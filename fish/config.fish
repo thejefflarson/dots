@@ -7,7 +7,7 @@ set __fish_git_prompt_char_stagedstate '→'
 set __fish_git_prompt_char_stashstate '↩'
 set __fish_git_prompt_char_upstream_ahead '↑'
 set __fish_git_prompt_char_upstream_behind '↓'
-
+set -x fish_greeting
 
 set -x PATH $HOME/dev/git-data/bin $HOME/bin /usr/local/bin /usr/local/checker $PATH /Applications/git-annex.app/Contents/MacOS
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
