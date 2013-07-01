@@ -1,3 +1,3 @@
 function compose_secure
-	cat | gpg --armor --encrypt --recipient $argv
+	gpg --armor --encrypt --sign --recipient $argv --encrypt-to 29E6B009
 end
