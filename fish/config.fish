@@ -17,7 +17,12 @@ set -x CC clang
 set -x CXX clang++
 set -x EDITOR vim
 
-. ~/.config/fish/secrets.fish
-. /usr/local/share/chruby/chruby.fish
-. /usr/local/share/chruby/auto.fish
-chruby ruby-2.0
+if test -f "~/.config/fish/secrets.fish"
+	. ~/.config/fish/secrets.fish
+end
+
+if test -d "/usr/local/share/chruby"
+	. /usr/local/share/chruby/chruby.fish
+	. /usr/local/share/chruby/auto.fish
+	chruby ruby-2.0
+end
