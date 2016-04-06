@@ -1,5 +1,16 @@
 #! /bin/bash
 for i in $(ls -d */);
-do 
+do
   stow -v -t ~/ -R ${i%%/};
 done
+mkdir -p ~/.mail/
+
+echo "
+Please remember to install the following packages:
+
+  msmtp
+  offlineimap
+  keyring (pip)
+  mu
+"
+

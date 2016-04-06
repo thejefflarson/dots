@@ -120,7 +120,7 @@ values."
                                :size 13
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -263,7 +263,7 @@ you should place you code here."
       (progn
         (setq insert-directory-program "/usr/local/bin/gls")
         (setq dired-listing-switches "-aBhl --group-directories-first")))
-
+  (spaceline-toggle-hud-off)
   (setq powerline-default-separator nil)
   )
 
