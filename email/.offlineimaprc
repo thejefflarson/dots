@@ -1,0 +1,24 @@
+[general]
+ui = TTY.TTYUI
+accounts = gmail
+pythonfile=~/.offlineimap.py
+fsync = False
+
+[Account gmail]
+localrepository = gmail-local
+remoterepository = gmail-remote
+status_backend = sqlite
+
+[Repository gmail-local]
+type = Maildir
+localfolders = ~/.mail/gmail
+
+[Repository gmail-remote]
+maxconnections = 1
+type = Gmail
+remoteuser = thejefflarson@gmail.com
+remotepasseval = get_keychain_pass(account="thejefflarson@gmail.com", server="imap.google.com")
+realdelete = no
+ssl = yes
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+folderfilter = lambda folder: folder not in ['[Gmail]/Spam']
