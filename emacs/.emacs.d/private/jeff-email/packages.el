@@ -18,16 +18,17 @@
 (defconst jeff-email-packages
   '((mu4e :location built-in)
     (mu4e-context :location built-in)
-    (mu4e-contrib :location built-in)))
+    (mu4e-contrib :location built-in)
+    (mu4e-maildirs-extension :location elpa)))
 
 (defun jeff-email/post-init-mu4e ()
   "Set up various email preferences."
   (setq mu4e-sent-messages-behavior 'delete)
   (setq mu4e-update-interval (* 60 5))
   (setq mu4e-get-mail-command "offlineimap -u quiet; true")
-  (setq mu4e-maildir "~/.mail/gmail")
-  (setq mu4e-mu-home "~/.mail/mu-gmail")
   (setq mu4e-compose-dont-reply-to-self t)
+  (setq mu4e-context-policy 'pick-first)
+  (setq mu4e-maildir "~/.mail")
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
@@ -47,16 +48,13 @@
                :match-func (lambda (msg)
                              (when msg
                                (mu4e-message-contact-field-matches msg :to "thejefflarson@gmail.com")))
-               :leave-func (lambda () (mu4e-clear-caches))
                :vars '((mail-reply-to . "thejefflarson@gmail.com")
                        (user-mail-address . "thejefflarson@gmail.com")
                        (user-full-name . "Jeff Larson")
-                       (mu4e-drafts-folder . "/[Gmail].Drafts")
-                       (mu4e-sent-folder . "/[Gmail].Sent Mail")
-                       (mu4e-trash-folder . "/[Gmail].Trash")
-                       (mu4e-maildir ."~/.mail/gmail")
-                       (mu4e-mu-home . "~/.mail/mu-gmail")
-                       (mu4e-refile-folder . "/[Gmail].All Mail")))
+                       (mu4e-drafts-folder . "/gmail/[Gmail].Drafts")
+                       (mu4e-sent-folder . "/gmail/[Gmail].Sent Mail")
+                       (mu4e-trash-folder . "/gmail/[Gmail].Trash")
+                       (mu4e-refile-folder . "/gmail/[Gmail].All Mail")))
              ,(make-mu4e-context
                :name "work"
                :enter-func (lambda ()
@@ -68,9 +66,10 @@
                :vars '((mail-reply-to . "jeff.larson@propublica.org")
                        (user-mail-address . "jeff.larson@propublica.org")
                        (user-full-name . "Jeff Larson")
-                       (mu4e-maildir ."~/.mail/work")
-                       (mu4e-mu-home . "~/.mail/mu-work")
-                       (mu4e-refile-folder . "/archive"))))
+                       (mu4e-drafts-folder . "/work/Drafts")
+                       (mu4e-sent-folder . "/work/Sent")
+                       (mu4e-trash-folder . "/work/Trash")
+                       (mu4e-refile-folder . "/work/archive"))))
              ,(make-mu4e-context
                :name "riseup"
                :enter-func (lambda ()
@@ -82,8 +81,9 @@
                :vars '((mail-reply-to . "thejefflarson@riseup.net")
                        (user-mail-address . "thejefflarson@riseup.net")
                        (user-full-name . "Jeff Larson")
-                       (mu4e-maildir ."~/.mail/riseup")
-                       (mu4e-mu-home . "~/.mail/mu-riseup"))))
+                       (mu4e-drafts-folder . "/riseup/Drafts")
+                       (mu4e-sent-folder . "/riseup/Sent")
+                       (mu4e-trash-folder . "/riseup/Trash"))))
              )
           )
     )
@@ -93,4 +93,9 @@
   (use-package mu4e-contrib
     :config
     (setq mu4e-html2text-command 'mu4e-shr2text)))
+
+(defun jeff-email/init-mu4e-maildirs-extension ()
+  (use-package mu4e-maildirs-extension
+    :config
+    (setq mu4e-maildirs-extension-fake-maildir-separator "\\.")))
 ;;; packages.el ends here
