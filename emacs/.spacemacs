@@ -259,10 +259,10 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
 
-
   (setq insert-directory-program "/usr/local/bin/gls")
   (setq dired-listing-switches "-aBhl --group-directories-first")
   (setq powerline-default-separator nil)
+
   (require 'mu4e-context)
   (require 'mu4e-contrib)
   (setq mu4e-html2text-command 'mu4e-shr2text)
@@ -284,6 +284,9 @@ you should place you code here."
                      (mu4e-maildir ."~/.mail/gmail")
                      (mu4e-mu-home . "~/.mail/mu-gmail"))))
         )
+
+  (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
+  (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
   )
 
 ;; Do not write anything past this comment. This re Emacs will
