@@ -259,9 +259,11 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
+  (if (eq system-type 'darwin)
+      (progn
+        (setq insert-directory-program "/usr/local/bin/gls")
+        (setq dired-listing-switches "-aBhl --group-directories-first")))
 
-  (setq insert-directory-program "/usr/local/bin/gls")
-  (setq dired-listing-switches "-aBhl --group-directories-first")
   (setq powerline-default-separator nil)
   )
 
