@@ -1,3 +1,5 @@
-#! /bin/env bash
-
-stow -t ~/ -R *
+#! /bin/bash
+for i in $(ls -d */);
+do 
+  stow -v -t ~/ -R ${i%%/};
+done

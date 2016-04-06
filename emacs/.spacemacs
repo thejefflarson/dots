@@ -44,6 +44,7 @@ values."
      ;; twitter
      semantic
      (mu4e :variables mu4e-installation-path "/usr/local/share/emacs/site-lisp")
+     jeff-email
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -262,31 +263,6 @@ you should place you code here."
   (setq insert-directory-program "/usr/local/bin/gls")
   (setq dired-listing-switches "-aBhl --group-directories-first")
   (setq powerline-default-separator nil)
-
-  (require 'mu4e-context)
-  (require 'mu4e-contrib)
-  (setq mu4e-html2text-command 'mu4e-shr2text)
-  (setq mu4e-sent-messages-behavior 'delete)
-  (setq mu4e-maildir "~/.mail/gmail")
-  (setq mu4e-contexts
-        `( ,(make-mu4e-context
-             :name "gmail"
-             :enter-func (lambda ()
-                           (mu4e-message "entering gmail"))
-             :match-func (lambda (msg)
-                           (if msg (string-equal "home" (mu4e-context-name mu4e~context-current)) t))
-             :vars '((mail-reply-to . "thejefflarson@gmail.com")
-                     (user-mail-address . "thejefflarson@gmail.com")
-                     (user-full-name . "Jeff Larson")
-                     (mu4e-drafts-folder . "/[Gmail].Drafts")
-                     (mu4e-sent-folder . "/[Gmail].Sent Mail")
-                     (mu4e-trash-folder . "/[Gmail].Trash")
-                     (mu4e-maildir ."~/.mail/gmail")
-                     (mu4e-mu-home . "~/.mail/mu-gmail"))))
-        )
-
-  (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
-  (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
   )
 
 ;; Do not write anything past this comment. This re Emacs will
