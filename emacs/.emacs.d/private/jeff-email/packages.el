@@ -47,7 +47,7 @@
                              (mu4e-message "entering gmail"))
                :match-func (lambda (msg)
                              (when msg
-                               (mu4e-message-contact-field-matches msg :to "thejefflarson@gmail.com")))
+                               (string-match "gmail" (mu4e-message-field msg :maildir))))
                :vars '((mail-reply-to . "thejefflarson@gmail.com")
                        (user-mail-address . "thejefflarson@gmail.com")
                        (user-full-name . "Jeff Larson")
@@ -61,29 +61,28 @@
                              (mu4e-message "entering work"))
                :match-func (lambda (msg)
                              (when msg
-                               (mu4e-message-contact-field-matches msg :to "jeff.larson@propublica.org"))
-               :leave-func (lambda () (mu4e-clear-caches))
+                               (string-match "work" (mu4e-message-field msg :maildir))))
                :vars '((mail-reply-to . "jeff.larson@propublica.org")
                        (user-mail-address . "jeff.larson@propublica.org")
                        (user-full-name . "Jeff Larson")
                        (mu4e-drafts-folder . "/work/Drafts")
                        (mu4e-sent-folder . "/work/Sent")
                        (mu4e-trash-folder . "/work/Trash")
-                       (mu4e-refile-folder . "/work/archive"))))
+                       (mu4e-refile-folder . "/work/archive")))
              ,(make-mu4e-context
                :name "riseup"
                :enter-func (lambda ()
                              (mu4e-message "entering riseup"))
                :match-func (lambda (msg)
                              (when msg
-                               (mu4e-message-contact-field-matches msg :to "thejefflarson@riseup.net"))
-               :leave-func (lambda () (mu4e-clear-caches))
+                               (string-match "riseup" (mu4e-message-field msg :maildir))))
                :vars '((mail-reply-to . "thejefflarson@riseup.net")
                        (user-mail-address . "thejefflarson@riseup.net")
                        (user-full-name . "Jeff Larson")
                        (mu4e-drafts-folder . "/riseup/Drafts")
                        (mu4e-sent-folder . "/riseup/Sent")
-                       (mu4e-trash-folder . "/riseup/Trash"))))
+                       (mu4e-trash-folder . "/riseup/Trash")
+                       (mu4e-refile-folder . "/riseup/Archive")))
              )
           )
     )
@@ -96,6 +95,8 @@
 
 (defun jeff-email/init-mu4e-maildirs-extension ()
   (use-package mu4e-maildirs-extension
+    :init
+    (mu4e-maildirs-extension)
     :config
     (setq mu4e-maildirs-extension-fake-maildir-separator "\\.")))
 ;;; packages.el ends here
