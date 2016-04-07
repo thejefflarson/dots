@@ -26,7 +26,7 @@
 (defun jeff-email/post-init-mu4e ()
   "Set up various email preferences."
   (setq mu4e-sent-messages-behavior 'delete)
-  (setq mu4e-update-interval (* 60 10))
+  (setq mu4e-update-interval (* 60 5))
   (setq mu4e-get-mail-command "offlineimap -u quiet; true")
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-context-policy 'pick-first)
@@ -123,12 +123,14 @@
   (use-package mu4e-alert
     :init
     (mu4e-alert-enable-notifications)
+    (mu4e-alert-enable-mode-line-display)
     :config
     (mu4e-alert-set-default-style (if (eq system-type 'darwin)
-                                      'notifier 'notifications))))
+                                      'notifier 'notifications))
+    (setq mu4e-alert-interesting-mail-query "flag:unread date:today..now")))
 
 (defun jeff-email/init-epa-config ()
-  "Varios encryption settings."
+  "Various encryption settings."
   (use-package epa-config
     :config
     (setq mml2015-use 'epg
