@@ -20,7 +20,8 @@
     (mu4e-context :location built-in)
     (mu4e-contrib :location built-in)
     (mu4e-maildirs-extension :location elpa)
-    (mu4e-alert :location elpa)))
+    (mu4e-alert :location elpa)
+    (epa-config :location built-in)))
 
 (defun jeff-email/post-init-mu4e ()
   "Set up various email preferences."
@@ -123,6 +124,15 @@
     :init
     (mu4e-alert-enable-notifications)
     :config
-    (mu4e-alert-set-default-style (if (eq system-type 'darwin) 'notifier 'notifications))))
+    (mu4e-alert-set-default-style (if (eq system-type 'darwin)
+                                      'notifier 'notifications))))
+
+(defun jeff-email/init-epa-config ()
+  "Varios encryption settings."
+  (use-package epa-config
+    :config
+    (setq mml2015-use 'epg
+          mml2015-encrypt-to-self t
+          mml2015-sign-with-sender t)))
 
 ;;; packages.el ends here
