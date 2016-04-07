@@ -11,11 +11,12 @@ set __fish_git_prompt_char_upstream_behind '↓'
 set __fish_git_prompt_char_upstream_equal '='
 set -x fish_greeting
 
-set -x PATH $HOME/dev/git-data/bin $HOME/bin /usr/local/bin /usr/local/checker /usr/local/share/npm/bin/ $PATH 
+set -x PATH $HOME/dev/git-data/bin $HOME/bin /usr/local/bin /usr/local/sbin /usr/local/checker /usr/local/share/npm/bin $PATH 
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
-set -x EDITOR vim
+set -x EDITOR emacs
+alias python "python3"
 
 if test -f "~/.config/fish/secrets.fish"
 	. ~/.config/fish/secrets.fish
@@ -24,5 +25,5 @@ end
 if test -d "/usr/local/share/chruby"
 	. /usr/local/share/chruby/chruby.fish
 	. /usr/local/share/chruby/auto.fish
-	chruby ruby-2.0
+	chruby ruby-2.2
 end
