@@ -123,6 +123,6 @@
     :init
     (mu4e-alert-enable-notifications)
     :config
-    (mu4e-alert-set-default-style (if (eq system-type 'darwin) 'notifier 'libnotify))))
+    (mu4e-alert-set-default-style (if (eq system-type 'darwin) 'notifier 'notifications))))
 
 ;;; packages.el ends here

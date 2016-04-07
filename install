@@ -12,5 +12,7 @@ Please remember to install the following packages:
   offlineimap
   keyring (pip)
   mu
+  terminal-notifier
+  
 "
 
