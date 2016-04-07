@@ -8,11 +8,11 @@
 ;; This file is not part of GNU Emacs.
 ;;
 ;;; License: GPLv3
-
+;;
 ;;; Commentary:
-
-;; This is me trying to create a custom Spacemacs layer.
-
+;;
+;; General email tomfoolery.
+;;
 ;;; Code:
 
 (defconst jeff-email-packages
@@ -89,12 +89,14 @@
   )
 
 (defun jeff-email/init-mu4e-contrib ()
+  "Use shr2text for HTML emails"
   (use-package mu4e-contrib
     :config
     (setq mu4e-html2text-command 'mu4e-shr2text)))
 
 (defun jeff-email/init-mu4e-maildirs-extension ()
   (use-package mu4e-maildirs-extension
+    "Grab unread / total counts by email box"
     :init
     (mu4e-maildirs-extension)
     :config
