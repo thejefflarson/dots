@@ -19,7 +19,8 @@
   '((mu4e :location built-in)
     (mu4e-context :location built-in)
     (mu4e-contrib :location built-in)
-    (mu4e-maildirs-extension :location elpa)))
+    (mu4e-maildirs-extension :location elpa)
+    (mu4e-alert :location elpa)))
 
 (defun jeff-email/post-init-mu4e ()
   "Set up various email preferences."
@@ -29,15 +30,29 @@
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-maildir "~/.mail")
+  (setq mu4e-headers-skip-duplicates t)
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
+  (add-to-list 'mu4e-header-info-custom
+               '(:mail-directory .
+                  (:name "Mail Directory"
+                   :shortname "Dir"
+                   :help "Mail Storage Directory"
+                   :function (lambda (msg)
+                               (or (mu4e-message-field msg :maildir) "")))))
+  (setq mu4e-headers-fields '((:mail-directory . 20)
+                              (:human-date     . 12)
+                              (:flags          .  6)
+                              (:mailing-list   . 10)
+                              (:from           . 22)
+                              (:subject        . nil)))
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
   (setq message-sendmail-f-is-evil 't))
 
 (defun jeff-email/init-mu4e-context ()
-  "Define different email contexts"
+  "Define different email contexts."
   (use-package mu4e-context
     :config
     (setq mu4e-contexts
@@ -89,16 +104,25 @@
   )
 
 (defun jeff-email/init-mu4e-contrib ()
-  "Use shr2text for HTML emails"
+  "Use shr2text for HTML emails."
   (use-package mu4e-contrib
     :config
     (setq mu4e-html2text-command 'mu4e-shr2text)))
 
 (defun jeff-email/init-mu4e-maildirs-extension ()
+  "Grab unread / total counts by email box."
   (use-package mu4e-maildirs-extension
-    "Grab unread / total counts by email box"
     :init
     (mu4e-maildirs-extension)
     :config
     (setq mu4e-maildirs-extension-fake-maildir-separator "\\.")))
+
+(defun jeff-email/init-mu4e-alert ()
+  "Desktop notifications."
+  (use-package mu4e-alert
+    :init
+    (mu4e-alert-enable-notifications)
+    :config
+    (mu4e-alert-set-default-style (if (eq system-type 'darwin) 'notifier 'libnotify))))
+
 ;;; packages.el ends here
