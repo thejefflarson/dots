@@ -19,34 +19,24 @@
   '((mu4e :location built-in)
     (mu4e-context :location built-in)
     (mu4e-contrib :location built-in)
+    (mu4e-vars :location built-in)
     (mu4e-maildirs-extension :location elpa)
     (mu4e-alert :location elpa)
-    (epa-config :location built-in)))
+    (epg-config :location built-in)))
 
 (defun jeff-email/post-init-mu4e ()
   "Set up various email preferences."
-  (setq mu4e-sent-messages-behavior 'delete)
   (setq mu4e-update-interval (* 60 5))
   (setq mu4e-get-mail-command "offlineimap -u quiet; true")
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-maildir "~/.mail")
   (setq mu4e-headers-skip-duplicates t)
+  (setq mu4e-headers-visible-lines 20)
+  (setq mu4e-view-show-addresses 'long)
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
-  (add-to-list 'mu4e-header-info-custom
-               '(:mail-directory .
-                  (:name "Mail Directory"
-                   :shortname "Dir"
-                   :help "Mail Storage Directory"
-                   :function (lambda (msg)
-                               (or (mu4e-message-field msg :maildir) "")))))
-  (setq mu4e-headers-fields '((:mail-directory . 20)
-                              (:human-date     . 12)
-                              (:flags          .  6)
-                              (:mailing-list   . 10)
-                              (:from           . 22)
-                              (:subject        . nil)))
+  (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
@@ -67,6 +57,7 @@
                :vars '((mail-reply-to . "thejefflarson@gmail.com")
                        (user-mail-address . "thejefflarson@gmail.com")
                        (user-full-name . "Jeff Larson")
+                       (mu4e-sent-messages-behavior . delete)
                        (mu4e-drafts-folder . "/gmail/[Gmail].Drafts")
                        (mu4e-sent-folder . "/gmail/[Gmail].Sent Mail")
                        (mu4e-trash-folder . "/gmail/[Gmail].Trash")
@@ -81,6 +72,7 @@
                :vars '((mail-reply-to . "jeff.larson@propublica.org")
                        (user-mail-address . "jeff.larson@propublica.org")
                        (user-full-name . "Jeff Larson")
+                       (mu4e-sent-messages-behavior . sent)
                        (mu4e-drafts-folder . "/work/Drafts")
                        (mu4e-sent-folder . "/work/Sent")
                        (mu4e-trash-folder . "/work/Trash")
@@ -95,6 +87,7 @@
                :vars '((mail-reply-to . "thejefflarson@riseup.net")
                        (user-mail-address . "thejefflarson@riseup.net")
                        (user-full-name . "Jeff Larson")
+                       (mu4e-sent-messages-behavior . sent)
                        (mu4e-drafts-folder . "/riseup/Drafts")
                        (mu4e-sent-folder . "/riseup/Sent")
                        (mu4e-trash-folder . "/riseup/Trash")
@@ -103,6 +96,7 @@
           )
     )
   )
+
 
 (defun jeff-email/init-mu4e-contrib ()
   "Use shr2text for HTML emails."
@@ -120,21 +114,46 @@
 
 (defun jeff-email/init-mu4e-alert ()
   "Desktop notifications."
-  (use-package mu4e-alert
-    :init
-    (mu4e-alert-enable-notifications)
-    (mu4e-alert-enable-mode-line-display)
+  (use-package mu4e-alert)
     :config
     (mu4e-alert-set-default-style (if (eq system-type 'darwin)
                                       'notifier 'notifications))
-    (setq mu4e-alert-interesting-mail-query "flag:unread date:today..now")))
+    (setq mu4e-alert-interesting-mail-query 
+          (concat 
+            "flag:unread date:today..now \("
+            "maildir:/work/INBOX"
+            " OR maildir:/gmail/INBOX"
+            " OR maildir:/gmail/[Gmail].All\ Mail"
+            " OR maildir:/gmail/[Gmail].Important"
+            " OR maildir:/riseup/INBOX\)"))
+    (mu4e-alert-enable-notifications)
+    (mu4e-alert-enable-mode-line-display))
+
 
 (defun jeff-email/init-epa-config ()
   "Various encryption settings."
-  (use-package epa-config
+  (use-package epg-config
     :config
     (setq mml2015-use 'epg
           mml2015-encrypt-to-self t
           mml2015-sign-with-sender t)))
+
+(defun jeff-email/init-mu4e-vars ()
+  "Set up custom headers"
+  (use-package mu4e-vars
+    :config
+    (add-to-list 'mu4e-header-info-custom
+                 '(:mail-directory .
+                                   (:name "Mail Directory"
+                                          :shortname "Dir"
+                                          :help "Mail Storage Directory"
+                                          :function (lambda (msg)
+                                                      (or (mu4e-message-field msg :maildir) "")))))
+    (setq mu4e-headers-fields '((:mail-directory . 20)
+                                (:human-date     . 12)
+                                (:flags          .  6)
+                                (:mailing-list   . 10)
+                                (:from           . 22)
+                                (:subject        . nil)))))
 
 ;;; packages.el ends here

@@ -38,6 +38,7 @@ values."
      syntax-checking
      (c-c++ :variables c-c++-enable-clang-support t)
      ruby
+     ruby-on-rails
      rust
      python
      javascript
