@@ -20,7 +20,7 @@ remoteuser = thejefflarson@gmail.com
 remotepasseval = get_password("imap.google.com", "thejefflarson@gmail.com")
 realdelete = no
 ssl = yes
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+sslcacertfile = ~/.certs
 folderfilter = lambda folder: folder not in ['[Gmail]/Spam']
 
 [Account work]
@@ -59,4 +59,4 @@ remoteuser = thejefflarson
 remotepasseval = get_password("imap.riseup.net", "thejefflarson@riseup.net")
 realdelete = no
 ssl = yes
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+sslcacertfile = ~/.certs
