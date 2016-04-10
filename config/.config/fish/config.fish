@@ -17,6 +17,7 @@ set -x CC clang
 set -x CXX clang++
 set -x EDITOR emacs
 alias python "python3"
+alias pip "pip3"
 
 if test -f "~/.config/fish/secrets.fish"
 	. ~/.config/fish/secrets.fish
