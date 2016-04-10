@@ -27,9 +27,9 @@ values."
      better-defaults
      emacs-lisp
      git
-     ;; markdown
+     markdown
      ;; org
-     ;; gtags
+     gtags
      (shell :variables
               shell-default-height 30
               shell-default-position 'bottom
@@ -266,9 +266,10 @@ you should place you code here."
         (setq dired-listing-switches "-aBhl --group-directories-first")))
   (spaceline-toggle-hud-off)
   (setq powerline-default-separator nil)
-  (setq custom-file "~/.emacs.d/custom.el")
-  (load custom-file)
+  (setq mouse-wheel-progressive-speed nil)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
