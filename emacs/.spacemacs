@@ -265,6 +265,8 @@ you should place you code here."
         (setq dired-listing-switches "-aBhl --group-directories-first")))
   (spaceline-toggle-hud-off)
   (setq powerline-default-separator nil)
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
