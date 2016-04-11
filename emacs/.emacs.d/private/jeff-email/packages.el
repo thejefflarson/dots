@@ -29,6 +29,9 @@
   (setq mu4e-update-interval (* 60 5))
   (setq mu4e-get-mail-command "offlineimap -u quiet; true")
   (setq mu4e-compose-dont-reply-to-self t)
+  (setq mu4e-user-mail-address-list '("thejefflarson@gmail.com",
+                                      "jeff.larson@propublica.org",
+                                      "thejefflarson@riseup.net"))
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-maildir "~/.mail")
   (setq mu4e-headers-skip-duplicates t)
@@ -37,6 +40,7 @@
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+  (setq mu4e-compose-in-new-frame t)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
