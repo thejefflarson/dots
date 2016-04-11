@@ -266,7 +266,7 @@ you should place you code here."
         (setq insert-directory-program "/usr/local/bin/gls")
         (setq dired-listing-switches "-aBhl --group-directories-first")))
   (setq powerline-default-separator nil)
-  (page-break-lines-mode)
+  (add-hook 'prog-mode-hook 'page-break-lines-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
