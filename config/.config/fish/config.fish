@@ -26,5 +26,5 @@ end
 if test -d "/usr/local/share/chruby"
 	. /usr/local/share/chruby/chruby.fish
 	. /usr/local/share/chruby/auto.fish
-	chruby ruby-2.2
+	chruby 2.3.0
 end
