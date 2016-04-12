@@ -70,10 +70,114 @@
 (pallet-mode t)
 
 (require 'req-package)
-(req-package swiper)
+(req-package swiper
+             :init
+             (setq ivy-use-virtual-buffers t)
+             (setq ivy-height 10)
+             (setq ivy-count-format "(%d/%d) ")
+             :config
+             (ivy-mode 1)
+             (global-set-key (kbd "C-s") 'swiper)
+             (global-set-key (kbd "M-x") 'counsel-M-x)
+             (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+             (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+             (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+             (global-set-key (kbd "<f1> l") 'counsel-load-library)
+             (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+             (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+             (global-set-key (kbd "C-c g") 'counsel-git)
+             (global-set-key (kbd "C-c j") 'counsel-git-grep)
+             (global-set-key (kbd "C-c k") 'counsel-ag)
+             (global-set-key (kbd "C-x l") 'counsel-locate)
+             (global-set-key (kbd "C-S-o") 'counsel-rhythmbox))
 
+(req-package undo-tree
+             :config
+             (global-undo-tree-mode))
 
+(req-package flycheck
+             :config
+             (global-flycheck-mode))
 
+(req-package projectile
+             :requires swiper
+             :config
+             (setq projectile-completion-system 'ivy))
+
+(req-package magit
+             :requires swiper
+             :config
+             (setq magit-completing-read-function 'ivy-completing-read))
+
+(req-package which-key
+             :config
+             (which-key-mode))
+
+(req-package kurecolor)
+(req-package rainbow-mode)
+
+(req-package diff-hl
+             :require magit
+             :init
+             (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+             :config
+             (global-diff-hl-mode 1))
+
+
+;; Programming modes
+(req-package ruby-mode
+             :mode (("Gemfile\\'"  . ruby-mode)
+                    ("Kirkfile\\'" . ruby-mode)
+                    ("Rakefile\\'" . ruby-mode)
+                    ("Vagrantfile\\'" . ruby-mode)
+                    ("\\.builder\\'"  . ruby-mode)
+                    ("\\.gemspec\\'"  . ruby-mode)
+                    ("\\.irbrc\\'" . ruby-mode)
+                    ("\\.pryrc\\'" . ruby-mode)
+                    ("\\.rake\\'"  . ruby-mode)
+                    ("\\.rjs\\'"   . ruby-mode)
+                    ("\\.ru\\'"    . ruby-mode)
+                    ("\\.rxml\\'"  . ruby-mode))
+             :config
+             ;; We never want to edit Rubinius bytecode
+             (add-to-list 'completion-ignored-extensions ".rbc"))
+
+(req-package projectile-rails
+             :require projectile
+             :init
+             (add-hook 'projectile-mode-hook 'projectile-rails-on))
+
+(req-package rust-mode
+             :mode "\\.rs\\'")
+
+(req-package racer)
+
+(req-package js2-mode
+             :mode "\\.js\\'")
+
+(req-package jsx-mode
+             :mode "\\.jsx\\'")
+
+(req-package cc-mode
+             :mode (("\\.cpp\\'" . c++-mode)
+                    ("\\.hpp\\'" . c++-mode)
+                    ("\\.h\\'" . c++-mode))
+             :config
+             (c-add-style "cc-style" cc-style)
+             (setq-default c-basic-offset 4)
+             (setq-default c-default-style "cc-style"))
+
+(req-package gdb-mi
+             :require cc-mode
+             :config
+             (setq gdb-many-windows t)
+             (setq gdb-show-main t))
+
+(req-package css-mode
+             :require kurecolor rainbow-mode
+             :mode "\\.css\\'"
+             :config
+             (rainbow-mode))
 
 
 ;; Mu4e
@@ -178,5 +282,16 @@
                                 (mu4e-sent-folder . "/riseup/Sent")
                                 (mu4e-trash-folder . "/riseup/Trash")
                                 (mu4e-refile-folder . "/riseup/Archive"))))))
+
+
+;; Theme
+
+(defadvice load-theme
+    (before theme-dont-propagate activate)
+  (mapc #'disable-theme custom-enabled-themes))
+
+(req-package color-theme-sanityinc-tomorrow
+             :init
+             (load-theme 'color-theme-sanityinc-tomorrow t))
 
 (req-package-finish)
