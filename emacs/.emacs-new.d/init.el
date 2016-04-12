@@ -77,19 +77,23 @@
              (setq ivy-count-format "(%d/%d) ")
              :config
              (ivy-mode 1)
-             (global-set-key (kbd "C-s") 'swiper)
-             (global-set-key (kbd "M-x") 'counsel-M-x)
-             (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-             (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-             (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-             (global-set-key (kbd "<f1> l") 'counsel-load-library)
-             (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-             (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-             (global-set-key (kbd "C-c g") 'counsel-git)
-             (global-set-key (kbd "C-c j") 'counsel-git-grep)
-             (global-set-key (kbd "C-c k") 'counsel-ag)
-             (global-set-key (kbd "C-x l") 'counsel-locate)
-             (global-set-key (kbd "C-S-o") 'counsel-rhythmbox))
+             (global-set-key (kbd "C-s") 'swiper))
+
+(req-package counsel
+  :require swiper
+  :config
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> l") 'counsel-load-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox))
 
 (req-package undo-tree
              :config
@@ -122,6 +126,10 @@
              (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
              :config
              (global-diff-hl-mode 1))
+
+(req-package page-break-lines
+  :config
+  (turn-on-page-break-lines-mode))
 
 
 ;; Programming modes
@@ -291,7 +299,11 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 (req-package color-theme-sanityinc-tomorrow
-             :init
+             :config
              (load-theme 'color-theme-sanityinc-tomorrow t))
+
+(when (eq system-type 'darwin)
+  (set-face-attribute 'default nil :family "Monaco")
+  (set-face-attribute 'default nil :height 120))
 
 (req-package-finish)
