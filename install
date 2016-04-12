@@ -13,6 +13,7 @@ Please remember to install the following packages:
   keyring (pip)
   mu
   terminal-notifier
+  cask
 
 "
 
