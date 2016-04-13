@@ -6,6 +6,9 @@
 ;;; Code:
 
 ;; Configuration
+
+(setq gc-cons-threshold 100000000)
+
 (setq user-full-name "Jeff Larson"
       user-mail-address "thejefflarson@gmail.com")
 
@@ -57,8 +60,12 @@
 (setq inhibit-startup-screen t)
 (blink-cursor-mode -1)
 (setq ring-bell-function #'ignore)
-
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(when (eq system-type 'darwin)
+  (progn
+    (setq insert-directory-program "/usr/local/bin/gls")
+    (setq dired-listing-switches "-aBhl --group-directories-first")))
 
 
 ;; Server code
@@ -137,6 +144,7 @@
 
 (req-package magit
   :requires swiper
+  :bind (("M-m s" . magit-status))
   :config
   (setq magit-completing-read-function 'ivy-completing-read))
 
@@ -159,12 +167,16 @@
   (global-diff-hl-mode 1))
 
 (req-package page-break-lines
-  :config
-  (global-page-break-lines-mode))
+  :init
+  (add-hook 'prog-mode-hook 'page-break-lines-mode))
 
-(req-package smartparens)
+(req-package smartparens
+  :defer t)
 (req-package smartparens-config
-  :require smartparens)
+  :require smartparens
+  :defer t
+  :init
+  (add-hook 'prog-mode-hook 'smartparens-mode))
 
 (req-package winner
   :config
@@ -180,8 +192,32 @@
 	eshell-directory-name (concat user-cache-directory "eshell/")))
 
 (req-package shell-pop
-  :bind (("C-t" . shell-pop-universal-key))
-  :init (setq shell-pop-shell-type 'eshell))
+  :bind (("C-t" . shell-pop))
+  :init (setq shell-pop-shell-type '("eshell" "*eshell*" (lambda () (eshell)))))
+
+(req-package company
+  :defer t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
+
+(req-package company-c-headers
+  :require company
+  :config
+  (add-to-list 'company-backends 'company-c-headers))
+
+(req-package company-statistics
+  :defer t
+  :init
+  (setq company-statistics-file (concat user-cache-directory
+                                        "company-statistics-cache.el"))
+  :config
+  (add-hook 'after-init-hook 'company-statistics-mode))
+
+(req-package semantic
+  :config
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-scheduler-mode 1)
+  (semantic-mode 1))
 
 
 ;; Programming modes
@@ -217,6 +253,7 @@
   (rainbow-mode))
 
 (req-package fish-mode)
+
 
 
 ;; Mu4e
