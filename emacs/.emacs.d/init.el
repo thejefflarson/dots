@@ -12,7 +12,6 @@
 (setq load-prefer-newer t)
 
 ;; Allow the -l flag to find the right emacs directory
-;; this won't work with stow and or symlinks. :( 
 (defconst user-emacs-directory 
   (file-name-directory (or load-file-name (buffer-file-name)))
   "Current emacs.d directory.")
@@ -133,7 +132,8 @@
 (req-package projectile
   :requires swiper
   :config
-  (setq projectile-completion-system 'ivy))
+  (setq projectile-completion-system 'ivy)
+  (setq projectile-enable-caching t))
 
 (req-package magit
   :requires swiper
@@ -144,8 +144,12 @@
   :config
   (which-key-mode))
 
-(req-package kurecolor)
-(req-package rainbow-mode)
+(req-package kurecolor
+  :defer t)
+
+(req-package rainbow-mode
+  :defer t
+  :requires kurecolor)
 
 (req-package diff-hl
   :require magit
@@ -177,26 +181,15 @@
 
 (req-package shell-pop
   :bind (("C-t" . shell-pop-universal-key))
-  :init (setq shell-pop-shell-type "eshell"))
+  :init (setq shell-pop-shell-type 'eshell))
 
 
 ;; Programming modes
 (req-package ruby-mode
-             :mode (("Gemfile\\'"  . ruby-mode)
-                    ("Kirkfile\\'" . ruby-mode)
-                    ("Rakefile\\'" . ruby-mode)
-                    ("Vagrantfile\\'" . ruby-mode)
-                    ("\\.builder\\'"  . ruby-mode)
-                    ("\\.gemspec\\'"  . ruby-mode)
-                    ("\\.irbrc\\'" . ruby-mode)
-                    ("\\.pryrc\\'" . ruby-mode)
-                    ("\\.rake\\'"  . ruby-mode)
-                    ("\\.rjs\\'"   . ruby-mode)
-                    ("\\.ru\\'"    . ruby-mode)
-                    ("\\.rxml\\'"  . ruby-mode))
-             :config
-             ;; We never want to edit Rubinius bytecode
-             (add-to-list 'completion-ignored-extensions ".rbc"))
+  :defer t
+  :config
+  ;; We never want to edit Rubinius bytecode
+  (add-to-list 'completion-ignored-extensions ".rbc"))
 
 (req-package projectile-rails
   :defer t
@@ -219,12 +212,11 @@
 
 (req-package css-mode
   :require kurecolor rainbow-mode
-  :mode "\\.css\\'"
+  :defer t
   :config
   (rainbow-mode))
 
-(req-package fish-mode
-  :mode "\\.fish\\")
+(req-package fish-mode)
 
 
 ;; Mu4e
@@ -246,6 +238,7 @@
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
   (setq message-sendmail-f-is-evil 't)
+  :defer t
   :config
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
