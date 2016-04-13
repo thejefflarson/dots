@@ -84,7 +84,7 @@
 
 (req-package diminish
   :config
-  (diminish auto-revert-mode))
+  (diminish 'auto-revert-mode))
 
 (req-package smooth-scrolling
   :config
