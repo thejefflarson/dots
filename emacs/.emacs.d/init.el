@@ -173,7 +173,7 @@
   :defer t
   :diminish page-break-lines-mode
   :commands
-  (global-page-break-lines-mode)
+  (global-page-break-lines-mode page-break-lines-mode)
   :init
   (add-hook 'after-init-hook 'global-page-break-lines-mode)
   (add-hook 'prog-mode-hook 'page-break-lines-mode))
@@ -307,13 +307,14 @@
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
   (setq message-sendmail-f-is-evil 't)
-  :defer t
   :config
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode))
 
-(req-package mu4e-contrib :init
+(req-package mu4e-contrib
+  :require mu4e
+  :init
   (setq mu4e-html2text-command 'mu4e-shr2text))
 
 (req-package mu4e-maildirs-extension
@@ -322,6 +323,7 @@
   :config (mu4e-maildirs-extension))
 
 (req-package mu4e-alert
+  :require mu4e
   :init
   (setq mu4e-alert-interesting-mail-query 
         (concat 
@@ -334,7 +336,6 @@
   :config
   (mu4e-alert-set-default-style (if (eq system-type 'darwin)
                                     'notifier 'notifications))
-  (mu4e-alert-enable-notifications)
   (mu4e-alert-enable-mode-line-display))
 
 (req-package epg-config
