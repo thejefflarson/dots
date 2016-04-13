@@ -12,7 +12,8 @@
 (setq load-prefer-newer t)
 
 ;; Allow the -l flag to find the right emacs directory
-(defconst user-emacs-directory
+;; this won't work with stow and or symlinks. :( 
+(defconst user-emacs-directory 
   (file-name-directory (or load-file-name (buffer-file-name)))
   "Current emacs.d directory.")
 
@@ -79,8 +80,6 @@
 
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
-(require 'pallet)
-(pallet-mode t)
 (require 'req-package)
 
 (req-package diminish)
@@ -89,8 +88,14 @@
   (smooth-scrolling t))
 
 (req-package rainbow-delimiters
+  :defer t
   :init
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+(req-package linum-mode
+  :defer t
+  :init
+  (add-hook 'prog-mode-hook 'linum-mode))
 
 (req-package swiper
   :init
@@ -171,7 +176,7 @@
 	eshell-directory-name (concat user-cache-directory "eshell/")))
 
 (req-package shell-pop
-  :bind (("C-t") . shell-pop-universal-key)
+  :bind (("C-t" . shell-pop-universal-key))
   :init (setq shell-pop-shell-type "eshell"))
 
 

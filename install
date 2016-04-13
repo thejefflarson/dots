@@ -1,10 +1,13 @@
 #! /bin/bash
+mkdir -p ~/.emacs.d/
+touch ~/.emacs.d/.keep
+
 for i in $(ls -d */);
 do
   stow -v -t ~/ -R ${i%%/};
 done
 mkdir -p ~/.mail/
-touch ~/.emacs.d/custom.el
+
 echo "
 Please remember to install the following packages:
 
