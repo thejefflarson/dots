@@ -132,8 +132,9 @@
   (global-undo-tree-mode))
 
 (req-package flycheck
-  :config
-  (global-flycheck-mode))
+  :commands (flycheck-mode-on)
+  :init
+  (add-hook 'prog-mode-hook 'flycheck-mode-on))
 
 (req-package projectile
   :requires swiper
@@ -160,20 +161,16 @@
   :requires kurecolor)
 
 (req-package diff-hl
-  :defer t
   :require magit
-  :commands
-  (diff-hl-magit-post-refresh)
+  :commands (diff-hl-magit-post-refresh)
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
   (global-diff-hl-mode 1))
 
 (req-package page-break-lines
-  :defer t
   :diminish page-break-lines-mode
-  :commands
-  (global-page-break-lines-mode page-break-lines-mode)
+  :commands (global-page-break-lines-mode page-break-lines-mode)
   :init
   (add-hook 'after-init-hook 'global-page-break-lines-mode)
   (add-hook 'prog-mode-hook 'page-break-lines-mode))
