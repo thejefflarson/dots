@@ -88,7 +88,10 @@
 (cask-initialize)
 (require 'req-package)
 
-(req-package diminish)
+(req-package diminish
+  :config
+  (diminish auto-revert-mode))
+
 (req-package smooth-scrolling
   :config
   (smooth-scrolling t))
@@ -104,6 +107,7 @@
   (add-hook 'prog-mode-hook 'linum-mode))
 
 (req-package swiper
+  :diminish ivy-mode
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-height 10)
@@ -129,6 +133,7 @@
    ("C-S-o" . counsel-rhythmbox)))
 
 (req-package undo-tree
+  :diminish undo-tree-mode
   :config
   (global-undo-tree-mode))
 
@@ -149,6 +154,7 @@
   (setq magit-completing-read-function 'ivy-completing-read))
 
 (req-package which-key
+  :diminish which-key-mode
   :config
   (which-key-mode))
 
@@ -167,10 +173,12 @@
   (global-diff-hl-mode 1))
 
 (req-package page-break-lines
+  :diminish page-break-lines-mode
   :init
   (add-hook 'prog-mode-hook 'page-break-lines-mode))
 
 (req-package smartparens
+  :diminish smartparens-mode
   :defer t)
 (req-package smartparens-config
   :require smartparens
@@ -196,6 +204,7 @@
   :init (setq shell-pop-shell-type '("eshell" "*eshell*" (lambda () (eshell)))))
 
 (req-package company
+  :diminish company-mode
   :defer t
   :init
   (add-hook 'after-init-hook 'global-company-mode))
