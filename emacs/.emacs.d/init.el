@@ -132,9 +132,9 @@
   (global-undo-tree-mode))
 
 (req-package flycheck
-  :commands (flycheck-mode-on)
+  :commands (global-flycheck-mode)
   :init
-  (add-hook 'prog-mode-hook 'flycheck-mode-on))
+  (add-hook 'after-init-hook 'global-flycheck-mode))
 
 (req-package projectile
   :requires swiper
@@ -247,6 +247,10 @@
   (add-hook 'c++-mode-hook 'enable-srefactor)
   (add-hook 'elisp-mode-hook 'enable-srefactor))
 
+(req-package flyspell
+  :commands (flyspell-buffer flyspell-mode)
+  :init (add-hook 'text-mode-hook 'flyspell-mode))
+
 
 ;; Programming modes
 (req-package ruby-mode
@@ -282,7 +286,6 @@
   (rainbow-mode))
 
 (req-package fish-mode)
-
 
 
 ;; Mu4e
