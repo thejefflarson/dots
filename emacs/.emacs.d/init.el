@@ -74,12 +74,6 @@
   (unless (server-running-p) (server-start)))
 
 
-;; Builtin configuration
-(eval-after-load 'srecode
-  '(setq srecode-map-save-file
-	 (concat user-cache-directory "srecode-map.el")))
-
-
 ;; Packages
 (package-initialize)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
@@ -166,20 +160,28 @@
   :requires kurecolor)
 
 (req-package diff-hl
+  :defer t
   :require magit
+  :commands
+  (diff-hl-magit-post-refresh)
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
   (global-diff-hl-mode 1))
 
 (req-package page-break-lines
+  :defer t
   :diminish page-break-lines-mode
+  :commands
+  (global-page-break-lines-mode)
   :init
+  (add-hook 'after-init-hook 'global-page-break-lines-mode)
   (add-hook 'prog-mode-hook 'page-break-lines-mode))
 
 (req-package smartparens
   :diminish smartparens-mode
   :defer t)
+
 (req-package smartparens-config
   :require smartparens
   :defer t
@@ -207,12 +209,13 @@
   :diminish company-mode
   :defer t
   :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'prog-mode-hook 'global-company-mode)
+  :config
+  (add-to-list 'company-backends 'company-c-headers))
 
 (req-package company-c-headers
   :require company
-  :config
-  (add-to-list 'company-backends 'company-c-headers))
+  :defer t)
 
 (req-package company-statistics
   :defer t
@@ -222,11 +225,30 @@
   :config
   (add-hook 'after-init-hook 'company-statistics-mode))
 
-(req-package semantic
-  :config
+(defun enable-semantic ()
+  "Set up semantic in programming modes."
+  (require 'semantic)
   (global-semanticdb-minor-mode 1)
   (global-semantic-idle-scheduler-mode 1)
   (semantic-mode 1))
+
+(req-package semantic
+  :defer t
+  :init
+  (setq srecode-map-save-file
+	(concat user-cache-directory "srecode-map.el"))
+  (add-hook 'prog-mode-hook 'enable-semantic))
+
+(defun enable-srefactor ()
+  (require 'srefactor))
+
+(req-package srefactor
+  :require semantic cc-mode
+  :defer t
+  :init
+  (add-hook 'c-mode-hook 'enable-srefactor)
+  (add-hook 'c++-mode-hook 'enable-srefactor)
+  (add-hook 'elisp-mode-hook 'enable-srefactor))
 
 
 ;; Programming modes
@@ -239,8 +261,9 @@
 (req-package projectile-rails
   :defer t
   :require projectile
+  :commands (projectile-rails-on)
   :init
-  (add-hook 'projectile-mode-hook 'projectile-rails-on))
+  (add-hook 'ruby-mode-hook 'projectile-rails-on))
 
 (req-package cc-mode
   :defer t
