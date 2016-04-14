@@ -295,12 +295,12 @@
 
 
 ;; Mu4e
-(defvar my-interesting-mail
+(defconst my-interesting-mail
   (concat " \(maildir:/work/INBOX"
-          " OR maildir:/gmail/INBOX"
-          " OR maildir:/gmail/[Gmail].All\ Mail"
-          " OR maildir:/gmail/[Gmail].Important"
-          " OR maildir:/riseup/INBOX\)")
+           " OR maildir:/gmail/INBOX"
+           " OR maildir:/gmail/[Gmail].All\ Mail"
+           " OR maildir:/gmail/[Gmail].Important"
+           " OR maildir:/riseup/INBOX\)")
   "Interesting mail suffix.")
 
 (req-package mu4e
@@ -318,17 +318,19 @@
   (setq mu4e-view-show-addresses 'long)
   (setq mu4e-compose-in-new-frame t)
   (setq mu4e-compose-complete-only-personal t)
+  (setq message-kill-buffer-on-exit t)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
   (setq message-sendmail-f-is-evil 't)
   (setq mu4e-bookmarks
-	'(((concat "flag:unread date:today..now" my-interesting-mail) "Today's unread messages"  ?u)
-	  ((concat "date:today..now" my-interesting-mail)             "Today's messages"         ?t)
-	  ((concat "date:7d..now" my-interesting-mail)                "This week's messages"     ?w)
-	  (my-interesting-mail                                        "All messages"             ?a)))
+	`((,(concat "flag:unread date:today..now" my-interesting-mail) "Today's unread messages"  ?u)
+	  (,(concat "date:today..now" my-interesting-mail)             "Today's messages"         ?t)
+	  (,(concat "date:7d..now" my-interesting-mail)                "This week's messages"     ?w)
+	  (,my-interesting-mail                                         "All messages"             ?a)))
   :config
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
+  (add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode))
 
