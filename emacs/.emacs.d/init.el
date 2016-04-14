@@ -297,10 +297,10 @@
 ;; Mu4e
 (defconst my-interesting-mail
   (concat " \(maildir:/work/INBOX"
-           " OR maildir:/gmail/INBOX"
-           " OR maildir:/gmail/[Gmail].All\ Mail"
-           " OR maildir:/gmail/[Gmail].Important"
-           " OR maildir:/riseup/INBOX\)")
+          " OR maildir:/gmail/INBOX"
+          " OR maildir:/gmail/[Gmail].All\ Mail"
+          " OR maildir:/gmail/[Gmail].Important"
+          " OR maildir:/riseup/INBOX\)")
   "Interesting mail suffix.")
 
 (req-package mu4e
