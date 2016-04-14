@@ -72,7 +72,6 @@
 (unless (string-equal "root" (getenv "USER"))
   (require 'server)
   (unless (server-running-p) (server-start)))
-
 
 ;; Packages
 (package-initialize)
@@ -251,6 +250,13 @@
   :commands (flyspell-buffer flyspell-mode)
   :init (add-hook 'text-mode-hook 'flyspell-mode))
 
+(req-package neotree
+  :bind ("M-t" . neotree)
+  :config
+  (setq neo-theme 'arrow)
+  (setq neo-show-hidden-files t)
+  (setq projectile-switch-project-action 'neotree-projectile-action))
+
 
 ;; Programming modes
 (req-package ruby-mode
@@ -289,6 +295,14 @@
 
 
 ;; Mu4e
+(defvar my-interesting-mail
+  (concat " \(maildir:/work/INBOX"
+          " OR maildir:/gmail/INBOX"
+          " OR maildir:/gmail/[Gmail].All\ Mail"
+          " OR maildir:/gmail/[Gmail].Important"
+          " OR maildir:/riseup/INBOX\)")
+  "Interesting mail suffix.")
+
 (req-package mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
@@ -303,10 +317,16 @@
   (setq mu4e-headers-visible-lines 20)
   (setq mu4e-view-show-addresses 'long)
   (setq mu4e-compose-in-new-frame t)
+  (setq mu4e-compose-complete-only-personal t)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
   (setq message-sendmail-f-is-evil 't)
+  (setq mu4e-bookmarks
+	'(((concat "flag:unread date:today..now" my-interesting-mail) "Today's unread messages"  ?u)
+	  ((concat "date:today..now" my-interesting-mail)             "Today's messages"         ?t)
+	  ((concat "date:7d..now" my-interesting-mail)                "This week's messages"     ?w)
+	  (my-interesting-mail                                        "All messages"             ?a)))
   :config
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
@@ -327,16 +347,13 @@
   :init
   (setq mu4e-alert-interesting-mail-query 
         (concat 
-         "flag:unread date:today..now \("
-         "maildir:/work/INBOX"
-         " OR maildir:/gmail/INBOX"
-         " OR maildir:/gmail/[Gmail].All\ Mail"
-         " OR maildir:/gmail/[Gmail].Important"
-         " OR maildir:/riseup/INBOX\)"))
+         "flag:unread date:today..now"
+         my-interesting-mail))
+  (add-hook 'after-init-hook 'mu4e-alert-enable-notifications)
+  (add-hook 'after-init-hook 'mu4e-alert-enable-mode-line-display)
   :config
   (mu4e-alert-set-default-style (if (eq system-type 'darwin)
-                                    'notifier 'notifications))
-  (mu4e-alert-enable-mode-line-display))
+                                    'notifier 'notifications)))
 
 (req-package epg-config
   :init
@@ -397,6 +414,7 @@
     )
 
 (req-package mu4e-vars
+  :require mu4e
   :config
   (add-to-list 'mu4e-header-info-custom
 	       '(:mail-directory .
