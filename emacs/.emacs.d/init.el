@@ -25,7 +25,7 @@
    "Directory for temporary files.")
 
 (unless (and (file-exists-p user-cache-directory)
-	     (file-accessible-directory-p user-cache-directory))
+             (file-accessible-directory-p user-cache-directory))
   (mkdir user-cache-directory))
 
 ;; OS X specific configuration
@@ -192,10 +192,10 @@
   :defer t
   :config
   (setq eshell-buffer-maximum-lines 20000
-	eshell-history-size 350
-	eshell-hist-ignoredups t
-	eshell-plain-echo-behavior t
-	eshell-directory-name (concat user-cache-directory "eshell/")))
+        eshell-history-size 350
+        eshell-hist-ignoredups t
+        eshell-plain-echo-behavior t
+        eshell-directory-name (concat user-cache-directory "eshell/")))
 
 (req-package shell-pop
   :bind (("C-t" . shell-pop))
@@ -232,7 +232,7 @@
   :defer t
   :init
   (setq srecode-map-save-file
-	(concat user-cache-directory "srecode-map.el"))
+        (concat user-cache-directory "srecode-map.el"))
   (add-hook 'prog-mode-hook 'enable-semantic))
 
 (defun enable-srefactor ()
@@ -306,11 +306,11 @@
 (req-package mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
-  (setq mu4e-get-mail-command "mbsync")
+  (setq mu4e-get-mail-command "mbsync -a")
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-user-mail-address-list '("thejefflarson@gmail.com"
                                       "jeff.larson@propublica.org"
-				      "thejefflarson@riseup.net"))
+                                      "thejefflarson@riseup.net"))
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-maildir "~/.mail")
   (setq mu4e-headers-skip-duplicates t)
@@ -324,10 +324,10 @@
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
   (setq message-sendmail-f-is-evil 't)
   (setq mu4e-bookmarks
-	`((,(concat "flag:unread date:today..now" my-interesting-mail) "Today's unread messages"  ?u)
-	  (,(concat "date:today..now" my-interesting-mail)             "Today's messages"         ?t)
-	  (,(concat "date:7d..now" my-interesting-mail)                "This week's messages"     ?w)
-	  (,my-interesting-mail                                         "All messages"             ?a)))
+        `((,(concat "flag:unread date:today..now" my-interesting-mail) "Today's unread messages"  ?u)
+          (,(concat "date:today..now" my-interesting-mail)             "Today's messages"         ?t)
+          (,(concat "date:7d..now" my-interesting-mail)                "This week's messages"     ?w)
+          (,my-interesting-mail                                         "All messages"             ?a)))
   :config
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
@@ -366,71 +366,71 @@
 (req-package mu4e-context
   :config
   (setq mu4e-contexts
-	`( ,(make-mu4e-context
-	     :name "gmail"
-	     :enter-func (lambda ()
-			   (mu4e-message "entering gmail"))
-	     :match-func (lambda (msg)
-			   (when msg
-			     (string-match "gmail" (mu4e-message-field msg :maildir))))
-	     :vars '((mail-reply-to . "thejefflarson@gmail.com")
-		     (user-mail-address . "thejefflarson@gmail.com")
-		     (user-full-name . "Jeff Larson")
-		     (mu4e-sent-messages-behavior . delete)
-		     (mu4e-drafts-folder . "/gmail/[Gmail].Drafts")
-		     (mu4e-sent-folder . "/gmail/[Gmail].Sent Mail")
-		     (mu4e-trash-folder . "/gmail/[Gmail].Trash")
-		     (mu4e-refile-folder . "/gmail/[Gmail].All Mail")))
-	   ,(make-mu4e-context
-	     :name "work"
-	     :enter-func (lambda ()
-			   (mu4e-message "entering work"))
-	     :match-func (lambda (msg)
-			   (when msg
-			     (string-match "work" (mu4e-message-field msg :maildir))))
-	     :vars '((mail-reply-to . "jeff.larson@propublica.org")
-		     (user-mail-address . "jeff.larson@propublica.org")
-		     (user-full-name . "Jeff Larson")
-		     (mu4e-sent-messages-behavior . sent)
-		     (mu4e-drafts-folder . "/work/Drafts")
-		     (mu4e-sent-folder . "/work/Sent")
-		     (mu4e-trash-folder . "/work/Trash")
-		     (mu4e-refile-folder . "/work/archive")))
-	   ,(make-mu4e-context
-	     :name "riseup"
-	     :enter-func (lambda ()
-			   (mu4e-message "entering riseup"))
-	     :match-func (lambda (msg)
-			   (when msg
-			     (string-match "riseup" (mu4e-message-field msg :maildir))))
-	     :vars '((mail-reply-to . "thejefflarson@riseup.net")
-		     (user-mail-address . "thejefflarson@riseup.net")
-		     (user-full-name . "Jeff Larson")
-		     (mu4e-sent-messages-behavior . sent)
-		     (mu4e-drafts-folder . "/riseup/Drafts")
-		     (mu4e-sent-folder . "/riseup/Sent")
-		     (mu4e-trash-folder . "/riseup/Trash")
-		     (mu4e-refile-folder . "/riseup/Archive")))
-	   )
-	)
+        `( ,(make-mu4e-context
+             :name "gmail"
+             :enter-func (lambda ()
+                           (mu4e-message "entering gmail"))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match "gmail" (mu4e-message-field msg :maildir))))
+             :vars '((mail-reply-to . "thejefflarson@gmail.com")
+                     (user-mail-address . "thejefflarson@gmail.com")
+                     (user-full-name . "Jeff Larson")
+                     (mu4e-sent-messages-behavior . delete)
+                     (mu4e-drafts-folder . "/gmail/[Gmail].Drafts")
+                     (mu4e-sent-folder . "/gmail/[Gmail].Sent Mail")
+                     (mu4e-trash-folder . "/gmail/[Gmail].Trash")
+                     (mu4e-refile-folder . "/gmail/[Gmail].All Mail")))
+           ,(make-mu4e-context
+             :name "work"
+             :enter-func (lambda ()
+                           (mu4e-message "entering work"))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match "work" (mu4e-message-field msg :maildir))))
+             :vars '((mail-reply-to . "jeff.larson@propublica.org")
+                     (user-mail-address . "jeff.larson@propublica.org")
+                     (user-full-name . "Jeff Larson")
+                     (mu4e-sent-messages-behavior . sent)
+                     (mu4e-drafts-folder . "/work/Drafts")
+                     (mu4e-sent-folder . "/work/Sent")
+                     (mu4e-trash-folder . "/work/Trash")
+                     (mu4e-refile-folder . "/work/archive")))
+           ,(make-mu4e-context
+             :name "riseup"
+             :enter-func (lambda ()
+                           (mu4e-message "entering riseup"))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match "riseup" (mu4e-message-field msg :maildir))))
+             :vars '((mail-reply-to . "thejefflarson@riseup.net")
+                     (user-mail-address . "thejefflarson@riseup.net")
+                     (user-full-name . "Jeff Larson")
+                     (mu4e-sent-messages-behavior . sent)
+                     (mu4e-drafts-folder . "/riseup/Drafts")
+                     (mu4e-sent-folder . "/riseup/Sent")
+                     (mu4e-trash-folder . "/riseup/Trash")
+                     (mu4e-refile-folder . "/riseup/Archive")))
+           )
+        )
     )
 
 (req-package mu4e-vars
   :require mu4e
   :config
   (add-to-list 'mu4e-header-info-custom
-	       '(:mail-directory .
-				 (:name "Mail Directory"
-					:shortname "Dir"
-					:help "Mail Storage Directory"
-					:function (lambda (msg)
-						    (or (mu4e-message-field msg :maildir) "")))))
+               '(:mail-directory .
+                                 (:name "Mail Directory"
+                                        :shortname "Dir"
+                                        :help "Mail Storage Directory"
+                                        :function (lambda (msg)
+                                                    (or (mu4e-message-field msg :maildir) "")))))
   (setq mu4e-headers-fields '((:mail-directory . 20)
-			      (:human-date     . 12)
-			      (:flags          .  6)
-			      (:mailing-list   . 10)
-			      (:from           . 22)
-			      (:subject        . nil))))
+                              (:human-date     . 12)
+                              (:flags          .  6)
+                              (:mailing-list   . 10)
+                              (:from           . 22)
+                              (:subject        . nil))))
 
 
 ;; Theme
