@@ -18,6 +18,7 @@ Master :gmail-remote:
 Slave :gmail-local:
 Patterns * ![Gmail]/Spam
 Create Both
+Expunge Both
 SyncState *
 
 IMAPAccount work
@@ -40,6 +41,7 @@ Master :work-remote:
 Slave :work-local:
 Patterns *
 Create Both
+Expunge Both
 SyncState *
 
 IMAPAccount riseup
@@ -61,5 +63,6 @@ Master :riseup-remote:
 Slave :riseup-local:
 Patterns *
 Create Both
+Expunge Both
 SyncState *
 
