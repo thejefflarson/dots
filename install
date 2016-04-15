@@ -6,13 +6,13 @@ for i in $(ls -d */);
 do
   stow -v -t ~/ -R ${i%%/};
 done
-mkdir -p ~/.mail/
+mkdir -p ~/.mail/{gmail,work,riseup}
 
 echo "
 Please remember to install the following packages:
 
   msmtp
-  offlineimap
+  isync
   keyring (pip)
   mu
   terminal-notifier
