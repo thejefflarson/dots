@@ -6,7 +6,6 @@
 ;;; Code:
 
 ;; Configuration
-
 (setq gc-cons-threshold 100000000)
 
 (setq user-full-name "Jeff Larson"
@@ -434,7 +433,6 @@
 
 
 ;; Theme
-
 (defadvice load-theme
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
