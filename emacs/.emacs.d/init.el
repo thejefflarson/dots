@@ -259,6 +259,10 @@
 (req-package twittering-mode
   :defer t)
 
+(req-package vlf
+  :config
+  (require 'vlf-setup))
+
 
 ;; Programming modes
 (req-package ruby-mode
