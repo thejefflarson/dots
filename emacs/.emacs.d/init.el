@@ -304,8 +304,8 @@
 (defconst my-interesting-mail
   (concat " \(maildir:/work/INBOX"
           " OR maildir:/gmail/INBOX"
-          " OR maildir:/gmail/[Gmail].All\ Mail"
-          " OR maildir:/gmail/[Gmail].Important"
+          " OR maildir:/gmail/[Gmail]/.All\ Mail"
+          " OR maildir:/gmail/[Gmail]/.Important"
           " OR maildir:/riseup/INBOX\)")
   "Interesting mail suffix.")
 
@@ -383,10 +383,10 @@
                      (user-mail-address . "thejefflarson@gmail.com")
                      (user-full-name . "Jeff Larson")
                      (mu4e-sent-messages-behavior . delete)
-                     (mu4e-drafts-folder . "/gmail/[Gmail].Drafts")
-                     (mu4e-sent-folder . "/gmail/[Gmail].Sent Mail")
-                     (mu4e-trash-folder . "/gmail/[Gmail].Trash")
-                     (mu4e-refile-folder . "/gmail/[Gmail].All Mail")))
+                     (mu4e-drafts-folder . "/gmail/[Gmail]/.Drafts")
+                     (mu4e-sent-folder . "/gmail/[Gmail]/.Sent Mail")
+                     (mu4e-trash-folder . "/gmail/[Gmail]/.Trash")
+                     (mu4e-refile-folder . "/gmail/[Gmail]/.All Mail")))
            ,(make-mu4e-context
              :name "work"
              :enter-func (lambda ()
