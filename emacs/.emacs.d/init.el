@@ -326,7 +326,7 @@
         `((,(concat "flag:unread date:today..now" my-interesting-mail) "Today's unread messages"  ?u)
           (,(concat "date:today..now" my-interesting-mail)             "Today's messages"         ?t)
           (,(concat "date:7d..now" my-interesting-mail)                "This week's messages"     ?w)
-          (,my-interesting-mail                                         "All messages"             ?a)))
+          (,my-interesting-mail                                         "All messages"            ?a)))
   :config
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
