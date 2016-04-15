@@ -256,6 +256,9 @@
   (setq neo-show-hidden-files t)
   (setq projectile-switch-project-action 'neotree-projectile-action))
 
+(req-package twittering-mode
+  :defer t)
+
 
 ;; Programming modes
 (req-package ruby-mode
