@@ -306,7 +306,7 @@
 (req-package mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
-  (setq mu4e-get-mail-command "offlineimap -u quiet; true")
+  (setq mu4e-get-mail-command "mbsync")
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-user-mail-address-list '("thejefflarson@gmail.com"
                                       "jeff.larson@propublica.org"

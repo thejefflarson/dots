@@ -1,0 +1,65 @@
+IMAPAccount gmail
+Host imap.gmail.com
+User thejefflarson@gmail.com
+PassCmd "keyring get imap.google.com thejefflarson@gmail.com" 
+SSLType IMAPS
+CertificateFile ~/.certs
+AuthMechs LOGIN
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/Inbox
+
+Channel gmail
+Master :gmail-remote:
+Slave :gmail-local:
+Patterns * ![Gmail]/Spam
+Create Both
+SyncState *
+
+IMAPAccount work
+Host localhost
+Port 1143
+User jlarson
+PassCmd "keyring get mail.propublica.org jeff.larson@propublica.org" 
+SSLType None
+AuthMechs LOGIN
+
+IMAPStore work-remote
+Account work
+
+MaildirStore work-local
+Path ~/.mail/work/
+Inbox ~/.mail/work/Inbox
+
+Channel work
+Master :work-remote:
+Slave :work-local:
+Patterns *
+Create Both
+SyncState *
+
+IMAPAccount riseup
+Host imap.riseup.net
+User thejefflarson@riseup.net
+PassCmd "keyring get imap.riseup.net thejefflarson@riseup.net" 
+SSLType IMAPS
+CertificateFile ~/.certs
+
+IMAPStore riseup-remote
+Account riseup
+
+MaildirStore riseup-local
+Path ~/.mail/riseup/
+Inbox ~/.mail/riseup/Inbox
+
+Channel riseup
+Master :riseup-remote:
+Slave :riseup-local:
+Patterns *
+Create Both
+SyncState *
+
