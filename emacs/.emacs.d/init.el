@@ -8,6 +8,8 @@
 ;; Configuration
 (setq gc-cons-threshold 100000000)
 
+(setq-default indent-tabs-mode nil)
+
 (setq user-full-name "Jeff Larson"
       user-mail-address "thejefflarson@gmail.com")
 
@@ -138,7 +140,8 @@
   :requires swiper
   :config
   (setq projectile-completion-system 'ivy)
-  (setq projectile-enable-caching t))
+  (setq projectile-enable-caching t)
+  (projectile-global-mode))
 
 (req-package magit
   :requires swiper
