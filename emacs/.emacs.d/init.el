@@ -260,8 +260,10 @@
   :defer t)
 
 (req-package vlf
-  :config
-  (require 'vlf-setup))
+  :defer t)
+
+(req-package vlf-setup
+  :require vlf)
 
 
 ;; Programming modes
@@ -297,6 +299,9 @@
   :config
   (rainbow-mode))
 
+(req-package rust-mode
+  :defer t)
+
 (req-package fish-mode)
 
 
@@ -312,7 +317,7 @@
 (req-package mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
-  (setq mu4e-get-mail-command "mbsync -aq")
+  (setq mu4e-get-mail-command "mbsync -aq; true")
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-user-mail-address-list '("thejefflarson@gmail.com"
                                       "jeff.larson@propublica.org"

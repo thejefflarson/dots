@@ -11,11 +11,12 @@ set __fish_git_prompt_char_upstream_behind '↓'
 set __fish_git_prompt_char_upstream_equal '='
 set -x fish_greeting
 
-set -x PATH $HOME/dev/git-data/bin $HOME/bin /usr/local/bin /usr/local/sbin /usr/local/checker /usr/local/share/npm/bin $HOME/.cask/bin $PATH 
+set -x PATH $HOME/dev/git-data/bin $HOME/bin $HOME/.multirust/toolchains/stable/cargo/bin /usr/local/bin /usr/local/sbin /usr/local/checker /usr/local/share/npm/bin $HOME/.cask/bin $PATH 
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
 set -x EDITOR emacs
+set -x RUST_SRC_PATH 
 alias python "python3"
 alias pip "pip3"
 
