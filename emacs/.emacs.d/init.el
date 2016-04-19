@@ -184,7 +184,9 @@
   :require smartparens
   :defer t
   :init
-  (add-hook 'prog-mode-hook 'smartparens-mode))
+  (add-hook 'after-init-hook 'smartparens-mode)
+  :config
+  (show-smartparens-global-mode t))
 
 (req-package winner
   :config
@@ -254,10 +256,19 @@
 
 (req-package neotree
   :bind ("M-t" . neotree)
+  :commands (neotree-find)
   :config
   (setq neo-theme 'arrow)
   (setq neo-show-hidden-files t)
   (setq projectile-switch-project-action 'neotree-projectile-action))
+
+(defun neotree-find-project-root ()
+  (interactive)
+  (let ((origin-buffer-file-name (buffer-file-name)))
+    (neotree-find (projectile-project-root))
+    (neotree-find origin-buffer-file-name)))
+
+
 
 (req-package twittering-mode
   :defer t)
