@@ -27,6 +27,7 @@
 (depends-on "rust-mode")
 (depends-on "smartparens")
 (depends-on "smooth-scrolling")
+(depends-on "srefactor")
 (depends-on "swiper")
 (depends-on "undo-tree")
 (depends-on "which-key")

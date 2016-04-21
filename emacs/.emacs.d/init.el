@@ -25,9 +25,13 @@
    (concat user-emacs-directory ".cache"))
    "Directory for temporary files.")
 
-(unless (and (file-exists-p user-cache-directory)
-             (file-accessible-directory-p user-cache-directory))
-  (mkdir user-cache-directory))
+(defun ensure-directory (dir)
+  "Make directory DIR if it doesn't exist."
+  (unless (and (file-exists-p dir)
+               (file-accessible-directory-p dir))
+    (mkdir dir)))
+
+(ensure-directory user-cache-directory)
 
 ;; OS X specific configuration
 (when (eq system-type 'darwin)
@@ -50,6 +54,13 @@
 (if (file-exists-p custom-file)
     (load-file custom-file)
   (write-region "" nil custom-file t))
+
+;; put versions in the cache directory
+(setq backup-directory-alist `(("." . user-cache-directory))
+      backup-by-copying t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
 
 ;; Turn off a bunch of useless stuff
 (when (featurep 'menu-bar)
@@ -186,7 +197,7 @@
   :init
   (add-hook 'after-init-hook 'smartparens-mode)
   :config
-  (show-smartparens-global-mode t))
+  (smartparens-global-mode))
 
 (req-package winner
   :config
