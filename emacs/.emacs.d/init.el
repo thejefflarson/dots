@@ -313,6 +313,7 @@
 
 (req-package gdb-mi
   :require cc-mode
+  :commands (gdb)
   :defer t
   :config
   (setq gdb-many-windows t)
