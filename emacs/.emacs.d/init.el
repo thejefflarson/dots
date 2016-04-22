@@ -56,7 +56,7 @@
   (write-region "" nil custom-file t))
 
 ;; put versions in the cache directory
-(setq backup-directory-alist `(("." . user-cache-directory))
+(setq backup-directory-alist `(("." . ,user-cache-directory))
       backup-by-copying t
       kept-new-versions 6
       kept-old-versions 2
@@ -189,15 +189,14 @@
 
 (req-package smartparens
   :diminish smartparens-mode
+  :commands (smartparens-mode)
   :defer t)
 
 (req-package smartparens-config
   :require smartparens
   :defer t
-  :init
-  (add-hook 'after-init-hook 'smartparens-mode)
   :config
-  (smartparens-global-mode))
+  (add-hook 'prog-mode-hook 'smartparens-mode))
 
 (req-package winner
   :config
@@ -278,8 +277,6 @@
   (let ((origin-buffer-file-name (buffer-file-name)))
     (neotree-find (projectile-project-root))
     (neotree-find origin-buffer-file-name)))
-
-
 
 (req-package twittering-mode
   :defer t)
