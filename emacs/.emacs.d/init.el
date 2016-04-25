@@ -1,4 +1,4 @@
-;;; jeffs-init --- various bits and boops to make emacs a nicer place
+m;;; jeffs-init --- various bits and boops to make emacs a nicer place
 
 ;;; Commentary:
 ;; Too many late nights copying and pasting from the internet,
@@ -99,7 +99,7 @@
 
 (req-package smooth-scrolling
   :config
-  (smooth-scrolling t))
+  (smooth-scrolling-mode 1))
 
 (req-package rainbow-delimiters
   :defer t
