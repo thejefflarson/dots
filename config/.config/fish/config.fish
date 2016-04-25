@@ -16,7 +16,8 @@ set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
 set -x EDITOR emacs
-set -x RUST_SRC_PATH 
+set -x HOMEBREW_NO_ANALYTICS 1
+
 alias python "python3"
 alias pip "pip3"
 
