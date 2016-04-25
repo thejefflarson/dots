@@ -1,4 +1,4 @@
-m;;; jeffs-init --- various bits and boops to make emacs a nicer place
+;;; jeffs-init --- various bits and boops to make emacs a nicer place
 
 ;;; Commentary:
 ;; Too many late nights copying and pasting from the internet,
