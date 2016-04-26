@@ -145,9 +145,9 @@
   (global-undo-tree-mode))
 
 (req-package flycheck
-  :commands (global-flycheck-mode)
+  :commands (flycheck-mode)
   :init
-  (add-hook 'after-init-hook 'global-flycheck-mode))
+  (add-hook 'prog-mode-hook 'flycheck-mode))
 
 (req-package projectile
   :requires swiper
@@ -210,7 +210,7 @@
   :diminish company-mode
   :defer t
   :init
-  (add-hook 'prog-mode-hook 'global-company-mode)
+  (add-hook 'prog-mode-hook 'company-mode)
   :config
   (add-to-list 'company-backends 'company-c-headers))
 
@@ -219,11 +219,11 @@
   :defer t)
 
 (req-package company-statistics
+  :require company
   :defer t
   :init
   (setq company-statistics-file (concat user-cache-directory
                                         "company-statistics-cache.el"))
-  :config
   (add-hook 'after-init-hook 'company-statistics-mode))
 
 (defun enable-semantic ()
@@ -270,7 +270,6 @@
     (neotree-find (projectile-project-root))
     (neotree-find origin-buffer-file-name)))
 
-
 (req-package twittering-mode
   :defer t)
 
@@ -279,6 +278,13 @@
 
 (req-package vlf-setup
   :require vlf)
+
+
+(ensure-directory "~/SpiderOak Hive/journal/")
+(req-package org-journal
+  :bind (("C-c C-j" . org-journal-new-entry))
+  :init
+  (setq org-journal-dir "~/SpiderOak Hive/journal/"))
 
 
 ;; Programming modes
@@ -312,8 +318,8 @@
 (req-package css-mode
   :require kurecolor rainbow-mode
   :defer t
-  :config
-  (rainbow-mode))
+  :init
+  (add-hook 'css-mode-hook 'rainbow-mode))
 
 (req-package rust-mode
   :defer t)
