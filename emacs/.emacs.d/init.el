@@ -16,7 +16,7 @@
 (setq load-prefer-newer t)
 
 ;; Allow the -l flag to find the right emacs directory
-(defconst user-emacs-directory 
+(defconst user-emacs-directory
   (file-name-directory (or load-file-name (buffer-file-name)))
   "Current emacs.d directory.")
 
@@ -79,6 +79,7 @@
     (setq insert-directory-program "/usr/local/bin/gls")
     (setq dired-listing-switches "-aBhl --group-directories-first")))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Server code
 (unless (string-equal "root" (getenv "USER"))
@@ -87,7 +88,8 @@
 
 ;; Packages
 (package-initialize)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
 
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
@@ -187,17 +189,6 @@
   (add-hook 'after-init-hook 'global-page-break-lines-mode)
   (add-hook 'prog-mode-hook 'page-break-lines-mode))
 
-(req-package smartparens
-  :diminish smartparens-mode
-  :commands (smartparens-mode)
-  :defer t)
-
-(req-package smartparens-config
-  :require smartparens
-  :defer t
-  :config
-  (add-hook 'prog-mode-hook 'smartparens-mode))
-
 (req-package winner
   :config
   (winner-mode t))
@@ -267,6 +258,7 @@
 (req-package neotree
   :bind ("M-t" . neotree)
   :commands (neotree-find)
+  :require projectile
   :config
   (setq neo-theme 'arrow)
   (setq neo-show-hidden-files t)
@@ -277,6 +269,7 @@
   (let ((origin-buffer-file-name (buffer-file-name)))
     (neotree-find (projectile-project-root))
     (neotree-find origin-buffer-file-name)))
+
 
 (req-package twittering-mode
   :defer t)
@@ -326,6 +319,9 @@
   :defer t)
 
 (req-package fish-mode)
+
+(show-paren-mode 1)
+(electric-pair-mode +1)
 
 
 ;; Mu4e
@@ -381,8 +377,8 @@
 (req-package mu4e-alert
   :require mu4e
   :init
-  (setq mu4e-alert-interesting-mail-query 
-        (concat 
+  (setq mu4e-alert-interesting-mail-query
+        (concat
          "flag:unread date:today..now"
          my-interesting-mail))
   (add-hook 'after-init-hook 'mu4e-alert-enable-notifications)
