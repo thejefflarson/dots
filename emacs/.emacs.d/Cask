@@ -1,6 +1,7 @@
 (source gnu)
 (source melpa)
 
+(depends-on "async")
 (depends-on "color-theme-sanityinc-tomorrow")
 (depends-on "company")
 (depends-on "counsel")
