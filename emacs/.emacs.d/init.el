@@ -154,10 +154,11 @@
 
 (req-package projectile
   :requires swiper
+  :init
+  (add-hook 'prog-mode-hook 'projectile-mode)
   :config
   (setq projectile-completion-system 'ivy)
-  (setq projectile-enable-caching t)
-  (projectile-global-mode))
+  (setq projectile-enable-caching t))
 
 (req-package magit
   :requires swiper
