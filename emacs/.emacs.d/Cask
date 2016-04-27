@@ -17,6 +17,7 @@
 (depends-on "magit-popup")
 (depends-on "mu4e-alert")
 (depends-on "mu4e-maildirs-extension")
+(depends-on "org-journal")
 (depends-on "page-break-lines")
 (depends-on "pallet")
 (depends-on "projectile")
