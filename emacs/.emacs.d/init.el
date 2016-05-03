@@ -283,12 +283,14 @@
 (req-package vlf-setup
   :require vlf)
 
-
 (ensure-directory "~/SpiderOak Hive/journal/")
 (req-package org-journal
   :bind (("C-c C-j" . org-journal-new-entry))
   :init
   (setq org-journal-dir "~/SpiderOak Hive/journal/"))
+
+(req-package ecb
+  :commands ecb-activate)
 
 
 ;; Programming modes

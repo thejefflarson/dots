@@ -6,6 +6,7 @@
 (depends-on "company")
 (depends-on "counsel")
 (depends-on "diff-hl")
+(depends-on "ecb")
 (depends-on "fish-mode")
 (depends-on "flycheck")
 (depends-on "git-commit")
