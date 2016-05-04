@@ -269,6 +269,7 @@
   (setq projectile-switch-project-action 'neotree-projectile-action))
 
 (defun neotree-find-project-root ()
+  "Find the root of a project for NeoTree using projectile."
   (interactive)
   (let ((origin-buffer-file-name (buffer-file-name)))
     (neotree-find (projectile-project-root))
@@ -283,7 +284,7 @@
 (req-package vlf-setup
   :require vlf)
 
-
+(setq org-support-shift-select t)
 (ensure-directory "~/SpiderOak Hive/journal/")
 (req-package org-journal
   :bind (("C-c C-j" . org-journal-new-entry))
@@ -372,7 +373,9 @@
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
-  (add-hook 'mu4e-view-mode-hook 'visual-line-mode))
+  (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+  (add-to-list 'mu4e-view-actions
+               '("ViewInBrowser" . mu4e-action-view-in-browser) t))
 
 (req-package mu4e-contrib
   :require mu4e
