@@ -291,6 +291,9 @@
   :init
   (setq org-journal-dir "~/SpiderOak Hive/journal/"))
 
+(req-package ecb
+  :commands ecb-activate)
+
 
 ;; Programming modes
 (req-package ruby-mode
