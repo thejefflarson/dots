@@ -11,11 +11,15 @@ set __fish_git_prompt_char_upstream_behind '↓'
 set __fish_git_prompt_char_upstream_equal '='
 set -x fish_greeting
 
-set -x PATH $HOME/dev/git-data/bin $HOME/bin $HOME/.cargo/bin /usr/local/bin /usr/local/sbin /usr/local/checker /usr/local/share/npm/bin $HOME/.cask/bin $PATH 
+set -x PATH $HOME/dev/git-data/bin $HOME/bin $HOME/.cargo/bin /usr/local/bin /usr/local/sbin /usr/local/checker /usr/local/share/npm/bin $HOME/.cask/bin $PATH
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
-set -x EDITOR emacs
+if test (uname) = "Darwin"
+        set -x EDITOR e
+else
+        set -x EDITOR emacsclient -nw
+end
 set -x HOMEBREW_NO_ANALYTICS 1
 
 alias python "python3"
