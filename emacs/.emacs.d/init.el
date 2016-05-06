@@ -6,6 +6,7 @@
 ;;; Code:
 
 ;; Configuration
+
 (setq gc-cons-threshold 100000000)
 
 (setq-default indent-tabs-mode nil)
@@ -80,6 +81,8 @@
     (setq dired-listing-switches "-aBhl --group-directories-first")))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(show-paren-mode 1)
+(electric-pair-mode 1)
 
 ;; Server code
 (unless (string-equal "root" (getenv "USER"))
@@ -97,6 +100,11 @@
 (pallet-mode t)
 
 (require 'req-package)
+
+(req-package exec-path-from-shell
+  :config
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)))
 
 (req-package diminish
   :config
@@ -294,6 +302,11 @@
 (req-package ecb
   :commands ecb-activate)
 
+(req-package cider
+  :defer t
+  :bind (("C-u M-x" . cider-jack-in))
+  :require clojure-mode)
+
 
 ;; Programming modes
 (req-package ruby-mode
@@ -329,13 +342,13 @@
   :init
   (add-hook 'css-mode-hook 'rainbow-mode))
 
+(req-package clojure-mode
+  :defer t)
+
 (req-package rust-mode
   :defer t)
 
 (req-package fish-mode)
-
-(show-paren-mode 1)
-(electric-pair-mode +1)
 
 
 ;; Mu4e
