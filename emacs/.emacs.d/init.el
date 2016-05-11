@@ -62,6 +62,7 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
+(setq-default delete-old-versions t)
 (setq auto-save-file-name-transforms `((".*" ,user-cache-directory t)))
 
 ;; Turn off a bunch of useless stuff
