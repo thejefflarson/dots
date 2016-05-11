@@ -347,8 +347,28 @@
 (req-package clojure-mode
   :defer t)
 
+(req-package racer
+  :defer t
+  :init
+  (add-hook 'rust-mode-hook 'racer-mode)
+  (add-hook 'racer-mode-hook 'eldoc-mode)
+  (add-hook 'racer-mode-hook 'company-mode)
+  :config
+  (setq racer-cmd "~/.cargo/bin/racer")
+  (setq racer-rust-src-path "~/.multirust/toolchains/1.8.0/src/"))
+
+(req-package flycheck-rust
+  :defer t
+  :commands flycheck-rust-setup)
+
 (req-package rust-mode
-  :defer t)
+  :defer t
+  :require racer flycheck-rust
+  :config
+  (progn
+    (racer-activate)
+    (racer-turn-on-eldoc)
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
 (req-package fish-mode)
 
