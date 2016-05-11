@@ -57,11 +57,12 @@
   (write-region "" nil custom-file t))
 
 ;; put versions in the cache directory
-(setq backup-directory-alist `(("." . ,user-cache-directory))
+(setq backup-directory-alist `((".*" . ,user-cache-directory))
       backup-by-copying t
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
+(setq auto-save-file-name-transforms `((".*" ,user-cache-directory t)))
 
 ;; Turn off a bunch of useless stuff
 (when (featurep 'menu-bar)
