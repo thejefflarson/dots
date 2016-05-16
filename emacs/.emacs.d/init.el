@@ -349,6 +349,7 @@
 
 (req-package racer
   :defer t
+  :commands racer-mode
   :init
   (add-hook 'rust-mode-hook 'racer-mode)
   (add-hook 'racer-mode-hook 'eldoc-mode)
@@ -368,9 +369,45 @@
   (progn
     (racer-activate)
     (racer-turn-on-eldoc)
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+    (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)))
 
 (req-package fish-mode)
+(req-package web-mode
+  :defer t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  :config
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-enable-part-face t)
+  (setq web-mode-enable-block-face t)
+  (setq web-mode-enable-current-column-highlight t)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+
+(req-package js2-mode
+  :defer t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  :config
+  (setq js2-basic-offset 2))
+
+(req-package tern
+  :defer t
+  :init
+  (add-hook 'js-mode-hook (lambda () (tern-mode t))))
+
+(req-package json-mode
+  :defer t)
+
+(req-package scss-mode
+  :defer t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+  :config
+  (setq scss-compile-at-save nil))
 
 
 ;; Mu4e
