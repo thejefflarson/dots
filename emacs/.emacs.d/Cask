@@ -24,6 +24,7 @@
 (depends-on "kurecolor")
 (depends-on "magit")
 (depends-on "magit-popup")
+(depends-on "markdown-mode")
 (depends-on "mu4e-alert")
 (depends-on "mu4e-maildirs-extension")
 (depends-on "neotree")

@@ -374,9 +374,9 @@
 (req-package fish-mode)
 (req-package web-mode
   :defer t
-  :init
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  :mode
+  (("\\.html?\\'" . web-mode)
+   ("\\.erb\\'" . web-mode))
   :config
   (setq web-mode-enable-auto-pairing t)
   (setq web-mode-enable-current-element-highlight t)
@@ -389,8 +389,8 @@
 
 (req-package js2-mode
   :defer t
-  :init
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  :mode
+  (("\\.js\\'" . js2-mode))
   :config
   (setq js2-basic-offset 2))
 
@@ -404,10 +404,20 @@
 
 (req-package scss-mode
   :defer t
-  :init
-  (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+  :mode
+  (("\\.scss\\'" . scss-mode))
   :config
   (setq scss-compile-at-save nil))
+
+(req-package markdown-mode
+  :commands
+  (markdown-mode gfm-mode)
+  :mode
+  (("README\\.md\\'" . gfm-mode)
+   ("\\.md\\'" . markdown-mode)
+   ("\\.markdown\\'" . markdown-mode))
+  :init
+  (setq markdown-command "multimarkdown"))
 
 
 ;; Mu4e
