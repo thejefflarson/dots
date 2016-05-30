@@ -57,11 +57,13 @@
   (write-region "" nil custom-file t))
 
 ;; put versions in the cache directory
-(setq backup-directory-alist `(("." . ,user-cache-directory))
+(setq backup-directory-alist `((".*" . ,user-cache-directory))
       backup-by-copying t
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
+(setq-default delete-old-versions t)
+(setq auto-save-file-name-transforms `((".*" ,user-cache-directory t)))
 
 ;; Turn off a bunch of useless stuff
 (when (featurep 'menu-bar)
@@ -345,10 +347,77 @@
 (req-package clojure-mode
   :defer t)
 
+(req-package racer
+  :defer t
+  :commands racer-mode
+  :init
+  (add-hook 'rust-mode-hook 'racer-mode)
+  (add-hook 'racer-mode-hook 'eldoc-mode)
+  (add-hook 'racer-mode-hook 'company-mode)
+  :config
+  (setq racer-cmd "~/.cargo/bin/racer")
+  (setq racer-rust-src-path "~/.multirust/toolchains/1.8.0/src/"))
+
+(req-package flycheck-rust
+  :defer t
+  :commands flycheck-rust-setup)
+
 (req-package rust-mode
-  :defer t)
+  :defer t
+  :require racer flycheck-rust
+  :config
+  (progn
+    (racer-activate)
+    (racer-turn-on-eldoc)
+    (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)))
 
 (req-package fish-mode)
+(req-package web-mode
+  :defer t
+  :mode
+  (("\\.html?\\'" . web-mode)
+   ("\\.erb\\'" . web-mode))
+  :config
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-current-element-highlight t)
+  (setq web-mode-enable-part-face t)
+  (setq web-mode-enable-block-face t)
+  (setq web-mode-enable-current-column-highlight t)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
+
+(req-package js2-mode
+  :defer t
+  :mode
+  (("\\.js\\'" . js2-mode))
+  :config
+  (setq js2-basic-offset 2))
+
+(req-package tern
+  :defer t
+  :init
+  (add-hook 'js-mode-hook (lambda () (tern-mode t))))
+
+(req-package json-mode
+  :defer t)
+
+(req-package scss-mode
+  :defer t
+  :mode
+  (("\\.scss\\'" . scss-mode))
+  :config
+  (setq scss-compile-at-save nil))
+
+(req-package markdown-mode
+  :commands
+  (markdown-mode gfm-mode)
+  :mode
+  (("README\\.md\\'" . gfm-mode)
+   ("\\.md\\'" . markdown-mode)
+   ("\\.markdown\\'" . markdown-mode))
+  :init
+  (setq markdown-command "multimarkdown"))
 
 
 ;; Mu4e
