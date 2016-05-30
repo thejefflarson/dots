@@ -503,11 +503,11 @@
 
 (req-package faces
   :config
-  (progn
     (when (eq system-type 'darwin)
-      (set-face-attribute 'default nil :family "Monaco"))
+      (set-face-attribute 'default nil :family "Monaco")
+      (set-face-attribute 'default nil :height 120))
     (when (eq system-type 'gnu/linux)
-      (set-face-attribute 'default nil :family "Source Code Pro"))
-    (set-face-attribute 'default nil :height 120)))
+      (set-face-attribute 'default nil :family "Source Code Pro")
+      (set-face-attribute 'default nil :height 100)))
 
 (req-package-finish)
