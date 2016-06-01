@@ -162,8 +162,11 @@
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode))
 
+(req-package ag
+  :defer t)
+
 (req-package projectile
-  :requires swiper
+  :requires swiper ag
   :init
   (add-hook 'prog-mode-hook 'projectile-mode)
   :config
