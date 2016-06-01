@@ -149,8 +149,7 @@
    ("C-c g" . counsel-git)
    ("C-c j" . counsel-git-grep)
    ("C-c k" . counsel-ag)
-   ("C-x l" . counsel-locate)
-   ("C-S-o" . counsel-rhythmbox)))
+   ("C-x l" . counsel-locate)))
 
 (req-package undo-tree
   :diminish undo-tree-mode
@@ -276,10 +275,18 @@
   :bind ("M-t" . neotree)
   :commands (neotree-find)
   :require projectile
-  :config
+  :init
   (setq neo-theme 'arrow)
   (setq neo-show-hidden-files t)
-  (setq projectile-switch-project-action 'neotree-projectile-action))
+  (setq projectile-switch-project-action 'neotree-projectile-action)
+  (custom-set-faces
+   '(neo-banner-face ((t . (:inherit shadow))) t)
+   '(neo-header-face ((t . (:inherit shadow))) t)
+   '(neo-root-dir-face ((t . (:inherit link-visited :underline nil))) t)
+   '(neo-dir-link-face ((t . (:inherit dired-directory))) t)
+   '(neo-file-link-face ((t . (:inherit default))) t)
+   '(neo-button-face ((t . (:inherit dired-directory))) t)
+   '(neo-expand-btn-face ((t . (:inherit button))) t)))
 
 (defun neotree-find-project-root ()
   "Find the root of a project for NeoTree using projectile."
