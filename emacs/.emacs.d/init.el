@@ -11,6 +11,8 @@
 
 (setq-default indent-tabs-mode nil)
 
+(setq-default fill-column 80)
+
 (setq user-full-name "Jeff Larson"
       user-mail-address "thejefflarson@gmail.com")
 
@@ -107,6 +109,14 @@
   :config
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
+
+(req-package whitespace
+  :defer t
+  :diminish t
+  :commands (whitepace-mode)
+  :init
+  (add-hook 'prog-mode-hook 'whitespace-mode)
+  (setq whitespace-style '(face lines-tail)))
 
 (req-package diminish
   :config
@@ -216,11 +226,13 @@
         eshell-history-size 350
         eshell-hist-ignoredups t
         eshell-plain-echo-behavior t
-        eshell-directory-name (concat user-cache-directory "eshell/")))
+        eshell-directory-name
+        (concat user-cache-directory "eshell/")))
 
 (req-package shell-pop
   :bind (("C-t" . shell-pop))
-  :init (setq shell-pop-shell-type '("eshell" "*eshell*" (lambda () (eshell)))))
+  :init (setq shell-pop-shell-type
+              '("eshell" "*eshell*" (lambda () (eshell)))))
 
 (req-package company
   :diminish company-mode
@@ -238,8 +250,9 @@
   :require company
   :defer t
   :init
-  (setq company-statistics-file (concat user-cache-directory
-                                        "company-statistics-cache.el"))
+  (setq company-statistics-file
+        (concat user-cache-directory
+                "company-statistics-cache.el"))
   (add-hook 'after-init-hook 'company-statistics-mode))
 
 (defun enable-semantic ()
@@ -460,10 +473,14 @@
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
   (setq message-sendmail-f-is-evil 't)
   (setq mu4e-bookmarks
-        `((,(concat "flag:unread date:today..now" my-interesting-mail) "Today's unread messages"  ?u)
-          (,(concat "date:today..now" my-interesting-mail)             "Today's messages"         ?t)
-          (,(concat "date:7d..now" my-interesting-mail)                "This week's messages"     ?w)
-          (,my-interesting-mail                                         "All messages"            ?a)))
+        `((,(concat "flag:unread date:today..now" my-interesting-mail)
+           "Today's unread messages" ?u)
+          (,(concat "date:today..now" my-interesting-mail)
+           "Today's messages" ?t)
+          (,(concat "date:7d..now" my-interesting-mail)
+           "This week's messages" ?w)
+          (,my-interesting-mail
+           "All messages" ?a)))
   :config
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
@@ -510,7 +527,8 @@
                            (mu4e-message "entering gmail"))
              :match-func (lambda (msg)
                            (when msg
-                             (string-match "gmail" (mu4e-message-field msg :maildir))))
+                             (string-match "gmail"
+                                           (mu4e-message-field msg :maildir))))
              :vars '((mail-reply-to . "thejefflarson@gmail.com")
                      (user-mail-address . "thejefflarson@gmail.com")
                      (user-full-name . "Jeff Larson")
@@ -525,7 +543,8 @@
                            (mu4e-message "entering work"))
              :match-func (lambda (msg)
                            (when msg
-                             (string-match "work" (mu4e-message-field msg :maildir))))
+                             (string-match "work"
+                                           (mu4e-message-field msg :maildir))))
              :vars '((mail-reply-to . "jeff.larson@propublica.org")
                      (user-mail-address . "jeff.larson@propublica.org")
                      (user-full-name . "Jeff Larson")
@@ -540,7 +559,8 @@
                            (mu4e-message "entering riseup"))
              :match-func (lambda (msg)
                            (when msg
-                             (string-match "riseup" (mu4e-message-field msg :maildir))))
+                             (string-match "riseup"
+                                           (mu4e-message-field msg :maildir))))
              :vars '((mail-reply-to . "thejefflarson@riseup.net")
                      (user-mail-address . "thejefflarson@riseup.net")
                      (user-full-name . "Jeff Larson")
@@ -559,10 +579,12 @@
   (add-to-list 'mu4e-header-info-custom
                '(:mail-directory .
                                  (:name "Mail Directory"
-                                        :shortname "Dir"
-                                        :help "Mail Storage Directory"
-                                        :function (lambda (msg)
-                                                    (or (mu4e-message-field msg :maildir) "")))))
+                                  :shortname "Dir"
+                                  :help "Mail Storage Directory"
+                                  :function
+                                  (lambda (msg)
+                                    (or
+                                     (mu4e-message-field msg :maildir) "")))))
   (setq mu4e-headers-fields '((:mail-directory . 20)
                               (:human-date     . 12)
                               (:flags          .  6)
