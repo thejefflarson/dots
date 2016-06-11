@@ -79,6 +79,8 @@
 (setq ring-bell-function #'ignore)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(global-auto-revert-mode t)
+
 (when (eq system-type 'darwin)
   (progn
     (setq insert-directory-program "/usr/local/bin/gls")
