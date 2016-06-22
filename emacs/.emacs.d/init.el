@@ -422,6 +422,15 @@
   :init
   (add-hook 'js-mode-hook (lambda () (tern-mode t))))
 
+(req-package sql-indent
+  :defer t)
+
+(req-package sql
+  :mode
+  (("\\.sql\\'" . sql-mode))
+  :config
+  (load-library "sql-indent"))
+
 (req-package json-mode
   :defer t)
 
@@ -441,6 +450,12 @@
    ("\\.markdown\\'" . markdown-mode))
   :init
   (setq markdown-command "multimarkdown"))
+
+(req-package bison-mode
+  :defer t
+  :mode
+  (("\\.l\\'" . bison-mode))
+  (("\\.y\\'" . bison-mode)))
 
 
 ;; Mu4e
