@@ -178,8 +178,11 @@
 
 (req-package projectile
   :requires swiper ag
+  :defer t
+  :commands projectile-mode projectile-global-mode
   :init
   (add-hook 'prog-mode-hook 'projectile-mode)
+  (add-hook 'after-init-hook 'projectile-global-mode)
   :config
   (setq projectile-completion-system 'ivy)
   (setq projectile-enable-caching t))
