@@ -89,6 +89,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (show-paren-mode 1)
 (electric-pair-mode 1)
+(global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 
 ;; Server code
 (unless (string-equal "root" (getenv "USER"))
@@ -381,7 +382,7 @@
   (add-hook 'racer-mode-hook 'company-mode)
   :config
   (setq racer-cmd "~/.cargo/bin/racer")
-  (setq racer-rust-src-path "~/.multirust/toolchains/1.8.0/src/"))
+  (setq racer-rust-src-path "~/.multirust/toolchains/1.9.0/src/"))
 
 (req-package flycheck-rust
   :defer t
