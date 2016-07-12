@@ -22,8 +22,6 @@ else
 end
 set -x HOMEBREW_NO_ANALYTICS 1
 
-alias python "python3"
-alias pip "pip3"
 
 if test -f "~/.config/fish/secrets.fish"
 	. ~/.config/fish/secrets.fish
@@ -34,3 +32,5 @@ if test -d "/usr/local/share/chruby"
 	. /usr/local/share/chruby/auto.fish
 	chruby 2.3.0
 end
+
+status --is-interactive; and source (pyenv init -|psub)
