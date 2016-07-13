@@ -22,7 +22,6 @@ else
 end
 set -x HOMEBREW_NO_ANALYTICS 1
 
-
 if test -f "~/.config/fish/secrets.fish"
 	. ~/.config/fish/secrets.fish
 end
