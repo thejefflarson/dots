@@ -90,7 +90,7 @@
 (show-paren-mode 1)
 (electric-pair-mode 1)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
-(setq-default abbrev-mode f)
+(setq-default abbrev-mode -1)
 
 
 ;; Server code
