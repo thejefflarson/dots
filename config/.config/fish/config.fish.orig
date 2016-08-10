@@ -22,6 +22,10 @@ else
 end
 set -x HOMEBREW_NO_ANALYTICS 1
 
+<<<<<<< 0cc3e405d0766316a566b84c1ce8c62cbe733439
+
+=======
+>>>>>>> remove aliases
 if test -f "~/.config/fish/secrets.fish"
 	. ~/.config/fish/secrets.fish
 end
