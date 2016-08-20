@@ -71,7 +71,7 @@ SyncState *
 
 IMAPAccount columbia
 Host imap.gmail.com
-User thejefflarson@gmail.com
+User jal2301@columbia.edu
 PassCmd "keyring get imap.google.com jal2301@columbia.edu"
 SSLType IMAPS
 CertificateFile ~/.certs
