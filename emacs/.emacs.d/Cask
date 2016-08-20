@@ -17,6 +17,7 @@
 (depends-on "diff-hl")
 (depends-on "ecb")
 (depends-on "exec-path-from-shell")
+(depends-on "f")
 (depends-on "fill-column-indicator")
 (depends-on "fish-mode")
 (depends-on "flycheck")

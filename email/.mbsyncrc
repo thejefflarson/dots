@@ -68,3 +68,27 @@ Create Both
 Expunge Both
 Remove Both
 SyncState *
+
+IMAPAccount columbia
+Host imap.gmail.com
+User thejefflarson@gmail.com
+PassCmd "keyring get imap.google.com jal2301@columbia.edu"
+SSLType IMAPS
+CertificateFile ~/.certs
+AuthMechs LOGIN
+
+IMAPStore columbia-remote
+Account columbia
+
+MaildirStore columbia-local
+Path ~/.mail/columbia/
+Inbox ~/.mail/columbia/Inbox
+
+Channel columbia
+Master :columbia-remote:
+Slave :columbia-local:
+Patterns * ![Gmail]/Spam
+Create Both
+Expunge Both
+Remove Both
+SyncState *
