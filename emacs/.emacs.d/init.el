@@ -592,6 +592,22 @@
                      (mu4e-sent-folder . "/riseup/Sent")
                      (mu4e-trash-folder . "/riseup/Trash")
                      (mu4e-refile-folder . "/riseup/Archive")))
+           ,(make-mu4e-context
+             :name "columbia"
+             :enter-func (lambda ()
+                           (mu4e-message "entering columbia"))
+             :match-func (lambda (msg)
+                           (when msg
+                             (string-match "columbia"
+                                           (mu4e-message-field msg :maildir))))
+             :vars '((mail-reply-to . "jal2301@columbia.edu")
+                     (user-mail-address . "jal2301@columbia.edu")
+                     (user-full-name . "Jeff Larson")
+                     (mu4e-sent-messages-behavior . delete)
+                     (mu4e-drafts-folder . "/columbia/[Gmail]/.Drafts")
+                     (mu4e-sent-folder . "/columbia/[Gmail]/.Sent Mail")
+                     (mu4e-trash-folder . "/columbia/[Gmail]/.Trash")
+                     (mu4e-refile-folder . "/columbia/[Gmail]/.All Mail")))
            )
         )
     )
