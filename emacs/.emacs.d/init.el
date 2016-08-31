@@ -490,6 +490,7 @@
   (setq mu4e-view-show-addresses 'long)
   (setq mu4e-compose-in-new-frame t)
   (setq mu4e-compose-complete-only-personal t)
+  (setq mu4e-change-filenames-when-moving t)
   (setq message-kill-buffer-on-exit t)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/local/bin/msmtp")
