@@ -169,7 +169,11 @@
 (req-package flycheck
   :commands (flycheck-mode)
   :init
-  (add-hook 'prog-mode-hook 'flycheck-mode))
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  :config
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(javascript-jshint))))
 
 (req-package ag
   :defer t)
@@ -273,6 +277,7 @@
   (add-hook 'prog-mode-hook 'enable-semantic))
 
 (defun enable-srefactor ()
+  "Set up srefactor."
   (require 'srefactor))
 
 (req-package srefactor
@@ -402,7 +407,8 @@
   :defer t
   :mode
   (("\\.html?\\'" . web-mode)
-   ("\\.erb\\'" . web-mode))
+   ("\\.erb\\'" . web-mode)
+   ("\\.jsx\\'" . web-mode))
   :config
   (setq web-mode-enable-auto-pairing t)
   (setq web-mode-enable-current-element-highlight t)
@@ -419,6 +425,8 @@
   (("\\.js\\'" . js2-mode))
   :config
   (setq js2-basic-offset 2))
+
+
 
 (req-package tern
   :defer t

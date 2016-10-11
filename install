@@ -7,6 +7,7 @@ do
   stow -v -t ~/ -R ${i%%/};
 done
 mkdir -p ~/.mail/{gmail,work,riseup}
+ln -s .eslintrc ~/.eslintrc
 
 echo "
 Please remember to install the following packages:
@@ -19,4 +20,3 @@ Please remember to install the following packages:
   cask
 
 "
-
