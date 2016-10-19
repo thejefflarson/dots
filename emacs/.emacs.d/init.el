@@ -426,8 +426,6 @@
   :config
   (setq js2-basic-offset 2))
 
-
-
 (req-package tern
   :defer t
   :init

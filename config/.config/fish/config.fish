@@ -15,11 +15,8 @@ set -x PATH $HOME/dev/git-data/bin $HOME/bin $HOME/.cargo/bin /usr/local/bin $HO
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
-if test (uname) = "Darwin"
-        set -x EDITOR e
-else
-        set -x EDITOR emacsclient -nw
-end
+
+set -x EDITOR emacsclient -nw
 set -x HOMEBREW_NO_ANALYTICS 1
 
 if test -f "~/.config/fish/secrets.fish"
