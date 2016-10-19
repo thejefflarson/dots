@@ -136,6 +136,10 @@
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
+
+(req-package linum-mode
+  :defer t)
+
 (req-package swiper
   :diminish ivy-mode
   :init
