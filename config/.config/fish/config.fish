@@ -18,7 +18,7 @@ set -x CXX clang++
 
 set -x EDITOR emacsclient -nw
 set -x HOMEBREW_NO_ANALYTICS 1
-set -x RUST_SRC_PATH=~/.multirust/toolchains/nightly/lib/rustlib/src/rust/src
+set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
 
 if test -f "~/.config/fish/secrets.fish"
 	. ~/.config/fish/secrets.fish
