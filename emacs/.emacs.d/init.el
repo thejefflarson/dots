@@ -390,8 +390,7 @@
   (add-hook 'racer-mode-hook 'eldoc-mode)
   (add-hook 'racer-mode-hook 'company-mode)
   :config
-  (setq racer-cmd "~/.cargo/bin/racer")
-  (setq racer-rust-src-path "~/.multirust/toolchains/nightly/lib/rustlib/src/rust/src"))
+  (setq racer-cmd "~/.cargo/bin/racer"))
 
 (req-package flycheck-rust
   :defer t
