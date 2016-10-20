@@ -16,7 +16,7 @@ set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
 
-set -x EDITOR emacsclient -nw
+set -x EDITOR 'emacsclient -nw'
 set -x HOMEBREW_NO_ANALYTICS 1
 set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
 
