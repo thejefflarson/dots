@@ -111,6 +111,8 @@
 (require 'req-package)
 
 (req-package exec-path-from-shell
+  :init
+  (setq exec-path-from-shell-check-startup-files nil)
   :config
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))

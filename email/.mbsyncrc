@@ -1,7 +1,7 @@
 IMAPAccount gmail
 Host imap.gmail.com
 User thejefflarson@gmail.com
-PassCmd "keyring get imap.google.com thejefflarson@gmail.com"
+PassCmd "getpasswd imap.google.com thejefflarson@gmail.com"
 SSLType IMAPS
 CertificateFile ~/.certs
 AuthMechs LOGIN
@@ -26,7 +26,7 @@ IMAPAccount work
 Host localhost
 Port 1143
 User jlarson
-PassCmd "keyring get mail.propublica.org jeff.larson@propublica.org"
+PassCmd "getpasswd mail.propublica.org jeff.larson@propublica.org"
 SSLType None
 AuthMechs LOGIN
 
@@ -49,7 +49,7 @@ SyncState *
 IMAPAccount riseup
 Host imap.riseup.net
 User thejefflarson@riseup.net
-PassCmd "keyring get imap.riseup.net thejefflarson@riseup.net"
+PassCmd "getpasswd imap.riseup.net thejefflarson@riseup.net"
 SSLType IMAPS
 CertificateFile ~/.certs
 
@@ -72,7 +72,7 @@ SyncState *
 IMAPAccount columbia
 Host imap.gmail.com
 User jal2301@columbia.edu
-PassCmd "keyring get imap.google.com jal2301@columbia.edu"
+PassCmd "getpasswd imap.google.com jal2301@columbia.edu"
 SSLType IMAPS
 CertificateFile ~/.certs
 AuthMechs LOGIN
