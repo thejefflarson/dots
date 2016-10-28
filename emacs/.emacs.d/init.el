@@ -296,7 +296,13 @@
 
 (req-package flyspell
   :commands (flyspell-buffer flyspell-mode)
-  :init (add-hook 'text-mode-hook 'flyspell-mode))
+  :init
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (add-hook 'flyspell-mode-hook #'flyspell-popup-auto-correct-mode))
+
+(req-package flyspell-popup
+  :commands (flyspell-popup-auto-correct-mode)
+  :require flyspell)
 
 (req-package neotree
   :bind ("M-t" . neotree)
