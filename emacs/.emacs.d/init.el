@@ -103,7 +103,7 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 
-(require 'cask "~/.cask/cask.el")
+(require 'cask)
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t)
