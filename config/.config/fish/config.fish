@@ -11,7 +11,7 @@ set __fish_git_prompt_char_upstream_behind '↓'
 set __fish_git_prompt_char_upstream_equal '='
 set -x fish_greeting
 
-set -x PATH $HOME/dev/git-data/bin $HOME/bin /usr/local/bin $HOME/.cargo/bin $PATH
+set -x PATH $HOME/bin /usr/local/bin $HOME/.cargo/bin $PATH
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
