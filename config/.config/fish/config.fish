@@ -11,14 +11,13 @@ set __fish_git_prompt_char_upstream_behind '↓'
 set __fish_git_prompt_char_upstream_equal '='
 set -x fish_greeting
 
-set -x PATH $HOME/dev/git-data/bin $HOME/bin /usr/local/bin $HOME/.cask/bin $PATH
+set -x PATH $HOME/dev/git-data/bin $HOME/bin /usr/local/bin $PATH
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
 
 set -x EDITOR 'emacsclient -nw'
 set -x HOMEBREW_NO_ANALYTICS 1
-set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
 
 if test -f "~/.config/fish/secrets.fish"
 	. ~/.config/fish/secrets.fish
