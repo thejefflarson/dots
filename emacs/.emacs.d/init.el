@@ -129,31 +129,26 @@
   :config
   (diminish 'auto-revert-mode))
 
-(req-package smooth-scrolling
-  :config
-  (smooth-scrolling-mode 1))
-
 (req-package rainbow-delimiters
   :defer t
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-
 (req-package linum-mode
   :defer t)
 
 (req-package swiper
+  :require counsel
   :diminish ivy-mode
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-height 10)
   (setq ivy-count-format "(%d/%d) ")
-  :config
   (ivy-mode 1)
+  :config
   (global-set-key (kbd "C-s") 'swiper))
 
 (req-package counsel
-  :require swiper
   :bind
   (("M-x" . counsel-M-x)
    ("C-x C-f" .  counsel-find-file)
@@ -261,12 +256,13 @@
 
 (req-package company-statistics
   :require company
-  :defer t
+  :diminish t
   :init
   (setq company-statistics-file
         (concat user-cache-directory
                 "company-statistics-cache.el"))
-  (add-hook 'after-init-hook 'company-statistics-mode))
+  :config
+  (company-statistics-mode))
 
 (defun enable-semantic ()
   "Set up semantic in programming modes."
