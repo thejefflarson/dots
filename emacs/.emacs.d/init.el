@@ -137,18 +137,17 @@
 (req-package linum-mode
   :defer t)
 
-(req-package swiper
-  :require counsel
+(req-package ivy
+  :commands ivy-mode
   :diminish ivy-mode
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-height 10)
   (setq ivy-count-format "(%d/%d) ")
-  (ivy-mode 1)
-  :config
-  (global-set-key (kbd "C-s") 'swiper))
+  (ivy-mode 1))
 
 (req-package counsel
+  :require ivy
   :bind
   (("M-x" . counsel-M-x)
    ("C-x C-f" .  counsel-find-file)
@@ -161,6 +160,11 @@
    ("C-c j" . counsel-git-grep)
    ("C-c k" . counsel-ag)
    ("C-x l" . counsel-locate)))
+
+(req-package swiper
+  :require counsel
+  :config
+  (global-set-key (kbd "C-s") 'swiper))
 
 (req-package undo-tree
   :diminish undo-tree-mode

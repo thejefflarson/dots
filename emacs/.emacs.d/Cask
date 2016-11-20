@@ -56,6 +56,7 @@
 (depends-on "shell-pop")
 (depends-on "smartparens")
 (depends-on "smooth-scrolling")
+(depends-on "spinner")
 (depends-on "sql-indent")
 (depends-on "srefactor")
 (depends-on "subatomic-theme")
