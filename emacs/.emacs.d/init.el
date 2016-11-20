@@ -103,7 +103,7 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 
-(require 'cask)
+(require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t)
@@ -248,10 +248,33 @@
   :init
   (add-hook 'prog-mode-hook 'company-mode)
   :config
-  (add-to-list 'company-backends 'company-c-headers))
+  (add-to-list 'company-backends 'company-irony))
 
-(req-package company-c-headers
-  :require company
+(req-package irony
+  :diminish irony-mode
+  :defer t
+  :commands flycheck-irony-setup
+  :init
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  :config
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+(req-package flycheck-irony
+  :require flycheck irony
+  :defer t
+  :commands flycheck-irony-mode
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
+
+(req-package company-irony
+  :require company irony
   :defer t)
 
 (req-package company-statistics
@@ -337,7 +360,7 @@
 (ensure-directory "~/SpiderOak Hive/journal/")
 (req-package org-journal
   :bind (("C-c C-j" . org-journal-new-entry))
-  :init
+  :config
   (setq org-journal-dir "~/SpiderOak Hive/journal/"))
 
 (req-package ecb
@@ -359,7 +382,7 @@
 (req-package projectile-rails
   :defer t
   :require projectile
-  :commands (projectile-rails-on)
+  :commands projectile-rails-on
   :init
   (add-hook 'ruby-mode-hook 'projectile-rails-on))
 
@@ -369,9 +392,16 @@
   (setq-default c-basic-offset 2)
   (setq-default c-default-style "linux"))
 
+(req-package platformio-mode
+  :defer t
+  :require irony company
+  :commands platformio-conditionally-enable
+  :init
+  (add-hook 'c++-mode-hook 'platformio-conditionally-enable))
+
 (req-package gdb-mi
   :require cc-mode
-  :commands (gdb)
+  :commands gdb
   :defer t
   :config
   (setq gdb-many-windows t)
