@@ -16,8 +16,9 @@ set -x LSCOLORS Gxfxcxdxbxegedabagacad
 set -x CC clang
 set -x CXX clang++
 
-set -x EDITOR 'emacsclient -nw'
+set -x EDITOR 'emacsclient -nc -a emacs'
 set -x HOMEBREW_NO_ANALYTICS 1
+alias e "emacsclient -nc -a emacs"
 
 if test -f "~/.config/fish/secrets.fish"
 	. ~/.config/fish/secrets.fish
