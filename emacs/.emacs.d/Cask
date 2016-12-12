@@ -29,6 +29,7 @@
 (depends-on "ht")
 (depends-on "inf-ruby")
 (depends-on "inflections")
+(depends-on "irony")
 (depends-on "ivy")
 (depends-on "js2-mode")
 (depends-on "json-mode")

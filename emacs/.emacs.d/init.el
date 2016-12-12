@@ -41,6 +41,7 @@
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta)
   (setq mac-pass-command-to-system nil)
+  (setq mac-emulate-three-button-mouse t)
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
   (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
