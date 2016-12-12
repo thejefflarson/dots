@@ -17,6 +17,7 @@
 (depends-on "counsel")
 (depends-on "dash")
 (depends-on "diff-hl")
+(depends-on "dumb-jump")
 (depends-on "ecb")
 (depends-on "exec-path-from-shell")
 (depends-on "fish-mode")

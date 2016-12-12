@@ -401,9 +401,7 @@
   :require irony company
   :commands platformio-conditionally-enable
   :init
-  (add-hook 'c++-mode-hook 'platformio-conditionally-enable)
-  :config
-  (platformio-setup-compile-buffer))
+  (add-hook 'c++-mode-hook 'platformio-conditionally-enable))
 
 (req-package gdb-mi
   :require cc-mode
