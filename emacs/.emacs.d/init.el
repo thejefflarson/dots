@@ -361,12 +361,13 @@
 (req-package vlf-setup
   :require vlf)
 
-(setq org-support-shift-select t)
+
 (ensure-directory "~/SpiderOak Hive/journal/")
 (req-package org-journal
   :bind (("C-c C-j" . org-journal-new-entry))
   :config
-  (setq org-journal-dir "~/SpiderOak Hive/journal/"))
+  (setq org-journal-dir "~/SpiderOak Hive/journal/")
+  (setq org-support-shift-select t))
 
 (req-package ecb
   :commands ecb-activate)
