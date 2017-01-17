@@ -518,6 +518,9 @@
           " OR maildir:/gmail/INBOX"
           " OR maildir:/gmail/[Gmail]/.All\ Mail"
           " OR maildir:/gmail/[Gmail]/.Important"
+          " OR maildir:/columbia/INBOX"
+          " OR maildir:/columbia/[Gmail]/.All\ Mail"
+          " OR maildir:/columbia/[Gmail]/.Important"
           " OR maildir:/riseup/INBOX\)")
   "Interesting mail suffix.")
 
