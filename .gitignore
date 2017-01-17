@@ -1,3 +1,4 @@
 .DS_Store
 *.elc
 *.orig
+flycheck_init.el
