@@ -2,7 +2,9 @@
 (source melpa)
 
 (depends-on "ag")
+(depends-on "alert")
 (depends-on "async")
+(depends-on "bind-key")
 (depends-on "bison-mode")
 (depends-on "cask")
 (depends-on "cider")
@@ -71,3 +73,4 @@
 (depends-on "web-mode")
 (depends-on "which-key")
 (depends-on "with-editor")
+(depends-on "writeroom-mode")

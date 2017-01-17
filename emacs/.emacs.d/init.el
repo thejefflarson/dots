@@ -376,6 +376,9 @@
   :bind (("C-u M-x" . cider-jack-in))
   :require clojure-mode)
 
+(req-package writeroom-mode
+  :defer t)
+
 
 ;; Programming modes
 (req-package ruby-mode
