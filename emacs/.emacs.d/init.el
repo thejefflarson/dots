@@ -432,6 +432,8 @@
   (add-hook 'racer-mode-hook 'eldoc-mode)
   (add-hook 'racer-mode-hook 'company-mode)
   :config
+  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+  (setq company-tooltip-align-annotations t)
   (setq racer-cmd "~/.cargo/bin/racer"))
 
 (req-package flycheck-rust
@@ -445,7 +447,7 @@
   (progn
     (racer-activate)
     (racer-turn-on-eldoc)
-    (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)))
+    (flycheck-rust-setup)))
 
 (req-package fish-mode)
 (req-package web-mode
@@ -534,6 +536,7 @@
                                       "thejefflarson@riseup.net"))
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-maildir "~/.mail")
+  (setq mu4e-attachment-dir "~/Downloads")
   (setq mu4e-headers-skip-duplicates t)
   (setq mu4e-headers-visible-lines 20)
   (setq mu4e-view-show-addresses 'long)
