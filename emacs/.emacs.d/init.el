@@ -526,6 +526,10 @@
           " OR maildir:/riseup/INBOX\)")
   "Interesting mail suffix.")
 
+(defun no-auto-fill ()
+  "Turn off 'auto-fill-mode'."
+  (auto-fill-mode -1))
+
 (req-package mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
@@ -562,6 +566,7 @@
   (add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+  (add-hook 'mu4e-compose-mode-hook #'no-auto-fill)
   (add-to-list 'mu4e-view-actions
                '("ViewInBrowser" . mu4e-action-view-in-browser) t))
 
