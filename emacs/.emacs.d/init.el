@@ -633,7 +633,7 @@
                      (mu4e-drafts-folder . "/work/Drafts")
                      (mu4e-sent-folder . "/work/Sent")
                      (mu4e-trash-folder . "/work/Trash")
-                     (mu4e-refile-folder . "/work/archive")))
+                     (mu4e-refile-folder . "/work/archive/.2017")))
            ,(make-mu4e-context
              :name "riseup"
              :enter-func (lambda ()
