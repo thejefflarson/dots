@@ -6,27 +6,22 @@
 ;;; Code:
 
 ;; Configuration
-
 (setq gc-cons-threshold 100000000)
 
 (setq-default indent-tabs-mode nil
-              tooltip-mode nil
               fill-column 80)
 
 (setq user-full-name "Jeff Larson"
       user-mail-address "thejefflarson@gmail.com"
       load-prefer-newer t
       cursor-in-non-selected-windows nil
-      highlight-nonselected-windows nil
-      jit-lock-defer-time nil
-      jit-lock-stealth-nice 0.1
-      jit-lock-stealth-time 0.2
-      jit-lock-stealth-time nil)
+      highlight-nonselected-windows nil)
 
 (setq window-divider-default-places t
       window-divider-default-bottom-width 1
       window-divider-default-right-width 1)
 (window-divider-mode)
+(tooltip-mode -1)
 ;; Allow the -l flag to find the right emacs directory
 (defconst user-emacs-directory
   (file-name-directory (or load-file-name (buffer-file-name)))
@@ -144,9 +139,6 @@
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(req-package linum-mode
-  :defer t)
-
 (req-package ivy
   :commands ivy-mode
   :diminish ivy-mode
@@ -173,8 +165,8 @@
 
 (req-package swiper
   :require counsel
-  :config
-  (global-set-key (kbd "C-s") 'swiper))
+  :bind
+  (("C-s" . swiper)))
 
 (req-package undo-tree
   :diminish undo-tree-mode
@@ -303,6 +295,7 @@
 
 (req-package nlinum
   :commands (nlinum-mode)
+  :defer t
   :init
   (add-hook 'prog-mode-hook 'nlinum-mode))
 
@@ -324,9 +317,9 @@
   :commands (neotree-find)
   :require projectile
   :init
-  (setq neo-theme 'arrow)
-  (setq neo-show-hidden-files t)
-  (setq projectile-switch-project-action 'neotree-projectile-action)
+  (setq neo-show-hidden-files t
+        neo-window-fixed-size nil
+        projectile-switch-project-action 'neotree-projectile-action)
   (custom-set-faces
    '(neo-banner-face ((t . (:inherit shadow))) t)
    '(neo-header-face ((t . (:inherit shadow))) t)
@@ -352,7 +345,6 @@
 (req-package vlf-setup
   :require vlf)
 
-
 (ensure-directory "~/SpiderOak Hive/journal/")
 (req-package org-journal
   :bind (("C-c C-j" . org-journal-new-entry))
@@ -376,7 +368,6 @@
 (req-package ruby-mode
   :defer t
   :config
-  ;; We never want to edit Rubinius bytecode
   (add-to-list 'completion-ignored-extensions ".rbc"))
 
 (req-package projectile-rails
@@ -692,9 +683,13 @@
   (load-theme 'doom-one t)
   (add-hook 'find-file-hook 'doom-buffer-mode)
   (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
-  (diminish 'doom-buffer-mode)
-  (require 'doom-nlinum)
-  (require 'doom-neotree))
+  (diminish 'doom-buffer-mode))
+
+(req-package doom-neotree
+  :requires doom-themes)
+
+(req-package doom-nlinum
+  :require doom-themes)
 
 (setq org-fontify-whole-heading-line t
       org-fontify-done-headline t
@@ -710,3 +705,4 @@
       (set-face-attribute 'default nil :height 100)))
 
 (req-package-finish)
+(message "Loaded in `%s'" (emacs-init-time))
