@@ -9,15 +9,24 @@
 
 (setq gc-cons-threshold 100000000)
 
-(setq-default indent-tabs-mode nil)
-
-(setq-default fill-column 80)
+(setq-default indent-tabs-mode nil
+              tooltip-mode nil
+              fill-column 80)
 
 (setq user-full-name "Jeff Larson"
-      user-mail-address "thejefflarson@gmail.com")
+      user-mail-address "thejefflarson@gmail.com"
+      load-prefer-newer t
+      cursor-in-non-selected-windows nil
+      highlight-nonselected-windows nil
+      jit-lock-defer-time nil
+      jit-lock-stealth-nice 0.1
+      jit-lock-stealth-time 0.2
+      jit-lock-stealth-time nil)
 
-(setq load-prefer-newer t)
-
+(setq window-divider-default-places t
+      window-divider-default-bottom-width 1
+      window-divider-default-right-width 1)
+(window-divider-mode)
 ;; Allow the -l flag to find the right emacs directory
 (defconst user-emacs-directory
   (file-name-directory (or load-file-name (buffer-file-name)))
@@ -292,31 +301,13 @@
   :config
   (company-statistics-mode))
 
-(defun enable-semantic ()
-  "Set up semantic in programming modes."
-  (require 'semantic)
-  (global-semanticdb-minor-mode 1)
-  (global-semantic-idle-scheduler-mode 1)
-  (semantic-mode 1))
-
-(req-package semantic
-  :defer t
+(req-package nlinum
+  :commands (nlinum-mode)
   :init
-  (setq srecode-map-save-file
-        (concat user-cache-directory "srecode-map.el"))
-  (add-hook 'prog-mode-hook 'enable-semantic))
+  (add-hook 'prog-mode-hook 'nlinum-mode))
 
-(defun enable-srefactor ()
-  "Set up srefactor."
-  (require 'srefactor))
-
-(req-package srefactor
-  :require semantic cc-mode
-  :defer t
-  :init
-  (add-hook 'c-mode-hook 'enable-srefactor)
-  (add-hook 'c++-mode-hook 'enable-srefactor)
-  (add-hook 'elisp-mode-hook 'enable-srefactor))
+(req-package hl-line-mode
+  :defer t)
 
 (req-package flyspell
   :commands (flyspell-buffer flyspell-mode)
@@ -696,9 +687,18 @@
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
-(req-package color-theme-sanityinc-tomorrow
+(req-package doom-themes
   :config
-  (color-theme-sanityinc-tomorrow-eighties))
+  (load-theme 'doom-one t)
+  (add-hook 'find-file-hook 'doom-buffer-mode)
+  (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
+  (diminish 'doom-buffer-mode)
+  (require 'doom-nlinum)
+  (require 'doom-neotree))
+
+(setq org-fontify-whole-heading-line t
+      org-fontify-done-headline t
+      org-fontify-quote-and-verse-blocks t)
 
 (req-package faces
   :config
