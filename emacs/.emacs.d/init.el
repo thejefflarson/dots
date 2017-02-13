@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; Configuration
-(setq gc-cons-threshold 100000000)
+(setq gc-cons-threshold 1000000000)
 
 (setq-default indent-tabs-mode nil
               fill-column 80)
@@ -104,10 +104,10 @@
   (unless (server-running-p) (server-start)))
 
 ;; Packages
-(package-initialize)
+(require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
-
+(package-initialize)
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
@@ -571,7 +571,6 @@
          "flag:unread date:today..now"
          my-interesting-mail))
   (add-hook 'after-init-hook 'mu4e-alert-enable-notifications)
-  (add-hook 'after-init-hook 'mu4e-alert-enable-mode-line-display)
   :config
   (mu4e-alert-set-default-style (if (eq system-type 'darwin)
                                     'notifier 'notifications)))
