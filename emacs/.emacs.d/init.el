@@ -390,6 +390,15 @@
   :init
   (add-hook 'c++-mode-hook 'platformio-conditionally-enable))
 
+(defun colorize-compilation-buffer()
+  "Color compilation."
+  (ansi-color-apply-on-region compilation-filter-start (point)))
+
+(req-package 'ansi-color
+  :commands colorize-compilation-buffer
+  :config
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+
 (req-package gdb-mi
   :require cc-mode
   :commands gdb
