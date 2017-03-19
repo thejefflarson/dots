@@ -180,7 +180,8 @@
   :config
   (setq-default flycheck-disabled-checkers
                 (append flycheck-disabled-checkers
-                        '(javascript-jshint))))
+                        '(javascript-jshint)
+                        '(python-flake8))))
 
 (req-package ag
   :defer t)
@@ -376,6 +377,16 @@
   :commands projectile-rails-on
   :init
   (add-hook 'ruby-mode-hook 'projectile-rails-on))
+
+(req-package jedi
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t))
+
+(req-package elpy
+  :require jedi
+  :init
+  (elpy-enable))
 
 (req-package cc-mode
   :defer t
