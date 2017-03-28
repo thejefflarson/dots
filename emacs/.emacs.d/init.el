@@ -385,6 +385,8 @@
 
 (req-package elpy
   :require jedi
+  :config
+  (setq )
   :init
   (elpy-enable))
 
@@ -706,8 +708,9 @@
 (req-package doom-neotree
   :requires doom-themes)
 
-(req-package doom-nlinum
-  :require doom-themes)
+;; this plays havoc with c++mode
+;;(req-package doom-nlinum
+;;  :require doom-themes)
 
 (setq org-fontify-whole-heading-line t
       org-fontify-done-headline t

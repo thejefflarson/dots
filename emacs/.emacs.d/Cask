@@ -24,6 +24,7 @@
 (depends-on "dumb-jump")
 (depends-on "ecb")
 (depends-on "elpy")
+(depends-on "esup")
 (depends-on "exec-path-from-shell")
 (depends-on "fish-mode")
 (depends-on "flycheck")
