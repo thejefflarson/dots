@@ -20,3 +20,4 @@ Please remember to install the following packages:
   cask
 
 "
+pip install -U flake8 jedi autopep8 yapf importmagic
