@@ -31,3 +31,5 @@ if test -d "/usr/local/share/chruby"
 end
 
 status --is-interactive; and source (pyenv init -|psub)
+set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
+set -g fish_user_paths "/usr/local/opt/flex/bin" $fish_user_paths
