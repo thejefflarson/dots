@@ -15,7 +15,7 @@ set -x fish_greeting
 set -x PATH $HOME/bin $HOME/.cask/bin/ /usr/local/bin $HOME/.cargo/bin $PATH
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
 
-set -x EDITOR 'emacsclient -nc -a emacs'
+set -x EDITOR 'emacsclient -c -a emacs'
 set -x HOMEBREW_NO_ANALYTICS 1
 alias e "emacsclient -nc -a emacs"
 
