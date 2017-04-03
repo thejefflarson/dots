@@ -517,6 +517,23 @@
   (("\\.l\\'" . bison-mode))
   (("\\.y\\'" . bison-mode)))
 
+(req-package swift-mode
+  :defer t
+  :mode
+  (("\\.swift" . swift-mode)))
+
+(req-package flycheck-swift
+  :defer t
+  :commands
+  (flycheck-swift-setup)
+  :init
+  (add-hook 'swift-mode-hook 'flycheck-swift-setup))
+
+(when (eq system-type 'darwin)
+  (req-package company-sourcekit
+    :requires swift-mode
+    :config (add-to-list 'company-backends 'company-sourcekit)))
+
 
 ;; Mu4e
 (defconst my-interesting-mail
