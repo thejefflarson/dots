@@ -1,4 +1,3 @@
-
 set __fish_git_prompt_showdirtystate 'yes'
 set __fish_git_prompt_showupstream 'yes'
 set __fish_git_prompt_color_branch 666666
@@ -30,5 +29,9 @@ if test -d "/usr/local/share/chruby"
 end
 
 status --is-interactive; and source (pyenv init -|psub)
+
 set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
 set -g fish_user_paths "/usr/local/opt/flex/bin" $fish_user_paths
+
+set -x CC (which clang)
+set -x CXX (which clang++)

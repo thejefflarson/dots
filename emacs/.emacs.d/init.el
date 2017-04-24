@@ -313,22 +313,11 @@
   :commands (flyspell-popup-auto-correct-mode)
   :require flyspell)
 
+(setq neo-show-hidden-files t)
+(setq neo-window-fixed-size nil)
+(setq projectile-switch-project-action 'neotree-projectile-action)
 (req-package neotree
-  :bind ("M-t" . neotree)
-  :commands (neotree-find)
-  :require projectile
-  :init
-  (setq neo-show-hidden-files t
-        neo-window-fixed-size nil
-        projectile-switch-project-action 'neotree-projectile-action)
-  (custom-set-faces
-   '(neo-banner-face ((t . (:inherit shadow))) t)
-   '(neo-header-face ((t . (:inherit shadow))) t)
-   '(neo-root-dir-face ((t . (:inherit link-visited :underline nil))) t)
-   '(neo-dir-link-face ((t . (:inherit dired-directory))) t)
-   '(neo-file-link-face ((t . (:inherit default))) t)
-   '(neo-button-face ((t . (:inherit dired-directory))) t)
-   '(neo-expand-btn-face ((t . (:inherit button))) t)))
+  :require projectile)
 
 (defun neotree-find-project-root ()
   "Find the root of a project for NeoTree using projectile."
@@ -383,12 +372,10 @@
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t))
 
+(setq yas-snippet-dirs nil)
 (req-package elpy
   :require jedi
-  :config
-  (setq )
-  :init
-  (elpy-enable))
+  :init (add-hook 'python-mode-hook 'elpy-enable))
 
 (req-package cc-mode
   :defer t
