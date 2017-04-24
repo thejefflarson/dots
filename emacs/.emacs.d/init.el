@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; Configuration
-(setq gc-cons-threshold 1000000000)
+(setq gc-cons-threshold 100000000)
 
 (setq-default indent-tabs-mode nil
               fill-column 80)
@@ -433,7 +433,6 @@
   :commands racer-mode
   :init
   (add-hook 'rust-mode-hook 'racer-mode)
-  (add-hook 'racer-mode-hook 'eldoc-mode)
   (add-hook 'racer-mode-hook 'company-mode)
   :config
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
@@ -442,16 +441,23 @@
 
 (req-package flycheck-rust
   :defer t
-  :commands flycheck-rust-setup)
+  :commands flycheck-rust-setup
+  :init
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (req-package rust-mode
   :defer t
   :require racer flycheck-rust
-  :config
-  (progn
-    (racer-activate)
-    (racer-turn-on-eldoc)
-    (flycheck-rust-setup)))
+  :init
+  (setq rust-format-on-save t)
+  (setq-local eldoc-documentation-function #'ignore))
+
+(req-package cargo
+  :defer t
+  :require rust-mode
+  :commands cargo-minor-mode
+  :init
+  (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
 (req-package fish-mode)
 (req-package web-mode
