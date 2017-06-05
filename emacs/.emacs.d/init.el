@@ -712,15 +712,13 @@
   :config
   (load-theme 'doom-one t)
   (add-hook 'find-file-hook 'doom-buffer-mode)
-  (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
   (diminish 'doom-buffer-mode))
 
 (req-package doom-neotree
   :requires doom-themes)
 
-;; this plays havoc with c++mode
-;;(req-package doom-nlinum
-;;  :require doom-themes)
+(req-package doom-nlinum
+  :require doom-themes)
 
 (setq org-fontify-whole-heading-line t
       org-fontify-done-headline t
