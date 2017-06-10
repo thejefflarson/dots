@@ -152,7 +152,7 @@
   :require ivy
   :bind
   (("M-x" . counsel-M-x)
-   ("C-x C-f" .  counsel-find-file)
+   ("C-x C-f" . counsel-find-file)
    ("<f1> f" . counsel-describe-function)
    ("<f1> v" . counsel-describe-variable)
    ("<f1> l" . counsel-load-library)

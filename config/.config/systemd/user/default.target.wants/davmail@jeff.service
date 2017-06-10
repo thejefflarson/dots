@@ -2,7 +2,7 @@
 Description=DavMail for %i
 
 [Service]
-ExecStart=/usr/bin/davmail %h/%i.properties
+ExecStart=/usr/bin/davmail %h/.davmail.properties
 Restart=on-failure
 
 [Install]
