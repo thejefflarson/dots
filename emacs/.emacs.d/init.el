@@ -142,6 +142,8 @@
 (req-package ivy
   :commands ivy-mode
   :diminish ivy-mode
+  :bind
+  (("C-x C-b" . ivy-buffer-list))
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-height 10)
