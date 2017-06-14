@@ -46,6 +46,7 @@
   (setq mac-command-modifier 'meta)
   (setq mac-pass-command-to-system nil)
   (setq mac-emulate-three-button-mouse t)
+  (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
   (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
@@ -296,7 +297,6 @@
 
 (req-package nlinum
   :commands (nlinum-mode)
-  :defer t
   :init
   (add-hook 'prog-mode-hook 'nlinum-mode))
 
