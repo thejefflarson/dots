@@ -143,6 +143,8 @@
 (req-package ivy
   :commands ivy-mode
   :diminish ivy-mode
+  :bind
+  (("C-x C-b" . ivy-buffer-list))
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-height 10)
@@ -153,7 +155,7 @@
   :require ivy
   :bind
   (("M-x" . counsel-M-x)
-   ("C-x C-f" .  counsel-find-file)
+   ("C-x C-f" . counsel-find-file)
    ("<f1> f" . counsel-describe-function)
    ("<f1> v" . counsel-describe-variable)
    ("<f1> l" . counsel-load-library)
@@ -712,15 +714,13 @@
   :config
   (load-theme 'doom-one t)
   (add-hook 'find-file-hook 'doom-buffer-mode)
-  (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
   (diminish 'doom-buffer-mode))
 
 (req-package doom-neotree
   :requires doom-themes)
 
-;; this plays havoc with c++mode
-;;(req-package doom-nlinum
-;;  :require doom-themes)
+(req-package doom-nlinum
+  :require doom-themes)
 
 (setq org-fontify-whole-heading-line t
       org-fontify-done-headline t
