@@ -143,8 +143,6 @@
 (req-package ivy
   :commands ivy-mode
   :diminish ivy-mode
-  :bind
-  (("C-x C-b" . ivy-buffer-list))
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-height 10)
@@ -190,7 +188,7 @@
   :defer t)
 
 (req-package projectile
-  :requires swiper ag
+  :require swiper ag
   :defer t
   :commands projectile-mode projectile-global-mode
   :init
@@ -201,7 +199,7 @@
   (setq projectile-enable-caching t))
 
 (req-package magit
-  :requires swiper
+  :require swiper
   :bind (("M-m s" . magit-status))
   :config
   (setq magit-completing-read-function 'ivy-completing-read))
@@ -216,7 +214,7 @@
 
 (req-package rainbow-mode
   :defer t
-  :requires kurecolor)
+  :require kurecolor)
 
 (req-package diff-hl
   :require magit
@@ -449,6 +447,9 @@
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
 (req-package fish-mode)
+
+(setq js-indent-level 2)
+
 (req-package web-mode
   :defer t
   :mode
@@ -472,6 +473,10 @@
   :config
   (setq js2-basic-offset 2))
 
+(req-package json-mode
+  :defer t)
+
+
 (req-package tern
   :defer t
   :init
@@ -486,8 +491,6 @@
   :config
   (load-library "sql-indent"))
 
-(req-package json-mode
-  :defer t)
 
 (req-package scss-mode
   :defer t
@@ -526,7 +529,7 @@
 
 (when (eq system-type 'darwin)
   (req-package company-sourcekit
-    :requires swift-mode
+    :require swift-mode
     :config (add-to-list 'company-backends 'company-sourcekit)))
 
 
@@ -711,15 +714,20 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 (req-package doom-themes
+  :require neotree
   :config
-  (load-theme 'doom-one t)
   (add-hook 'find-file-hook 'doom-buffer-mode)
-  (diminish 'doom-buffer-mode))
+  (diminish 'doom-buffer-mode)
+  (doom-themes-neotree-config)
+  (load-theme 'doom-one t))
 
 (req-package doom-neotree
-  :requires doom-themes)
+  :require doom-themes)
 
 (req-package doom-nlinum
+  :require doom-themes nlinum)
+
+(req-package solaire-mode
   :require doom-themes)
 
 (setq org-fontify-whole-heading-line t
