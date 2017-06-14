@@ -714,12 +714,9 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 (req-package doom-themes
-  :require neotree
   :config
-  (add-hook 'find-file-hook 'doom-buffer-mode)
-  (diminish 'doom-buffer-mode)
   (doom-themes-neotree-config)
-  (load-theme 'doom-one t))
+  (load-theme 'doom-vibrant t))
 
 (req-package doom-neotree
   :require doom-themes)
@@ -728,7 +725,9 @@
   :require doom-themes nlinum)
 
 (req-package solaire-mode
-  :require doom-themes)
+  :config
+  (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
+  (add-hook 'after-revert-hook #'turn-on-solaire-mode))
 
 (setq org-fontify-whole-heading-line t
       org-fontify-done-headline t
