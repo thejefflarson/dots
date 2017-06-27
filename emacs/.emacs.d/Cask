@@ -20,6 +20,7 @@
 (depends-on "company-sourcekit")
 (depends-on "company-statistics")
 (depends-on "counsel")
+(depends-on "counsel-projectile")
 (depends-on "dash")
 (depends-on "deferred")
 (depends-on "diff-hl")

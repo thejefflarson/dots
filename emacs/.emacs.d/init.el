@@ -188,8 +188,13 @@
 (req-package ag
   :defer t)
 
+(req-package counsel-projectile
+  :defer t
+  :config
+  (counsel-projectile-on))
+
 (req-package projectile
-  :requires swiper ag
+  :requires swiper ag counsel-projectile
   :defer t
   :commands projectile-mode projectile-global-mode
   :init
@@ -198,6 +203,8 @@
   :config
   (setq projectile-completion-system 'ivy)
   (setq projectile-enable-caching t))
+
+
 
 (req-package magit
   :requires swiper
@@ -412,7 +419,9 @@
   :require kurecolor rainbow-mode
   :defer t
   :init
-  (add-hook 'css-mode-hook 'rainbow-mode))
+  (add-hook 'css-mode-hook 'rainbow-mode)
+  :config
+  (setq css-indent-offset 2))
 
 (req-package clojure-mode
   :defer t)
