@@ -46,6 +46,7 @@
   (setq mac-command-modifier 'meta)
   (setq mac-pass-command-to-system nil)
   (setq mac-emulate-three-button-mouse t)
+  (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
   (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
@@ -142,8 +143,6 @@
 (req-package ivy
   :commands ivy-mode
   :diminish ivy-mode
-  :bind
-  (("C-x C-b" . ivy-buffer-list))
   :init
   (setq ivy-use-virtual-buffers t)
   (setq ivy-height 10)
@@ -207,7 +206,7 @@
 
 
 (req-package magit
-  :requires swiper
+  :require swiper
   :bind (("M-m s" . magit-status))
   :config
   (setq magit-completing-read-function 'ivy-completing-read))
@@ -222,7 +221,7 @@
 
 (req-package rainbow-mode
   :defer t
-  :requires kurecolor)
+  :require kurecolor)
 
 (req-package diff-hl
   :require magit
@@ -305,7 +304,6 @@
 
 (req-package nlinum
   :commands (nlinum-mode)
-  :defer t
   :init
   (add-hook 'prog-mode-hook 'nlinum-mode))
 
@@ -458,6 +456,9 @@
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
 (req-package fish-mode)
+
+(setq js-indent-level 2)
+
 (req-package web-mode
   :defer t
   :mode
@@ -481,6 +482,10 @@
   :config
   (setq js2-basic-offset 2))
 
+(req-package json-mode
+  :defer t)
+
+
 (req-package tern
   :defer t
   :init
@@ -495,8 +500,6 @@
   :config
   (load-library "sql-indent"))
 
-(req-package json-mode
-  :defer t)
 
 (req-package scss-mode
   :defer t
@@ -535,7 +538,7 @@
 
 (when (eq system-type 'darwin)
   (req-package company-sourcekit
-    :requires swift-mode
+    :require swift-mode
     :config (add-to-list 'company-backends 'company-sourcekit)))
 
 
@@ -721,15 +724,19 @@
 
 (req-package doom-themes
   :config
-  (load-theme 'doom-one t)
-  (add-hook 'find-file-hook 'doom-buffer-mode)
-  (diminish 'doom-buffer-mode))
+  (doom-themes-neotree-config)
+  (load-theme 'doom-vibrant t))
 
 (req-package doom-neotree
-  :requires doom-themes)
+  :require doom-themes)
 
 (req-package doom-nlinum
-  :require doom-themes)
+  :require doom-themes nlinum)
+
+(req-package solaire-mode
+  :config
+  (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
+  (add-hook 'after-revert-hook #'turn-on-solaire-mode))
 
 (setq org-fontify-whole-heading-line t
       org-fontify-done-headline t

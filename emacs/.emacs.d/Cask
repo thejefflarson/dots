@@ -83,6 +83,7 @@
 (depends-on "shell-pop")
 (depends-on "smartparens")
 (depends-on "smooth-scrolling")
+(depends-on "solaire-mode")
 (depends-on "spinner")
 (depends-on "sql-indent")
 (depends-on "srefactor")
