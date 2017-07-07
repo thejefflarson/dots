@@ -21,4 +21,5 @@ Installing requirements...
 "
 pip install -U flake8 jedi autopep8 yapf importmagic
 npm i -g eslint stylelint
-cargo install racer rustfmt --force
+cargo install racer
+cargo install rustfmt
