@@ -194,17 +194,18 @@
   (counsel-projectile-on))
 
 (req-package neotree
+  :commands neotree-projectile-action
   :init
   (setq neo-show-hidden-files t)
   (setq neo-window-fixed-size nil))
 
 (req-package projectile
-  :requires swiper ag counsel-projectile neotree
-  :commands projectile-mode
-  :init
-  (setq projectile-completion-system 'ivy)
-  (setq projectile-enable-caching t)
-  (setq projectile-switch-project-action 'neotree-projectile-action))
+  :requires swiper ag counsel-projectile neotree)
+
+;; no clue why this doesn't work with req-package
+(setq projectile-completion-system 'ivy)
+(setq projectile-enable-caching t)
+(setq projectile-switch-project-action 'neotree-projectile-action)
 (projectile-mode)
 
 (req-package magit
