@@ -408,8 +408,7 @@
   :require kurecolor rainbow-mode
   :defer t
   :init
-  (add-hook 'css-mode-hook 'rainbow-mode)
-  (setq css-indent-offset 2))
+  (add-hook 'css-mode-hook 'rainbow-mode))
 
 (req-package clojure-mode
   :defer t)
@@ -448,6 +447,7 @@
 (req-package fish-mode)
 
 (setq js-indent-level 2)
+(setq css-indent-offset 2)
 
 (req-package web-mode
   :defer t
