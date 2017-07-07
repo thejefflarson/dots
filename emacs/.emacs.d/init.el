@@ -95,6 +95,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (show-paren-mode 1)
 (electric-pair-mode 1)
+(recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 (setq-default abbrev-mode -1)
 
@@ -192,15 +193,19 @@
   :config
   (counsel-projectile-on))
 
-(req-package projectile
-  :requires swiper ag counsel-projectile
-  :defer t
-  :commands projectile-mode projectile-global-mode
+(req-package neotree
   :init
-  (add-hook 'prog-mode-hook 'projectile-mode)
-  (add-hook 'after-init-hook 'projectile-global-mode)
+  (setq neo-show-hidden-files t)
+  (setq neo-window-fixed-size nil))
+
+(req-package projectile
+  :requires swiper ag counsel-projectile neotree
+  :commands projectile-mode
+  :init
   (setq projectile-completion-system 'ivy)
-  (setq projectile-enable-caching t))
+  (setq projectile-enable-caching t)
+  (setq projectile-switch-project-action 'neotree-projectile-action))
+(projectile-mode)
 
 (req-package magit
   :require swiper
@@ -314,13 +319,6 @@
 (req-package flyspell-popup
   :commands (flyspell-popup-auto-correct-mode)
   :require flyspell)
-
-(req-package neotree
-  :require projectile
-  :init
-  (setq neo-show-hidden-files t)
-  (setq neo-window-fixed-size nil)
-  (setq projectile-switch-project-action 'neotree-projectile-action))
 
 (req-package twittering-mode
   :defer t)
