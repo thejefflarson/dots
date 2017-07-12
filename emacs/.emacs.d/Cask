@@ -62,6 +62,8 @@
 (depends-on "mu4e-maildirs-extension")
 (depends-on "neotree")
 (depends-on "nlinum")
+(depends-on "org")
+(depends-on "org-alert")
 (depends-on "org-journal")
 (depends-on "package-build")
 (depends-on "page-break-lines")

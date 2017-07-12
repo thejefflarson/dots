@@ -98,7 +98,6 @@
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 (setq-default abbrev-mode -1)
-
 
 ;; Server code
 (unless (string-equal "root" (getenv "USER"))
@@ -116,6 +115,11 @@
 (pallet-mode t)
 
 (require 'req-package)
+
+(req-package 'session
+  :init
+  (setq session-save-file (expand-file-name ".session" user-emacs-directory))
+  (add-hook 'after-init-hook 'session-initialize))
 
 (req-package exec-path-from-shell
   :init
@@ -330,9 +334,25 @@
 (req-package vlf-setup
   :require vlf)
 
+(ensure-directory "~/SpiderOak Hive/org/")
 (ensure-directory "~/SpiderOak Hive/journal/")
+(req-package org
+  :commands org-agenda-list
+  :bind
+  (("C-c l" . org-store-link)
+   ("C-c a" . org-agenda))
+  :init
+  (setq org-log-done t)
+  (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
+                               "~/SpiderOak Hive/org/family.org"))
+  (setq org-agenda-window-setup 'only-window))
+
+(req-package org-alert
+  :require org)
+
 (req-package org-journal
-  :bind (("C-c C-j" . org-journal-new-entry))
+  :bind
+  ("C-c C-j" . org-journal-new-entry)
   :init
   (setq org-journal-dir "~/SpiderOak Hive/journal/")
   (setq org-support-shift-select t))
@@ -341,9 +361,10 @@
   :commands ecb-activate)
 
 (req-package cider
+  :require clojure-mode
   :defer t
-  :bind (("C-u M-x" . cider-jack-in))
-  :require clojure-mode)
+  :bind
+  ("C-u M-x" . cider-jack-in))
 
 (req-package writeroom-mode
   :defer t)
@@ -487,10 +508,11 @@
   :defer t)
 
 (req-package sql
+  :require sql-indent
   :mode
   (("\\.sql\\'" . sql-mode))
-  :config
-  (load-library "sql-indent"))
+  :init
+  (setq sql-indent-offset 2))
 
 (req-package scss-mode
   :defer t
@@ -550,6 +572,13 @@
   "Turn off 'auto-fill-mode'."
   (auto-fill-mode -1))
 
+(req-package org-mu4e
+  :init
+  (setq org-mu4e-link-query-in-headers-mode nil)
+  (setq org-capture-templates
+      '(("t" "todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
+         "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
+
 (req-package mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
@@ -571,7 +600,7 @@
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
-  (setq message-sendmail-f-is-evil 't)
+  (setq message-sendmail-f-is-evil t)
   (setq mu4e-bookmarks
         `((,(concat "flag:unread date:today..now" my-interesting-mail)
            "Today's unread messages" ?u)
@@ -716,7 +745,10 @@
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
+(req-package all-the-icons)
+
 (req-package doom-themes
+  :require all-the-icons
   :config
   (doom-themes-neotree-config)
   (load-theme 'doom-vibrant t))
@@ -741,3 +773,22 @@
 
 (req-package-finish)
 (message "Loaded in `%s'" (emacs-init-time))
+
+(defun layout()
+  (select-frame (make-frame '((user-position . t)
+                              (width . 120)
+                              (height . 40)
+                              (top . -1)
+                              (left . -1))))
+  (org-agenda-list)
+  (select-frame (make-frame '((user-position . t)
+                              (width . 120)
+                              (height . 40)
+                              (top . 0)
+                              (left . -1))))
+  (mu4e))
+
+(add-hook 'after-init-hook 'layout)
+
+(provide 'init)
+;;; init.el ends here
