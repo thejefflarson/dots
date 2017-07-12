@@ -96,8 +96,8 @@
 (show-paren-mode 1)
 (electric-pair-mode 1)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
-(setq-default abbrev-mode -1)
-
+(setq abbrev-mode -1)
+(setq doc-view-resolution 300)
 
 ;; Server code
 (unless (string-equal "root" (getenv "USER"))
