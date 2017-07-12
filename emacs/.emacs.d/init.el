@@ -97,7 +97,10 @@
 (electric-pair-mode 1)
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
+
 (setq-default abbrev-mode -1)
+(setq-default doc-view-resolution 300)
+
 
 ;; Server code
 (unless (string-equal "root" (getenv "USER"))
@@ -207,9 +210,9 @@
   :requires swiper ag counsel-projectile neotree)
 
 ;; no clue why this doesn't work with req-package
-(setq projectile-completion-system 'ivy)
-(setq projectile-enable-caching t)
-(setq projectile-switch-project-action 'neotree-projectile-action)
+(setq-default projectile-completion-system 'ivy)
+(setq-default projectile-enable-caching t)
+(setq-default projectile-switch-project-action 'neotree-projectile-action)
 (projectile-mode)
 
 (req-package magit
@@ -467,8 +470,8 @@
 
 (req-package fish-mode)
 
-(setq js-indent-level 2)
-(setq css-indent-offset 2)
+(setq-default js-indent-level 2)
+(setq-default css-indent-offset 2)
 
 (req-package web-mode
   :defer t
@@ -758,7 +761,7 @@
   (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
   (add-hook 'after-revert-hook #'turn-on-solaire-mode))
 
-(setq org-fontify-whole-heading-line t
+(setq-default org-fontify-whole-heading-line t
       org-fontify-done-headline t
       org-fontify-quote-and-verse-blocks t)
 
