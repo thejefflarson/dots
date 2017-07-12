@@ -95,6 +95,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (show-paren-mode 1)
 (electric-pair-mode 1)
+(recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 (setq abbrev-mode -1)
 (setq doc-view-resolution 300)
@@ -192,23 +193,25 @@
   :config
   (counsel-projectile-on))
 
-(req-package projectile
-  :requires swiper ag counsel-projectile
-  :defer t
-  :commands projectile-mode projectile-global-mode
+(req-package neotree
+  :commands neotree-projectile-action
   :init
-  (add-hook 'prog-mode-hook 'projectile-mode)
-  (add-hook 'after-init-hook 'projectile-global-mode)
-  :config
-  (setq projectile-completion-system 'ivy)
-  (setq projectile-enable-caching t))
+  (setq neo-show-hidden-files t)
+  (setq neo-window-fixed-size nil))
 
+(req-package projectile
+  :requires swiper ag counsel-projectile neotree)
 
+;; no clue why this doesn't work with req-package
+(setq projectile-completion-system 'ivy)
+(setq projectile-enable-caching t)
+(setq projectile-switch-project-action 'neotree-projectile-action)
+(projectile-mode)
 
 (req-package magit
   :require swiper
   :bind (("M-m s" . magit-status))
-  :config
+  :init
   (setq magit-completing-read-function 'ivy-completing-read))
 
 (req-package which-key
@@ -225,7 +228,6 @@
 
 (req-package diff-hl
   :require magit
-  :commands (diff-hl-magit-post-refresh)
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
@@ -244,7 +246,7 @@
 
 (req-package eshell
   :defer t
-  :config
+  :init
   (setq eshell-buffer-maximum-lines 20000
         eshell-history-size 350
         eshell-hist-ignoredups t
@@ -254,8 +256,9 @@
 
 (req-package shell-pop
   :bind (("C-t" . shell-pop))
-  :init (setq shell-pop-shell-type
-              '("eshell" "*eshell*" (lambda () (eshell)))))
+  :init
+  (setq shell-pop-shell-type
+        '("eshell" "*eshell*" (lambda () (eshell)))))
 
 (req-package company
   :diminish company-mode
@@ -272,7 +275,6 @@
   :init
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
-  :config
   (defun my-irony-mode-hook ()
     (define-key irony-mode-map [remap completion-at-point]
       'irony-completion-at-point-async)
@@ -299,8 +301,7 @@
   (setq company-statistics-file
         (concat user-cache-directory
                 "company-statistics-cache.el"))
-  :config
-  (company-statistics-mode))
+  (add-hook 'after-init-hook 'company-statistics-mode))
 
 (req-package nlinum
   :commands (nlinum-mode)
@@ -320,19 +321,6 @@
   :commands (flyspell-popup-auto-correct-mode)
   :require flyspell)
 
-(setq neo-show-hidden-files t)
-(setq neo-window-fixed-size nil)
-(setq projectile-switch-project-action 'neotree-projectile-action)
-(req-package neotree
-  :require projectile)
-
-(defun neotree-find-project-root ()
-  "Find the root of a project for NeoTree using projectile."
-  (interactive)
-  (let ((origin-buffer-file-name (buffer-file-name)))
-    (neotree-find (projectile-project-root))
-    (neotree-find origin-buffer-file-name)))
-
 (req-package twittering-mode
   :defer t)
 
@@ -345,7 +333,7 @@
 (ensure-directory "~/SpiderOak Hive/journal/")
 (req-package org-journal
   :bind (("C-c C-j" . org-journal-new-entry))
-  :config
+  :init
   (setq org-journal-dir "~/SpiderOak Hive/journal/")
   (setq org-support-shift-select t))
 
@@ -364,7 +352,7 @@
 ;; Programming modes
 (req-package ruby-mode
   :defer t
-  :config
+  :init
   (add-to-list 'completion-ignored-extensions ".rbc"))
 
 (req-package projectile-rails
@@ -379,10 +367,12 @@
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t))
 
-(setq yas-snippet-dirs nil)
+
 (req-package elpy
   :require jedi
-  :init (add-hook 'python-mode-hook 'elpy-enable))
+  :init
+  (setq yas-snippet-dirs nil)
+  (add-hook 'python-mode-hook 'elpy-enable))
 
 (req-package cc-mode
   :defer t
@@ -402,14 +392,15 @@
 (defun colorize-compilation-buffer()
   "Color compilation."
   (ansi-color-apply-on-region compilation-filter-start (point)))
-(require 'ansi-color)
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+(req-package ansi-color
+  :init
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 
 (req-package gdb-mi
   :require cc-mode
   :commands gdb
   :defer t
-  :config
+  :init
   (setq gdb-many-windows t)
   (setq gdb-show-main t))
 
@@ -417,9 +408,7 @@
   :require kurecolor rainbow-mode
   :defer t
   :init
-  (add-hook 'css-mode-hook 'rainbow-mode)
-  :config
-  (setq css-indent-offset 2))
+  (add-hook 'css-mode-hook 'rainbow-mode))
 
 (req-package clojure-mode
   :defer t)
@@ -430,10 +419,10 @@
   :init
   (add-hook 'rust-mode-hook 'racer-mode)
   (add-hook 'racer-mode-hook 'company-mode)
-  :config
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
   (setq company-tooltip-align-annotations t)
-  (setq racer-cmd "~/.cargo/bin/racer"))
+  (setq racer-cmd "~/.cargo/bin/racer")
+  :config
+  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
 
 (req-package flycheck-rust
   :defer t
@@ -458,6 +447,7 @@
 (req-package fish-mode)
 
 (setq js-indent-level 2)
+(setq css-indent-offset 2)
 
 (req-package web-mode
   :defer t
@@ -465,7 +455,7 @@
   (("\\.html?\\'" . web-mode)
    ("\\.erb\\'" . web-mode)
    ("\\.jsx\\'" . web-mode))
-  :config
+  :init
   (setq web-mode-enable-auto-pairing t)
   (setq web-mode-enable-current-element-highlight t)
   (setq web-mode-enable-part-face t)
@@ -479,12 +469,14 @@
   :defer t
   :mode
   (("\\.js\\'" . js2-mode))
-  :config
-  (setq js2-basic-offset 2))
+  (("\\.jsx\\'" . js2-jsx-mode))
+  :init
+  (setq js2-basic-offset 2)
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-mode-show-strict-warnings nil))
 
 (req-package json-mode
   :defer t)
-
 
 (req-package tern
   :defer t
@@ -500,12 +492,11 @@
   :config
   (load-library "sql-indent"))
 
-
 (req-package scss-mode
   :defer t
   :mode
   (("\\.scss\\'" . scss-mode))
-  :config
+  :init
   (setq scss-compile-at-save nil))
 
 (req-package markdown-mode
@@ -539,7 +530,8 @@
 (when (eq system-type 'darwin)
   (req-package company-sourcekit
     :require swift-mode
-    :config (add-to-list 'company-backends 'company-sourcekit)))
+    :init
+    (add-to-list 'company-backends 'company-sourcekit)))
 
 
 ;; Mu4e
@@ -589,14 +581,14 @@
            "This week's messages" ?w)
           (,my-interesting-mail
            "All messages" ?a)))
-  :config
   (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
   (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
   (add-hook 'mu4e-compose-mode-hook #'no-auto-fill)
+  :config
   (add-to-list 'mu4e-view-actions
-               '("ViewInBrowser" . mu4e-action-view-in-browser) t))
+               '("View In Browser" . mu4e-action-view-in-browser) t))
 
 (req-package mu4e-contrib
   :require mu4e
@@ -605,8 +597,10 @@
 
 (req-package mu4e-maildirs-extension
   :require mu4e
-  :init (setq mu4e-maildirs-extension-fake-maildir-separator "\\.")
-  :config (mu4e-maildirs-extension))
+  :init
+  (setq mu4e-maildirs-extension-fake-maildir-separator "\\.")
+  :config
+  (mu4e-maildirs-extension))
 
 (req-package mu4e-alert
   :require mu4e
@@ -727,14 +721,8 @@
   (doom-themes-neotree-config)
   (load-theme 'doom-vibrant t))
 
-(req-package doom-neotree
-  :require doom-themes)
-
-(req-package doom-nlinum
-  :require doom-themes nlinum)
-
 (req-package solaire-mode
-  :config
+  :init
   (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
   (add-hook 'after-revert-hook #'turn-on-solaire-mode))
 

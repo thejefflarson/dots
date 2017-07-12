@@ -7,17 +7,19 @@ do
   stow -v -t ~/ -R ${i%%/};
 done
 mkdir -p ~/.mail/{gmail,work,riseup}
-ln -s `pwd`/.eslintrc ~/.eslintrc
 
 echo "
 Please remember to install the following packages:
 
   msmtp
   isync
-  keyring (pip)
   mu
   terminal-notifier
   cask
 
+Installing requirements...
 "
 pip install -U flake8 jedi autopep8 yapf importmagic
+npm i -g eslint stylelint
+cargo install racer --force
+cargo install rustfmt --force
