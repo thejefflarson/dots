@@ -44,8 +44,8 @@
 (when (eq system-type 'darwin)
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta)
-  (setq mac-pass-command-to-system nil)
-  (setq mac-emulate-three-button-mouse t)
+  (setq-default mac-pass-command-to-system nil)
+  (setq-default mac-emulate-three-button-mouse t)
   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
@@ -106,6 +106,7 @@
 (unless (string-equal "root" (getenv "USER"))
   (require 'server)
   (unless (server-running-p) (server-start)))
+
 
 ;; Packages
 (require 'package)
@@ -343,15 +344,21 @@
   :commands org-agenda-list
   :bind
   (("C-c l" . org-store-link)
-   ("C-c a" . org-agenda))
+   ("C-c a" . org-agenda)
+   ("C-c c" . org-capture))
   :init
   (setq org-log-done t)
   (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
                                "~/SpiderOak Hive/org/family.org"))
-  (setq org-agenda-window-setup 'only-window))
+  (setq org-agenda-window-setup 'only-window)
+  (setq org-capture-templates
+        '(("t" "todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
+           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
 
 (req-package org-alert
-  :require org)
+  :require org
+  :config
+  (org-alert-enable))
 
 (req-package org-journal
   :bind
@@ -391,7 +398,6 @@
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t))
 
-
 (req-package elpy
   :require jedi
   :init
@@ -410,7 +416,6 @@
   :commands platformio-conditionally-enable
   :init
   (add-hook 'c++-mode-hook 'platformio-conditionally-enable))
-
 
 ;; dunno why this needs to be non async but ok
 (defun colorize-compilation-buffer()
@@ -517,6 +522,10 @@
   :init
   (setq sql-indent-offset 2))
 
+(req-package lua-mode
+  :mode
+  (("\\.lua$" . lua-mode)))
+
 (req-package scss-mode
   :defer t
   :mode
@@ -577,10 +586,7 @@
 
 (req-package org-mu4e
   :init
-  (setq org-mu4e-link-query-in-headers-mode nil)
-  (setq org-capture-templates
-      '(("t" "todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
-         "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
+  (setq org-mu4e-link-query-in-headers-mode nil))
 
 (req-package mu4e
   :init
