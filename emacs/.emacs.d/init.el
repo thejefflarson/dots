@@ -44,8 +44,8 @@
 (when (eq system-type 'darwin)
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta)
-  (setq mac-pass-command-to-system nil)
-  (setq mac-emulate-three-button-mouse t)
+  (setq-default mac-pass-command-to-system nil)
+  (setq-default mac-emulate-three-button-mouse t)
   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
@@ -97,13 +97,16 @@
 (electric-pair-mode 1)
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
-(setq abbrev-mode -1)
-(setq doc-view-resolution 300)
+
+(setq-default abbrev-mode -1)
+(setq-default doc-view-resolution 300)
+
 
 ;; Server code
 (unless (string-equal "root" (getenv "USER"))
   (require 'server)
   (unless (server-running-p) (server-start)))
+
 
 ;; Packages
 (require 'package)
@@ -116,6 +119,11 @@
 (pallet-mode t)
 
 (require 'req-package)
+
+(req-package 'session
+  :init
+  (setq session-save-file (expand-file-name ".session" user-emacs-directory))
+  (add-hook 'after-init-hook 'session-initialize))
 
 (req-package exec-path-from-shell
   :init
@@ -202,9 +210,9 @@
   :requires swiper ag counsel-projectile neotree)
 
 ;; no clue why this doesn't work with req-package
-(setq projectile-completion-system 'ivy)
-(setq projectile-enable-caching t)
-(setq projectile-switch-project-action 'neotree-projectile-action)
+(setq-default projectile-completion-system 'ivy)
+(setq-default projectile-enable-caching t)
+(setq-default projectile-switch-project-action 'neotree-projectile-action)
 (projectile-mode)
 
 (req-package magit
@@ -329,9 +337,31 @@
 (req-package vlf-setup
   :require vlf)
 
+(ensure-directory "~/SpiderOak Hive/org/")
 (ensure-directory "~/SpiderOak Hive/journal/")
+(req-package org
+  :commands org-agenda-list
+  :bind
+  (("C-c l" . org-store-link)
+   ("C-c a" . org-agenda)
+   ("C-c c" . org-capture))
+  :init
+  (setq org-log-done t)
+  (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
+                               "~/SpiderOak Hive/org/family.org"))
+  (setq org-agenda-window-setup 'only-window)
+  (setq org-capture-templates
+        '(("t" "todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
+           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
+
+(req-package org-alert
+  :require org
+  :config
+  (org-alert-enable))
+
 (req-package org-journal
-  :bind (("C-c C-j" . org-journal-new-entry))
+  :bind
+  ("C-c C-j" . org-journal-new-entry)
   :init
   (setq org-journal-dir "~/SpiderOak Hive/journal/")
   (setq org-support-shift-select t))
@@ -340,9 +370,10 @@
   :commands ecb-activate)
 
 (req-package cider
+  :require clojure-mode
   :defer t
-  :bind (("C-u M-x" . cider-jack-in))
-  :require clojure-mode)
+  :bind
+  ("C-u M-x" . cider-jack-in))
 
 (req-package writeroom-mode
   :defer t)
@@ -366,7 +397,6 @@
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t))
 
-
 (req-package elpy
   :require jedi
   :init
@@ -385,7 +415,6 @@
   :commands platformio-conditionally-enable
   :init
   (add-hook 'c++-mode-hook 'platformio-conditionally-enable))
-
 
 ;; dunno why this needs to be non async but ok
 (defun colorize-compilation-buffer()
@@ -441,8 +470,8 @@
 
 (req-package fish-mode)
 
-(setq js-indent-level 2)
-(setq css-indent-offset 2)
+(setq-default js-indent-level 2)
+(setq-default css-indent-offset 2)
 
 (req-package web-mode
   :defer t
@@ -482,10 +511,15 @@
   :defer t)
 
 (req-package sql
+  :require sql-indent
   :mode
   (("\\.sql\\'" . sql-mode))
-  :config
-  (load-library "sql-indent"))
+  :init
+  (setq sql-indent-offset 2))
+
+(req-package lua-mode
+  :mode
+  (("\\.lua$" . lua-mode)))
 
 (req-package scss-mode
   :defer t
@@ -545,6 +579,10 @@
   "Turn off 'auto-fill-mode'."
   (auto-fill-mode -1))
 
+(req-package org-mu4e
+  :init
+  (setq org-mu4e-link-query-in-headers-mode nil))
+
 (req-package mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
@@ -566,7 +604,7 @@
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq sendmail-program "/usr/local/bin/msmtp")
   (setq message-sendmail-extra-arguments '("--read-envelope-from"))
-  (setq message-sendmail-f-is-evil 't)
+  (setq message-sendmail-f-is-evil t)
   (setq mu4e-bookmarks
         `((,(concat "flag:unread date:today..now" my-interesting-mail)
            "Today's unread messages" ?u)
@@ -711,7 +749,10 @@
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
+(req-package all-the-icons)
+
 (req-package doom-themes
+  :require all-the-icons
   :config
   (doom-themes-neotree-config)
   (load-theme 'doom-vibrant t))
@@ -721,7 +762,7 @@
   (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
   (add-hook 'after-revert-hook #'turn-on-solaire-mode))
 
-(setq org-fontify-whole-heading-line t
+(setq-default org-fontify-whole-heading-line t
       org-fontify-done-headline t
       org-fontify-quote-and-verse-blocks t)
 
@@ -736,3 +777,22 @@
 
 (req-package-finish)
 (message "Loaded in `%s'" (emacs-init-time))
+
+(defun layout()
+  (select-frame (make-frame '((user-position . t)
+                              (width . 120)
+                              (height . 40)
+                              (top . -1)
+                              (left . -1))))
+  (org-agenda-list)
+  (select-frame (make-frame '((user-position . t)
+                              (width . 120)
+                              (height . 40)
+                              (top . 0)
+                              (left . -1))))
+  (mu4e))
+
+(add-hook 'after-init-hook 'layout)
+
+(provide 'init)
+;;; init.el ends here
