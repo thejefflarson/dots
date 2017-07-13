@@ -779,6 +779,7 @@
 (message "Loaded in `%s'" (emacs-init-time))
 
 (defun layout()
+  (interactive)
   (select-frame (make-frame '((user-position . t)
                               (width . 120)
                               (height . 40)
@@ -791,8 +792,6 @@
                               (top . 0)
                               (left . -1))))
   (mu4e))
-
-(add-hook 'after-init-hook 'layout)
 
 (provide 'init)
 ;;; init.el ends here
