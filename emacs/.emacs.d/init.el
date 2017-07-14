@@ -349,15 +349,29 @@
   (setq org-log-done t)
   (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
                                "~/SpiderOak Hive/org/family.org"))
+  (setq org-default-notes-file "~/SpiderOak Hive/org/work.org")
   (setq org-agenda-window-setup 'only-window)
   (setq org-capture-templates
         '(("t" "todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
-           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
+           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
+  (setq org-tag-alist '((:startgroup . nil)
+                        ("@work" . ?w) ("@home" . ?h)
+                        (:endgroup . nil)
+                        ("phone" . ?p) ("meeting" . ?m)
+                        ("code" . ?c) ("writing" . ?w))))
 
 (req-package org-alert
   :require org
   :config
   (org-alert-enable))
+
+(req-package org-projectile
+  :require org
+  :bind
+  (("C-c n p" . org-projectile:project-todo-completing-read))
+  :config
+  (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
+  (org-projectile:prompt))
 
 (req-package org-journal
   :bind

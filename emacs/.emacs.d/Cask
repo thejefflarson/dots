@@ -66,6 +66,7 @@
 (depends-on "org")
 (depends-on "org-alert")
 (depends-on "org-journal")
+(depends-on "org-projectile")
 (depends-on "package-build")
 (depends-on "page-break-lines")
 (depends-on "pallet")
