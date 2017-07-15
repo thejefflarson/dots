@@ -358,7 +358,11 @@
                         ("@work" . ?w) ("@home" . ?h)
                         (:endgroup . nil)
                         ("phone" . ?p) ("meeting" . ?m)
-                        ("code" . ?c) ("writing" . ?w))))
+                        ("code" . ?c) ("writing" . ?r)))
+  (setq org-todo-keywords
+      '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED")))
+  :config
+  (add-to-list 'org-modules 'org-habit))
 
 (req-package org-alert
   :require org
