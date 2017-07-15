@@ -346,7 +346,10 @@
    ("C-c a" . org-agenda)
    ("C-c c" . org-capture))
   :init
-  (setq org-log-done t)
+  (setq org-log-done 'time)
+  (setq org-log-redeadline 'note)
+  (setq org-log-reschedule 'note)
+  (setq org-log-refile 'time)
   (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
                                "~/SpiderOak Hive/org/family.org"))
   (setq org-default-notes-file "~/SpiderOak Hive/org/work.org")
