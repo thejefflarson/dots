@@ -360,7 +360,8 @@
                         ("phone" . ?p) ("meeting" . ?m)
                         ("code" . ?c) ("writing" . ?r)))
   (setq org-todo-keywords
-      '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED")))
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED")))
+  (setq org-enforce-todo-dependencies t)
   :config
   (add-to-list 'org-modules 'org-habit))
 
