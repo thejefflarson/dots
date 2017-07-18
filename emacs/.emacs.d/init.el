@@ -350,6 +350,8 @@
   (setq org-log-redeadline 'note)
   (setq org-log-reschedule 'note)
   (setq org-log-refile 'time)
+  (setq org-mobile-directory "~/Dropbox/MobileOrg")
+  (setq org-directory "~/SpiderOak Hive/org")
   (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
                                "~/SpiderOak Hive/org/family.org"))
   (setq org-default-notes-file "~/SpiderOak Hive/org/notes.org")
