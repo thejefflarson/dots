@@ -352,7 +352,7 @@
   (setq org-log-refile 'time)
   (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
                                "~/SpiderOak Hive/org/family.org"))
-  (setq org-default-notes-file "~/SpiderOak Hive/org/work.org")
+  (setq org-default-notes-file "~/SpiderOak Hive/org/notes.org")
   (setq org-agenda-window-setup 'only-window)
   (setq org-capture-templates
         '(("t" "todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
@@ -365,6 +365,7 @@
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED")))
   (setq org-enforce-todo-dependencies t)
+  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
   :config
   (add-to-list 'org-modules 'org-habit))
 
