@@ -85,6 +85,13 @@
 (setq ring-bell-function #'ignore)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; Only utf-8 please
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq buffer-file-coding-system 'utf-8)
+
 (global-auto-revert-mode t)
 
 (when (eq system-type 'darwin)
