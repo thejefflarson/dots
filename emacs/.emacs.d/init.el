@@ -120,6 +120,10 @@
 
 (require 'req-package)
 
+(req-package 'epa-file
+  :config
+  (epa-file-enable))
+
 (req-package 'session
   :init
   (setq session-save-file (expand-file-name ".session" user-emacs-directory))
@@ -337,9 +341,11 @@
 (req-package vlf-setup
   :require vlf)
 
+(load-library "~/.emacs.d/secrets.el.gpg")
 (ensure-directory "~/SpiderOak Hive/org/")
 (ensure-directory "~/SpiderOak Hive/journal/")
 (req-package org
+  :require epa-file
   :commands org-agenda-list
   :bind
   (("C-c l" . org-store-link)
@@ -350,7 +356,8 @@
   (setq org-log-redeadline 'note)
   (setq org-log-reschedule 'note)
   (setq org-log-refile 'time)
-  (setq org-mobile-directory "~/Dropbox/MobileOrg")
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-mobile-inbox-for-pull "~/SpiderOak Hive/org/notes.org")
   (setq org-directory "~/SpiderOak Hive/org")
   (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
                                "~/SpiderOak Hive/org/family.org"))
@@ -369,7 +376,8 @@
   (setq org-enforce-todo-dependencies t)
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
   :config
-  (add-to-list 'org-modules 'org-habit))
+  (add-to-list 'org-modules 'org-habit)
+  (add-to-list 'org-modules 'org-mobile))
 
 (req-package org-alert
   :require org
