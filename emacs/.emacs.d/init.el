@@ -49,6 +49,7 @@
   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
+  (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg2"))
   (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path)))
 
@@ -371,8 +372,10 @@
   (setq org-default-notes-file "~/SpiderOak Hive/org/notes.org")
   (setq org-agenda-window-setup 'only-window)
   (setq org-capture-templates
-        '(("t" "todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
-           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
+        '(("t" "Todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
+           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))
+        '(("n" "Note" entry (file "~/SpiderOak Hive/org/notes.org")
+           "* %?\nCaptured %<%Y-%m-%d %H:%M>")))
   (setq org-tag-alist '((:startgroup . nil)
                         ("@work" . ?w) ("@home" . ?h)
                         (:endgroup . nil)
