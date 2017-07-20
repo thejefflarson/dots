@@ -360,7 +360,6 @@
    ("C-c a" . org-agenda)
    ("C-c c" . org-capture))
   :init
-  (setq org-log-done 'time)
   (setq org-log-redeadline 'note)
   (setq org-log-reschedule 'note)
   (setq org-log-refile 'time)
@@ -373,8 +372,8 @@
   (setq org-agenda-window-setup 'only-window)
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
-           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))
-        '(("n" "Note" entry (file "~/SpiderOak Hive/org/notes.org")
+           "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
+          ("n" "Note" entry (file "~/SpiderOak Hive/org/notes.org")
            "* %?\nCaptured %<%Y-%m-%d %H:%M>")))
   (setq org-tag-alist '((:startgroup . nil)
                         ("@work" . ?w) ("@home" . ?h)
@@ -382,7 +381,7 @@
                         ("phone" . ?p) ("meeting" . ?m)
                         ("code" . ?c) ("writing" . ?r)))
   (setq org-todo-keywords
-        '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED")))
+        '((sequence "TODO(t)" "IN-PROGRESS(i!)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
   (setq org-enforce-todo-dependencies t)
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
   :config
