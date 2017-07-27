@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; Configuration
-(setq gc-cons-threshold 100000000)
+(setq gc-cons-threshold (eval-when-compile (* 100 1024 1024)))
 
 (setq-default indent-tabs-mode nil
               fill-column 80)
@@ -30,7 +30,7 @@
 (defconst user-cache-directory
   (file-name-as-directory
    (concat user-emacs-directory ".cache"))
-   "Directory for temporary files.")
+  "Directory for temporary files.")
 
 (defun ensure-directory (dir)
   "Make directory DIR if it doesn't exist."
@@ -154,6 +154,19 @@
   (add-hook 'prog-mode-hook 'whitespace-mode)
   (setq whitespace-style '(face lines-tail)))
 
+(req-package crux
+  :bind
+  (("C-c o" . crux-open-with)
+   ("C-k" . crux-smart-kill-line)
+   ("C-c n" . crux-cleanup-buffer-or-region)
+   ("C-c f" . crux-recentf-find-file)
+   ("C-c D" . crux-delete-file-and-buffer)
+   ("C-c r" . crux-rename-file-and-buffer)
+   ("C-c I" . crux-find-user-init-file)
+   ("C-c i" . crux-ispell-word-then-abbrev))
+  :config
+  (crux-reopen-as-root-mode))
+
 (req-package diminish
   :config
   (diminish 'auto-revert-mode))
@@ -232,7 +245,7 @@
 
 (req-package magit
   :require swiper
-  :bind (("M-m s" . magit-status))
+  :bind (("C-c s" . magit-status))
   :init
   (setq magit-completing-read-function 'ivy-completing-read))
 
