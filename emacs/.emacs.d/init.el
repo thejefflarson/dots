@@ -109,6 +109,9 @@
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
 
+;; Enable narrowing
+(put 'narrow-to-region 'disabled nil)
+
 
 ;; Server code
 (unless (string-equal "root" (getenv "USER"))
