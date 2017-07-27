@@ -126,6 +126,8 @@
 (require 'pallet)
 (pallet-mode t)
 
+(setq-default use-package-verbose t)
+
 (require 'req-package)
 
 (req-package 'epa-file
@@ -435,12 +437,14 @@
   (add-hook 'ruby-mode-hook 'projectile-rails-on))
 
 (req-package jedi
+  :commands jedi:setup
   :init
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t))
 
 (req-package elpy
   :require jedi
+  :commands elypy-enable
   :init
   (setq yas-snippet-dirs nil)
   (add-hook 'python-mode-hook 'elpy-enable))
@@ -622,10 +626,13 @@
   (auto-fill-mode -1))
 
 (req-package org-mu4e
+  :defer t
   :init
   (setq org-mu4e-link-query-in-headers-mode nil))
 
 (req-package mu4e
+  :commands mu4e
+  :require org-mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
   (setq mu4e-get-mail-command "mbsync -aq; true")
