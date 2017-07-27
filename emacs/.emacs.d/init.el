@@ -129,6 +129,8 @@
 (require 'pallet)
 (pallet-mode t)
 
+(setq-default use-package-verbose t)
+
 (require 'req-package)
 
 (req-package 'epa-file
@@ -297,7 +299,6 @@
 
 (req-package company
   :diminish company-mode
-  :defer t
   :init
   (add-hook 'prog-mode-hook 'company-mode)
   :config
@@ -451,12 +452,14 @@
   (add-hook 'ruby-mode-hook 'projectile-rails-on))
 
 (req-package jedi
+  :commands jedi:setup
   :init
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t))
 
 (req-package elpy
   :require jedi
+  :commands elypy-enable
   :init
   (setq yas-snippet-dirs nil)
   (add-hook 'python-mode-hook 'elpy-enable))
@@ -516,6 +519,7 @@
 
 (req-package rust-mode
   :require racer flycheck-rust
+  :defer t
   :init
   (setq rust-format-on-save t)
   (setq-local eldoc-documentation-function #'ignore))
@@ -526,7 +530,8 @@
   :init
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
-(req-package fish-mode)
+(req-package fish-mode
+  :defer t)
 
 (setq-default js-indent-level 2)
 (setq-default css-indent-offset 2)
@@ -580,15 +585,13 @@
   (("\\.lua$" . lua-mode)))
 
 (req-package scss-mode
-  :defer t
   :mode
   (("\\.scss\\'" . scss-mode))
   :init
   (setq scss-compile-at-save nil))
 
 (req-package markdown-mode
-  :commands
-  (markdown-mode gfm-mode)
+  :commands markdown-mode gfm-mode
   :mode
   (("README\\.md\\'" . gfm-mode)
    ("\\.md\\'" . markdown-mode)
@@ -597,20 +600,16 @@
   (setq markdown-command "multimarkdown"))
 
 (req-package bison-mode
-  :defer t
   :mode
   (("\\.l\\'" . bison-mode))
   (("\\.y\\'" . bison-mode)))
 
 (req-package swift-mode
-  :defer t
   :mode
   (("\\.swift" . swift-mode)))
 
 (req-package flycheck-swift
-  :defer t
-  :commands
-  (flycheck-swift-setup)
+  :commands flycheck-swift-setup
   :init
   (add-hook 'swift-mode-hook 'flycheck-swift-setup))
 
@@ -638,10 +637,13 @@
   (auto-fill-mode -1))
 
 (req-package org-mu4e
+  :defer t
   :init
   (setq org-mu4e-link-query-in-headers-mode nil))
 
 (req-package mu4e
+  :commands mu4e
+  :require org-mu4e
   :init
   (setq mu4e-update-interval (* 60 5))
   (setq mu4e-get-mail-command "mbsync -aq; true")
