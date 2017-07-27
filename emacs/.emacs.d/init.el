@@ -286,7 +286,6 @@
 
 (req-package company
   :diminish company-mode
-  :defer t
   :init
   (add-hook 'prog-mode-hook 'company-mode)
   :config
@@ -507,6 +506,7 @@
 
 (req-package rust-mode
   :require racer flycheck-rust
+  :defer t
   :init
   (setq rust-format-on-save t)
   (setq-local eldoc-documentation-function #'ignore))
@@ -517,7 +517,8 @@
   :init
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
-(req-package fish-mode)
+(req-package fish-mode
+  :defer t)
 
 (setq-default js-indent-level 2)
 (setq-default css-indent-offset 2)
@@ -571,15 +572,13 @@
   (("\\.lua$" . lua-mode)))
 
 (req-package scss-mode
-  :defer t
   :mode
   (("\\.scss\\'" . scss-mode))
   :init
   (setq scss-compile-at-save nil))
 
 (req-package markdown-mode
-  :commands
-  (markdown-mode gfm-mode)
+  :commands markdown-mode gfm-mode
   :mode
   (("README\\.md\\'" . gfm-mode)
    ("\\.md\\'" . markdown-mode)
@@ -588,20 +587,16 @@
   (setq markdown-command "multimarkdown"))
 
 (req-package bison-mode
-  :defer t
   :mode
   (("\\.l\\'" . bison-mode))
   (("\\.y\\'" . bison-mode)))
 
 (req-package swift-mode
-  :defer t
   :mode
   (("\\.swift" . swift-mode)))
 
 (req-package flycheck-swift
-  :defer t
-  :commands
-  (flycheck-swift-setup)
+  :commands flycheck-swift-setup
   :init
   (add-hook 'swift-mode-hook 'flycheck-swift-setup))
 
