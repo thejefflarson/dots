@@ -377,6 +377,7 @@
    ("C-c a" . org-agenda)
    ("C-c c" . org-capture))
   :init
+  (setq org-log-done 'note)
   (setq org-log-redeadline 'note)
   (setq org-log-reschedule 'note)
   (setq org-log-refile 'time)
