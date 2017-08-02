@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; Configuration
-(setq gc-cons-threshold (eval-when-compile (* 100 1024 1024)))
+(setq gc-cons-threshold (eval-when-compile (* 1000 1024 1024)))
 
 (setq-default indent-tabs-mode nil
               fill-column 80)
@@ -236,13 +236,11 @@
   (setq neo-show-hidden-files t)
   (setq neo-window-fixed-size nil))
 
-(req-package projectile
-  :requires swiper ag counsel-projectile neotree)
-
-;; no clue why this doesn't work with req-package
 (setq-default projectile-completion-system 'ivy)
 (setq-default projectile-enable-caching t)
 (setq-default projectile-switch-project-action 'neotree-projectile-action)
+(req-package projectile
+  :requires swiper ag counsel-projectile neotree)
 (projectile-mode)
 
 (req-package magit
@@ -272,7 +270,7 @@
 
 (req-package page-break-lines
   :diminish page-break-lines-mode
-  :commands (global-page-break-lines-mode page-break-lines-mode)
+  :commands global-page-break-lines-mode page-break-lines-mode
   :init
   (add-hook 'after-init-hook 'global-page-break-lines-mode)
   (add-hook 'prog-mode-hook 'page-break-lines-mode))
@@ -366,9 +364,6 @@
 (req-package vlf-setup
   :require vlf)
 
-(load-library "~/.emacs.d/secrets.el.gpg")
-(ensure-directory "~/SpiderOak Hive/org/")
-(ensure-directory "~/SpiderOak Hive/journal/")
 (req-package org
   :require epa-file
   :commands org-agenda-list
@@ -377,6 +372,9 @@
    ("C-c a" . org-agenda)
    ("C-c c" . org-capture))
   :init
+  (load-library "~/.emacs.d/secrets.el.gpg")
+  (ensure-directory "~/SpiderOak Hive/org/")
+  (ensure-directory "~/SpiderOak Hive/journal/")
   (setq org-log-redeadline 'note)
   (setq org-log-reschedule 'note)
   (setq org-log-refile 'time)
@@ -441,9 +439,12 @@
 
 ;; Programming modes
 (req-package ruby-mode
+  :require flycheck
   :defer t
   :init
-  (add-to-list 'completion-ignored-extensions ".rbc"))
+  (add-to-list 'completion-ignored-extensions ".rbc")
+  :config
+  (setq flycheck-rubocoprc nil))
 
 (req-package projectile-rails
   :defer t
