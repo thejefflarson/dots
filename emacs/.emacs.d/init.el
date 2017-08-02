@@ -377,10 +377,10 @@
    ("C-c a" . org-agenda)
    ("C-c c" . org-capture))
   :init
-  (setq org-log-done 'note)
   (setq org-log-redeadline 'note)
   (setq org-log-reschedule 'note)
   (setq org-log-refile 'time)
+  (setq org-use-tag-inheritance t)
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-mobile-inbox-for-pull "~/SpiderOak Hive/org/notes.org")
   (setq org-directory "~/SpiderOak Hive/org")
@@ -399,7 +399,7 @@
                         ("phone" . ?p) ("meeting" . ?m)
                         ("code" . ?c) ("writing" . ?r)))
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "IN-PROGRESS(i!)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+        '((sequence "TODO(t)" "IN-PROGRESS(i!)" "WAITING(w@/!)" "|" "DONE(d@)" "CANCELED(c@)")))
   (setq org-enforce-todo-dependencies t)
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
   :config
