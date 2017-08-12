@@ -203,7 +203,7 @@
    ("C-x l" . counsel-locate)))
 
 (req-package swiper
-  :require counsel
+  :require counsel ivy
   :bind
   (("C-s" . swiper)))
 
@@ -452,14 +452,12 @@
   :init
   (add-hook 'ruby-mode-hook 'projectile-rails-on))
 
-(req-package jedi
-  :commands jedi:setup
+(req-package company-jedi
   :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t))
+  (add-hook 'python-mode-hook 'company-mode))
 
 (req-package elpy
-  :require jedi
+  :require company-jedi
   :commands elypy-enable
   :init
   (setq yas-snippet-dirs nil)
