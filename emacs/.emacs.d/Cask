@@ -20,6 +20,7 @@
 (depends-on "company-jedi")
 (depends-on "company-sourcekit")
 (depends-on "company-statistics")
+(depends-on "company-tern")
 (depends-on "counsel")
 (depends-on "counsel-projectile")
 (depends-on "crux")

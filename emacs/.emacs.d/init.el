@@ -453,8 +453,7 @@
   (add-hook 'ruby-mode-hook 'projectile-rails-on))
 
 (req-package company-jedi
-  :init
-  (add-hook 'python-mode-hook 'company-mode))
+  :defer t)
 
 (req-package elpy
   :require company-jedi
@@ -503,9 +502,9 @@
 
 (req-package racer
   :commands racer-mode
+  :defer t
   :init
   (add-hook 'rust-mode-hook 'racer-mode)
-  (add-hook 'racer-mode-hook 'company-mode)
   (setq company-tooltip-align-annotations t)
   (setq racer-cmd "~/.cargo/bin/racer")
   :config
@@ -536,7 +535,6 @@
 (setq-default css-indent-offset 2)
 
 (req-package web-mode
-  :defer t
   :mode
   (("\\.html?\\'" . web-mode)
    ("\\.erb\\'" . web-mode)
@@ -568,6 +566,11 @@
   :defer t
   :init
   (add-hook 'js-mode-hook (lambda () (tern-mode t))))
+
+(req-package company-tern
+  :require tern
+  :defer t
+  (add-to-list 'company-backend 'company-tern))
 
 (req-package sql-indent
   :defer t)
