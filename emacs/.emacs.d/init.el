@@ -109,6 +109,10 @@
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
 
+;; Blinky hairline cursor
+(setq-default cursor-type '(bar . 1))
+(blink-cursor-mode 1)
+
 ;; Enable narrowing
 (put 'narrow-to-region 'disabled nil)
 
