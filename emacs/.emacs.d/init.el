@@ -818,7 +818,8 @@
   :require all-the-icons
   :config
   (doom-themes-neotree-config)
-  (load-theme 'doom-vibrant t))
+  (load-theme 'doom-vibrant t)
+  (doom-themes-org-config))
 
 (req-package solaire-mode
   :init
