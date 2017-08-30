@@ -9,7 +9,7 @@
 (setq gc-cons-threshold (eval-when-compile (* 1000 1024 1024)))
 
 (setq-default indent-tabs-mode nil
-              fill-column 80)
+              fill-column 100)
 
 (setq user-full-name "Jeff Larson"
       user-mail-address "thejefflarson@gmail.com"
@@ -49,7 +49,7 @@
   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
-  (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg2"))
+  (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
   (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path)))
 
@@ -358,11 +358,9 @@
 (req-package twittering-mode
   :defer t)
 
-(req-package vlf
-  :defer t)
-
 (req-package vlf-setup
-  :require vlf)
+  :init
+  (setq vlf-application 'dont-ask))
 
 (req-package org
   :require epa-file
@@ -386,6 +384,7 @@
                                "~/SpiderOak Hive/org/family.org"))
   (setq org-default-notes-file "~/SpiderOak Hive/org/notes.org")
   (setq org-agenda-window-setup 'only-window)
+  (setq org-hierarchical-todo-statistics nil)
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
@@ -501,6 +500,9 @@
   :init
   (add-hook 'css-mode-hook 'rainbow-mode))
 
+(req-package csv-mode
+  :mode "\\.csv\\'")
+
 (req-package clojure-mode
   :defer t)
 
@@ -521,7 +523,7 @@
 
 (req-package rust-mode
   :require racer flycheck-rust
-  :defer t
+  :mode "\\.rs\\'"
   :init
   (setq rust-format-on-save t)
   (setq-local eldoc-documentation-function #'ignore))
@@ -529,7 +531,7 @@
 (req-package cargo
   :require rust-mode
   :commands cargo-minor-mode
-  :init
+  :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
 (req-package fish-mode
@@ -542,8 +544,7 @@
   :defer t
   :mode
   (("\\.html?\\'" . web-mode)
-   ("\\.erb\\'" . web-mode)
-   ("\\.jsx\\'" . web-mode))
+   ("\\.erb\\'" . web-mode))
   :init
   (setq web-mode-enable-auto-pairing t)
   (setq web-mode-enable-current-element-highlight t)
@@ -577,18 +578,15 @@
 
 (req-package sql
   :require sql-indent
-  :mode
-  (("\\.sql\\'" . sql-mode))
+  :mode "\\.sql\\'"
   :init
   (setq sql-indent-offset 2))
 
 (req-package lua-mode
-  :mode
-  (("\\.lua$" . lua-mode)))
+  :mode "\\.lua$")
 
 (req-package scss-mode
-  :mode
-  (("\\.scss\\'" . scss-mode))
+  :mode "\\.scss\\'"
   :init
   (setq scss-compile-at-save nil))
 
@@ -607,8 +605,7 @@
   (("\\.y\\'" . bison-mode)))
 
 (req-package swift-mode
-  :mode
-  (("\\.swift" . swift-mode)))
+  :mode "\\.swift\\'")
 
 (req-package flycheck-swift
   :commands flycheck-swift-setup
@@ -738,8 +735,8 @@
                            (when msg
                              (string-match "work"
                                            (mu4e-message-field msg :maildir))))
-             :vars '((mail-reply-to . "jeff.larson@propublica.org")
-                     (user-mail-address . "jeff.larson@propublica.org")
+             :vars '((mail-reply-to . "JLarson@propublica.org")
+                     (user-mail-address . "JLarson@propublica.org")
                      (user-full-name . "Jeff Larson")
                      (mu4e-sent-messages-behavior . sent)
                      (mu4e-drafts-folder . "/work/Drafts")
