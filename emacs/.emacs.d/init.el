@@ -44,12 +44,12 @@
 (when (eq system-type 'darwin)
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta)
-  (setq-default mac-pass-command-to-system nil)
-  (setq-default mac-emulate-three-button-mouse t)
+  (setq mac-pass-command-to-system nil)
+  (setq mac-emulate-three-button-mouse t)
   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
-  (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg"))
+  (setq-default epg-gpg-program  "/usr/local/bin/gpg")
   (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path)))
 
@@ -651,7 +651,7 @@
   (setq mu4e-get-mail-command "mbsync -aq; true")
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-user-mail-address-list '("thejefflarson@gmail.com"
-                                      "jeff.larson@propublica.org"
+                                      "jlarson@propublica.org"
                                       "thejefflarson@riseup.net"))
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-maildir "~/.mail")
@@ -742,8 +742,13 @@
                            (when msg
                              (string-match "work"
                                            (mu4e-message-field msg :maildir))))
+<<<<<<< HEAD
              :vars '((mail-reply-to . "JLarson@propublica.org")
                      (user-mail-address . "JLarson@propublica.org")
+=======
+             :vars '((mail-reply-to . "jlarson@propublica.org")
+                     (user-mail-address . "jlarson@propublica.org")
+>>>>>>> 0faf543c9f71eb79ac2445f32f1e3e783d112727
                      (user-full-name . "Jeff Larson")
                      (mu4e-sent-messages-behavior . sent)
                      (mu4e-drafts-folder . "/work/Drafts")
