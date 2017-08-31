@@ -7,6 +7,7 @@
 (depends-on "async")
 (depends-on "bind-key")
 (depends-on "bison-mode")
+(depends-on "browse-kill-ring")
 (depends-on "cargo")
 (depends-on "cask")
 (depends-on "cider")

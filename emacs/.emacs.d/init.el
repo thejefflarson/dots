@@ -93,18 +93,24 @@
 (set-keyboard-coding-system 'utf-8)
 (setq buffer-file-coding-system 'utf-8)
 
+;; Revert when file changes
 (global-auto-revert-mode t)
 
+;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
-  (progn
-    (setq insert-directory-program "/usr/local/bin/gls")
-    (setq dired-listing-switches "-aBhl --group-directories-first")))
+  (setq insert-directory-program "/usr/local/bin/gls")
+  (setq dired-listing-switches "-aBhl --group-directories-first"))
 
+;; other niceties
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'prog-mode-hook 'whitespace-mode)
+(setq-default whitespace-style '(face trailing lines-tail))
+(setq-default whitespace-line-column 100)
 (show-paren-mode 1)
 (electric-pair-mode 1)
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
+(delete-selection-mode 1)
 
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
@@ -151,14 +157,6 @@
   (setq exec-path-from-shell-check-startup-files nil)
   :config
   (exec-path-from-shell-initialize))
-
-(req-package whitespace
-  :defer t
-  :diminish t
-  :commands (whitepace-mode)
-  :init
-  (add-hook 'prog-mode-hook 'whitespace-mode)
-  (setq whitespace-style '(face lines-tail)))
 
 (req-package crux
   :bind
@@ -438,6 +436,10 @@
 
 (req-package writeroom-mode
   :defer t)
+
+(req-package browse-kill-ring
+  :config
+  (browse-kill-ring-default-keybindings))
 
 
 ;; Programming modes
