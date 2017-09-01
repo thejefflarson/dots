@@ -227,8 +227,13 @@
 (req-package ag
   :defer t)
 
+(req-package ripgrep
+  :defer t)
+
+(req-package projectile-ripgrep
+  :defer t)
+
 (req-package counsel-projectile
-  :defer t
   :config
   (counsel-projectile-on))
 
@@ -242,7 +247,7 @@
 (setq-default projectile-enable-caching t)
 (setq-default projectile-switch-project-action 'neotree-projectile-action)
 (req-package projectile
-  :requires swiper ag counsel-projectile neotree)
+  :requires swiper ag counsel-projectile neotree projectile-ripgrep)
 (projectile-mode)
 
 (req-package magit
