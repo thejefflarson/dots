@@ -473,6 +473,9 @@
   (setq yas-snippet-dirs nil)
   (add-hook 'python-mode-hook 'elpy-enable))
 
+(req-package pyvenv
+  :commands pyvenv-activate)
+
 (req-package cc-mode
   :defer t
   :config
