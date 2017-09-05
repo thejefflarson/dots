@@ -111,6 +111,7 @@
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 (delete-selection-mode 1)
+(windmove-default-keybindings)
 
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
@@ -583,7 +584,9 @@
 (req-package tern
   :defer t
   :init
-  (add-hook 'js-mode-hook (lambda () (tern-mode t))))
+  (add-hook 'js-mode-hook (lambda () (tern-mode t)))
+  :config
+  (setq tern-command (append tern-command '("--no-port-file"))))
 
 (req-package company-tern
   :require tern
