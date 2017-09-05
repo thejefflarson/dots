@@ -445,7 +445,7 @@
 ;; Programming modes
 (req-package ruby-mode
   :require flycheck
-  :defer t
+  :mode "\\.rb\\'"
   :init
   (add-to-list 'completion-ignored-extensions ".rbc")
   :config
@@ -498,8 +498,8 @@
   (setq gdb-show-main t))
 
 (req-package css-mode
+  :mode "\\.css\\'"
   :require kurecolor rainbow-mode
-  :defer t
   :init
   (add-hook 'css-mode-hook 'rainbow-mode))
 
@@ -507,7 +507,7 @@
   :mode "\\.csv\\'")
 
 (req-package clojure-mode
-  :defer t)
+  :mode "\\.clj\\'")
 
 (req-package racer
   :commands racer-mode
@@ -531,6 +531,9 @@
   (setq rust-format-on-save t)
   (setq-local eldoc-documentation-function #'ignore))
 
+(req-package toml-mode
+  :mode "\\.toml\\'")
+
 (req-package cargo
   :require rust-mode
   :commands cargo-minor-mode
@@ -538,7 +541,7 @@
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
 (req-package fish-mode
-  :defer t)
+  :mode "\\.fish\\'")
 
 (setq-default js-indent-level 2)
 (setq-default css-indent-offset 2)
@@ -558,7 +561,6 @@
   (setq web-mode-code-indent-offset 2))
 
 (req-package js2-mode
-  :defer t
   :mode
   (("\\.js\\'" . js2-mode))
   (("\\.jsx\\'" . js2-jsx-mode))
@@ -568,7 +570,7 @@
   (setq js2-mode-show-strict-warnings nil))
 
 (req-package json-mode
-  :defer t)
+  :mode "\\.json\\'")
 
 (req-package tern
   :defer t
