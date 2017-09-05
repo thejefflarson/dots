@@ -227,8 +227,13 @@
 (req-package ag
   :defer t)
 
+(req-package ripgrep
+  :defer t)
+
+(req-package projectile-ripgrep
+  :defer t)
+
 (req-package counsel-projectile
-  :defer t
   :config
   (counsel-projectile-on))
 
@@ -242,7 +247,7 @@
 (setq-default projectile-enable-caching t)
 (setq-default projectile-switch-project-action 'neotree-projectile-action)
 (req-package projectile
-  :requires swiper ag counsel-projectile neotree)
+  :requires swiper ag counsel-projectile neotree projectile-ripgrep)
 (projectile-mode)
 
 (req-package magit
@@ -744,13 +749,8 @@
                            (when msg
                              (string-match "work"
                                            (mu4e-message-field msg :maildir))))
-<<<<<<< HEAD
              :vars '((mail-reply-to . "JLarson@propublica.org")
                      (user-mail-address . "JLarson@propublica.org")
-=======
-             :vars '((mail-reply-to . "jlarson@propublica.org")
-                     (user-mail-address . "jlarson@propublica.org")
->>>>>>> 0faf543c9f71eb79ac2445f32f1e3e783d112727
                      (user-full-name . "Jeff Larson")
                      (mu4e-sent-messages-behavior . sent)
                      (mu4e-drafts-folder . "/work/Drafts")
