@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; Configuration
-(setq gc-cons-threshold (eval-when-compile (* 1000 1024 1024)))
+(setq gc-cons-threshold (eval-when-compile (* 100 1024 1024)))
 
 (setq-default indent-tabs-mode nil
               fill-column 80)
@@ -364,6 +364,11 @@
 (req-package vlf-setup
   :require vlf)
 
+(req-package artbollocks-mode
+  :config
+  (add-hook 'text-mode-hook 'artbollocks-mode)
+  (add-hook 'org-mode-hook 'artbollocks-mode))
+
 (req-package org
   :require epa-file
   :commands org-agenda-list
@@ -458,14 +463,14 @@
 
 (req-package elpy
   :require company-jedi
-  :commands elypy-enable
   :init
   (setq yas-snippet-dirs nil)
-  (add-hook 'python-mode-hook 'elpy-enable))
+  :config
+  (elpy-enable))
 
 (req-package cc-mode
   :defer t
-  :config
+  :init
   (setq-default c-basic-offset 2)
   (setq-default c-default-style "linux"))
 
@@ -739,8 +744,8 @@
                            (when msg
                              (string-match "work"
                                            (mu4e-message-field msg :maildir))))
-             :vars '((mail-reply-to . "jeff.larson@propublica.org")
-                     (user-mail-address . "jeff.larson@propublica.org")
+             :vars '((mail-reply-to . "jlarson@propublica.org")
+                     (user-mail-address . "jlarson@propublica.org")
                      (user-full-name . "Jeff Larson")
                      (mu4e-sent-messages-behavior . sent)
                      (mu4e-drafts-folder . "/work/Drafts")
