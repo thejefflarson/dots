@@ -9,7 +9,7 @@
 (setq gc-cons-threshold (eval-when-compile (* 100 1024 1024)))
 
 (setq-default indent-tabs-mode nil
-              fill-column 80)
+              fill-column 100)
 
 (setq user-full-name "Jeff Larson"
       user-mail-address "thejefflarson@gmail.com"
@@ -44,12 +44,12 @@
 (when (eq system-type 'darwin)
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta)
-  (setq-default mac-pass-command-to-system nil)
-  (setq-default mac-emulate-three-button-mouse t)
+  (setq mac-pass-command-to-system nil)
+  (setq mac-emulate-three-button-mouse t)
   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
-  (custom-set-variables '(epg-gpg-program  "/usr/local/bin/gpg2"))
+  (setq-default epg-gpg-program  "/usr/local/bin/gpg")
   (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path)))
 
@@ -93,21 +93,31 @@
 (set-keyboard-coding-system 'utf-8)
 (setq buffer-file-coding-system 'utf-8)
 
+;; Revert when file changes
 (global-auto-revert-mode t)
 
+;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
-  (progn
-    (setq insert-directory-program "/usr/local/bin/gls")
-    (setq dired-listing-switches "-aBhl --group-directories-first")))
+  (setq insert-directory-program "/usr/local/bin/gls")
+  (setq dired-listing-switches "-aBhl --group-directories-first"))
 
+;; other niceties
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'prog-mode-hook 'whitespace-mode)
+(setq-default whitespace-style '(face trailing lines-tail))
+(setq-default whitespace-line-column 100)
 (show-paren-mode 1)
 (electric-pair-mode 1)
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
+(delete-selection-mode 1)
 
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
+
+;; Blinky hairline cursor
+(setq-default cursor-type '(bar . 1))
+(blink-cursor-mode 1)
 
 ;; Enable narrowing
 (put 'narrow-to-region 'disabled nil)
@@ -147,14 +157,6 @@
   (setq exec-path-from-shell-check-startup-files nil)
   :config
   (exec-path-from-shell-initialize))
-
-(req-package whitespace
-  :defer t
-  :diminish t
-  :commands (whitepace-mode)
-  :init
-  (add-hook 'prog-mode-hook 'whitespace-mode)
-  (setq whitespace-style '(face lines-tail)))
 
 (req-package crux
   :bind
@@ -225,8 +227,13 @@
 (req-package ag
   :defer t)
 
+(req-package ripgrep
+  :defer t)
+
+(req-package projectile-ripgrep
+  :defer t)
+
 (req-package counsel-projectile
-  :defer t
   :config
   (counsel-projectile-on))
 
@@ -240,7 +247,7 @@
 (setq-default projectile-enable-caching t)
 (setq-default projectile-switch-project-action 'neotree-projectile-action)
 (req-package projectile
-  :requires swiper ag counsel-projectile neotree)
+  :requires swiper ag counsel-projectile neotree projectile-ripgrep)
 (projectile-mode)
 
 (req-package magit
@@ -358,11 +365,9 @@
 (req-package twittering-mode
   :defer t)
 
-(req-package vlf
-  :defer t)
-
 (req-package vlf-setup
-  :require vlf)
+  :init
+  (setq vlf-application 'dont-ask))
 
 (req-package artbollocks-mode
   :config
@@ -391,6 +396,7 @@
                                "~/SpiderOak Hive/org/family.org"))
   (setq org-default-notes-file "~/SpiderOak Hive/org/notes.org")
   (setq org-agenda-window-setup 'only-window)
+  (setq org-hierarchical-todo-statistics nil)
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
@@ -441,11 +447,15 @@
 (req-package writeroom-mode
   :defer t)
 
+(req-package browse-kill-ring
+  :config
+  (browse-kill-ring-default-keybindings))
+
 
 ;; Programming modes
 (req-package ruby-mode
   :require flycheck
-  :defer t
+  :mode "\\.rb\\'"
   :init
   (add-to-list 'completion-ignored-extensions ".rbc")
   :config
@@ -467,6 +477,9 @@
   (setq yas-snippet-dirs nil)
   :config
   (elpy-enable))
+
+(req-package pyvenv
+  :commands pyvenv-activate)
 
 (req-package cc-mode
   :defer t
@@ -498,13 +511,16 @@
   (setq gdb-show-main t))
 
 (req-package css-mode
+  :mode "\\.css\\'"
   :require kurecolor rainbow-mode
-  :defer t
   :init
   (add-hook 'css-mode-hook 'rainbow-mode))
 
+(req-package csv-mode
+  :mode "\\.csv\\'")
+
 (req-package clojure-mode
-  :defer t)
+  :mode "\\.clj\\'")
 
 (req-package racer
   :commands racer-mode
@@ -523,19 +539,22 @@
 
 (req-package rust-mode
   :require racer flycheck-rust
-  :defer t
+  :mode "\\.rs\\'"
   :init
   (setq rust-format-on-save t)
   (setq-local eldoc-documentation-function #'ignore))
 
+(req-package toml-mode
+  :mode "\\.toml\\'")
+
 (req-package cargo
   :require rust-mode
   :commands cargo-minor-mode
-  :init
+  :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
 (req-package fish-mode
-  :defer t)
+  :mode "\\.fish\\'")
 
 (setq-default js-indent-level 2)
 (setq-default css-indent-offset 2)
@@ -543,8 +562,7 @@
 (req-package web-mode
   :mode
   (("\\.html?\\'" . web-mode)
-   ("\\.erb\\'" . web-mode)
-   ("\\.jsx\\'" . web-mode))
+   ("\\.erb\\'" . web-mode))
   :init
   (setq web-mode-enable-auto-pairing t)
   (setq web-mode-enable-current-element-highlight t)
@@ -556,7 +574,6 @@
   (setq web-mode-code-indent-offset 2))
 
 (req-package js2-mode
-  :defer t
   :mode
   (("\\.js\\'" . js2-mode))
   (("\\.jsx\\'" . js2-jsx-mode))
@@ -566,7 +583,7 @@
   (setq js2-mode-show-strict-warnings nil))
 
 (req-package json-mode
-  :defer t)
+  :mode "\\.json\\'")
 
 (req-package tern
   :defer t
@@ -583,18 +600,15 @@
 
 (req-package sql
   :require sql-indent
-  :mode
-  (("\\.sql\\'" . sql-mode))
+  :mode "\\.sql\\'"
   :init
   (setq sql-indent-offset 2))
 
 (req-package lua-mode
-  :mode
-  (("\\.lua$" . lua-mode)))
+  :mode "\\.lua$")
 
 (req-package scss-mode
-  :mode
-  (("\\.scss\\'" . scss-mode))
+  :mode "\\.scss\\'"
   :init
   (setq scss-compile-at-save nil))
 
@@ -613,8 +627,7 @@
   (("\\.y\\'" . bison-mode)))
 
 (req-package swift-mode
-  :mode
-  (("\\.swift" . swift-mode)))
+  :mode "\\.swift\\'")
 
 (req-package flycheck-swift
   :commands flycheck-swift-setup
@@ -653,7 +666,7 @@
   (setq mu4e-get-mail-command "mbsync -aq; true")
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-user-mail-address-list '("thejefflarson@gmail.com"
-                                      "jeff.larson@propublica.org"
+                                      "jlarson@propublica.org"
                                       "thejefflarson@riseup.net"))
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-maildir "~/.mail")
@@ -744,8 +757,8 @@
                            (when msg
                              (string-match "work"
                                            (mu4e-message-field msg :maildir))))
-             :vars '((mail-reply-to . "jlarson@propublica.org")
-                     (user-mail-address . "jlarson@propublica.org")
+             :vars '((mail-reply-to . "JLarson@propublica.org")
+                     (user-mail-address . "JLarson@propublica.org")
                      (user-full-name . "Jeff Larson")
                      (mu4e-sent-messages-behavior . sent)
                      (mu4e-drafts-folder . "/work/Drafts")
@@ -819,7 +832,8 @@
   :require all-the-icons
   :config
   (doom-themes-neotree-config)
-  (load-theme 'doom-vibrant t))
+  (load-theme 'doom-vibrant t)
+  (doom-themes-org-config))
 
 (req-package solaire-mode
   :init

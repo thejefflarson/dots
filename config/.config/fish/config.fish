@@ -10,12 +10,11 @@ set __fish_git_prompt_char_upstream_ahead '↑'
 set __fish_git_prompt_char_upstream_behind '↓'
 set __fish_git_prompt_char_upstream_equal '='
 set -x fish_greeting
-
-set -x PATH $HOME/bin $HOME/.cask/bin/ /usr/local/bin $HOME/.cargo/bin $PATH
 set -x LSCOLORS Gxfxcxdxbxegedabagacad
 
 set -x EDITOR 'emacsclient -c -a emacs'
 set -x HOMEBREW_NO_ANALYTICS 1
+set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc -a emacs"
 
 if test -f "~/.config/fish/secrets.fish"
@@ -30,8 +29,13 @@ end
 
 status --is-interactive; and source (pyenv init -|psub)
 
-set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
-set -g fish_user_paths "/usr/local/opt/flex/bin" $fish_user_paths
+set -g fish_user_paths ~/bin $fish_user_paths
+set -g fish_user_paths ~/.cask/bin $fish_user_paths
+set -g fish_user_paths ~/.cargo/bin $fish_user_paths
+set -g fish_user_paths /usr/local/bin $fish_user_paths
+set -g fish_user_paths /usr/local/opt/llvm/bin $fish_user_paths
+set -g fish_user_paths /usr/local/opt/flex/bin $fish_user_paths
+set -g fish_user_paths ~/.local/bin $fish_user_paths
 
 set -x CC (which clang)
 set -x CXX (which clang++)

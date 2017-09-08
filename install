@@ -20,6 +20,7 @@ Please remember to install the following packages:
 Installing requirements...
 "
 pip install -U flake8 jedi autopep8 yapf importmagic
-npm i -g eslint stylelint
+npm i -g eslint stylelint tern
 cargo install racer --force
 cargo install rustfmt --force
+cargo install ripgrep --force
