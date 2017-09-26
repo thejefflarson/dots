@@ -4,6 +4,7 @@
 (depends-on "ag")
 (depends-on "alert")
 (depends-on "all-the-icons")
+(depends-on "artbollocks-mode")
 (depends-on "async")
 (depends-on "bind-key")
 (depends-on "bison-mode")
