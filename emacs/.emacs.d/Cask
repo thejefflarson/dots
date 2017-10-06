@@ -49,6 +49,7 @@
 (depends-on "font-lock+")
 (depends-on "git-commit")
 (depends-on "git-gutter-fringe")
+(depends-on "go-mode")
 (depends-on "highlight-indentation")
 (depends-on "ht")
 (depends-on "inf-ruby")

@@ -111,6 +111,7 @@
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 (delete-selection-mode 1)
+(windmove-default-keybindings 'super)
 
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
@@ -146,6 +147,8 @@
 (req-package 'epa-file
   :config
   (epa-file-enable))
+
+(req-package 'buffer-move)
 
 (req-package 'session
   :init
@@ -585,7 +588,9 @@
 (req-package tern
   :defer t
   :init
-  (add-hook 'js-mode-hook (lambda () (tern-mode t))))
+  (add-hook 'js-mode-hook (lambda () (tern-mode t)))
+  :config
+  (setq tern-command (append tern-command '("--no-port-file"))))
 
 (req-package company-tern
   :require tern
@@ -626,6 +631,9 @@
 (req-package swift-mode
   :mode "\\.swift\\'")
 
+(req-package go-mode
+  :mode "\\.go\\'")
+
 (req-package flycheck-swift
   :commands flycheck-swift-setup
   :init
@@ -663,7 +671,7 @@
   (setq mu4e-get-mail-command "mbsync -aq; true")
   (setq mu4e-compose-dont-reply-to-self t)
   (setq mu4e-user-mail-address-list '("thejefflarson@gmail.com"
-                                      "jlarson@propublica.org"
+                                      "jeff.larson@propublica.org"
                                       "thejefflarson@riseup.net"))
   (setq mu4e-context-policy 'pick-first)
   (setq mu4e-maildir "~/.mail")
@@ -754,8 +762,8 @@
                            (when msg
                              (string-match "work"
                                            (mu4e-message-field msg :maildir))))
-             :vars '((mail-reply-to . "JLarson@propublica.org")
-                     (user-mail-address . "JLarson@propublica.org")
+             :vars '((mail-reply-to . "jeff.larson@propublica.org")
+                     (user-mail-address . "jeff.larson@propublica.org")
                      (user-full-name . "Jeff Larson")
                      (mu4e-sent-messages-behavior . sent)
                      (mu4e-drafts-folder . "/work/Drafts")
