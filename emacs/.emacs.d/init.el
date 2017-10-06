@@ -435,9 +435,6 @@
   (setq org-journal-dir "~/SpiderOak Hive/journal/")
   (setq org-support-shift-select t))
 
-(req-package ecb
-  :commands ecb-activate)
-
 (req-package cider
   :require clojure-mode
   :defer t
