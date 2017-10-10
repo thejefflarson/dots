@@ -27,6 +27,7 @@
 (depends-on "counsel-projectile")
 (depends-on "crux")
 (depends-on "csv-mode")
+(depends-on "ctable")
 (depends-on "dash")
 (depends-on "deferred")
 (depends-on "diff-hl")
