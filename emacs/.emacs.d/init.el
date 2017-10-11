@@ -765,7 +765,7 @@
              :vars '((mail-reply-to . "jeff.larson@propublica.org")
                      (user-mail-address . "jeff.larson@propublica.org")
                      (user-full-name . "Jeff Larson")
-                     (mu4e-sent-messages-behavior . sent)
+                     (mu4e-sent-messages-behavior . delete)
                      (mu4e-drafts-folder . "/work/Drafts")
                      (mu4e-sent-folder . "/work/Sent")
                      (mu4e-trash-folder . "/work/Trash")
