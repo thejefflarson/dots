@@ -24,7 +24,7 @@ end
 if test -d "/usr/local/share/chruby"
 	. /usr/local/share/chruby/chruby.fish
 	. /usr/local/share/chruby/auto.fish
-	chruby 2.4.1
+	chruby 2.4.2
 end
 
 status --is-interactive; and source (pyenv init -|psub)
