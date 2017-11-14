@@ -310,7 +310,7 @@
   :init
   (add-hook 'prog-mode-hook 'company-mode)
   :config
-  (add-to-list 'company-backends 'company-irony))
+  (setq company-tooltip-align-annotations t))
 
 (req-package irony
   :diminish irony-mode
@@ -325,6 +325,7 @@
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-to-list 'company-backends 'company-irony)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
 (req-package flycheck-irony
@@ -522,27 +523,18 @@
 (req-package clojure-mode
   :mode "\\.clj\\'")
 
-(req-package racer
-  :commands racer-mode
-  :defer t
-  :init
-  (add-hook 'rust-mode-hook 'racer-mode)
-  (setq company-tooltip-align-annotations t)
-  (setq racer-cmd "~/.cargo/bin/racer")
-  :config
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
+(req-package eldoc-mode)
 
-(req-package flycheck-rust
-  :commands flycheck-rust-setup
+(req-package racer-mode
   :init
-  (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode))
 
 (req-package rust-mode
-  :require racer flycheck-rust
   :mode "\\.rs\\'"
   :init
-  (setq rust-format-on-save t)
-  (setq-local eldoc-documentation-function #'ignore))
+  (setq rust-format-on-save t))
 
 (req-package toml-mode
   :mode "\\.toml\\'")
@@ -594,7 +586,6 @@
 
 (req-package company-tern
   :require tern
-  :defer t
   (add-to-list 'company-backend 'company-tern))
 
 (req-package sql-indent

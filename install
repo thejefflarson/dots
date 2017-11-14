@@ -16,11 +16,22 @@ Please remember to install the following packages:
   mu
   terminal-notifier
   cask
+  rustup
+  pyenv
 
 Installing requirements...
 "
 pip install -U flake8 jedi autopep8 yapf importmagic
 npm i -g eslint stylelint tern
-cargo install racer --force
-cargo install rustfmt --force
-cargo install ripgrep --force
+cargo install racer
+cargo install rustfmt
+cargo install ripgrep
+cargo install cargo-outdated
+cargo install cargo-profiler
+cargo install cargo-update
+cargo install diesel_cli
+
+rustup component add rls-preview --toolchain nightly
+rustup component add rust-analysis --toolchain nightly
+rustup component add rust-src --toolchain nightly
+rustup run nightly cargo clippy

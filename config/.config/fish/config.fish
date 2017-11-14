@@ -29,13 +29,13 @@ end
 
 status --is-interactive; and source (pyenv init -|psub)
 
-set -g fish_user_paths ~/bin $fish_user_paths
-set -g fish_user_paths ~/.cask/bin $fish_user_paths
-set -g fish_user_paths ~/.cargo/bin $fish_user_paths
-set -g fish_user_paths /usr/local/bin $fish_user_paths
-set -g fish_user_paths /usr/local/opt/llvm/bin $fish_user_paths
-set -g fish_user_paths /usr/local/opt/flex/bin $fish_user_paths
-set -g fish_user_paths ~/.local/bin $fish_user_paths
+if status --is-login
+        set -g fish_user_paths ~/bin $fish_user_paths
+        set -g fish_user_paths ~/.cask/bin $fish_user_paths
+        set -g fish_user_paths ~/.cargo/bin $fish_user_paths
+        set -g fish_user_paths /usr/local/bin $fish_user_paths
+        set -g fish_user_paths ~/.local/bin $fish_user_paths
 
-set -x CC (which clang)
-set -x CXX (which clang++)
+        set -x CC (which clang)
+        set -x CXX (which clang++)
+end
