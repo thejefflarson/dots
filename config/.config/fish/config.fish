@@ -38,4 +38,5 @@ if status --is-login
 
         set -x CC (which clang)
         set -x CXX (which clang++)
+        set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
 end

@@ -2,3 +2,4 @@
 *.elc
 *.orig
 flycheck_init.el
+/config/.config/fish/functions/fisher.fish

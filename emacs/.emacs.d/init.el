@@ -159,7 +159,8 @@
   :init
   (setq exec-path-from-shell-check-startup-files nil)
   :config
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "RUST_SRC_PATH"))
 
 (req-package crux
   :bind
@@ -240,11 +241,22 @@
   :config
   (counsel-projectile-on))
 
+
+;; Fixes an annoying behavior of neotree: https://github.com/jaypei/emacs-neotree/issues/262
+(defun neotree-keep-size (fn &rest args)
+  "This function will reset the neotree width back to my adjusted width.
+FN is neotree-enter and ARGS is the arguments."
+  (let ((w (window-width)))
+    (funcall fn)
+    (neo-global--set-window-width w)))
+
 (req-package neotree
   :commands neotree-projectile-action
   :init
   (setq neo-show-hidden-files t)
-  (setq neo-window-fixed-size nil))
+  (setq neo-window-fixed-size nil)
+  :config
+  (advice-add 'neotree-enter :around 'neotree-keep-size))
 
 (setq-default projectile-completion-system 'ivy)
 (setq-default projectile-enable-caching t)
@@ -307,6 +319,7 @@
 
 (req-package company
   :diminish company-mode
+  :bind (("C-;" . company-indent-or-complete-common))
   :init
   (add-hook 'prog-mode-hook 'company-mode)
   :config
@@ -325,7 +338,7 @@
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async))
   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-to-list 'company-backends 'company-irony)
+
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
 (req-package flycheck-irony
@@ -337,7 +350,8 @@
 
 (req-package company-irony
   :require company irony
-  :defer t)
+  :config
+  (add-to-list 'company-backends 'company-irony))
 
 (req-package company-statistics
   :require company
@@ -523,13 +537,14 @@
 (req-package clojure-mode
   :mode "\\.clj\\'")
 
-(req-package eldoc-mode)
+(req-package lsp-mode)
 
-(req-package racer-mode
+(req-package lsp-rust
   :init
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode))
+  (add-hook 'rust-mode-hook #'lsp-rust-enable))
+
+(req-package company-lsp
+  (push 'company-lsp company-backends))
 
 (req-package rust-mode
   :mode "\\.rs\\'"
