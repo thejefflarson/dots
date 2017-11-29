@@ -241,7 +241,6 @@
   :config
   (counsel-projectile-on))
 
-
 ;; Fixes an annoying behavior of neotree: https://github.com/jaypei/emacs-neotree/issues/262
 (defun neotree-keep-size (fn &rest args)
   "This function will reset the neotree width back to my adjusted width.
@@ -255,6 +254,9 @@ FN is neotree-enter and ARGS is the arguments."
   :init
   (setq neo-show-hidden-files t)
   (setq neo-window-fixed-size nil)
+  (setq neo-window-width 30)
+  (setq neo-autorefresh t)
+  (setq neo-force-change-root t)
   :config
   (advice-add 'neotree-enter :around 'neotree-keep-size))
 
