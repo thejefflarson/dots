@@ -255,7 +255,6 @@ FN is neotree-enter and ARGS is the arguments."
   (setq neo-show-hidden-files t)
   (setq neo-window-fixed-size nil)
   (setq neo-window-width 30)
-  (setq neo-autorefresh t)
   (setq neo-force-change-root t)
   :config
   (advice-add 'neotree-enter :around 'neotree-keep-size))
