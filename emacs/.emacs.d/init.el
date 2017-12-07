@@ -594,7 +594,6 @@ FN is neotree-enter and ARGS is the arguments."
   :mode "\\.json\\'")
 
 (req-package tern
-  :defer t
   :init
   (add-hook 'js-mode-hook (lambda () (tern-mode t)))
   :config
