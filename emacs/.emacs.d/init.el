@@ -144,13 +144,13 @@
 
 (require 'req-package)
 
-(req-package 'epa-file
+(req-package epa-file
   :config
   (epa-file-enable))
 
-(req-package 'buffer-move)
+(req-package buffer-move)
 
-(req-package 'session
+(req-package session
   :init
   (setq session-save-file (expand-file-name ".session" user-emacs-directory))
   (add-hook 'after-init-hook 'session-initialize))
@@ -602,7 +602,7 @@ FN is neotree-enter and ARGS is the arguments."
 
 (req-package company-tern
   :require tern
-  (add-to-list 'company-backend 'company-tern))
+  (add-to-list 'company-backends 'company-tern))
 
 (req-package sql-indent
   :defer t)
