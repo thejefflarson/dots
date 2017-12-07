@@ -50,6 +50,7 @@
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
   (setq-default epg-gpg-program  "/usr/local/bin/gpg")
+  (setq mouse-wheel-scroll-amount '(0.01))
   (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
     (normal-top-level-add-subdirs-to-load-path)))
 
@@ -112,7 +113,7 @@
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 (delete-selection-mode 1)
 (windmove-default-keybindings 'super)
-
+(global-hl-line-mode 1)
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
 
@@ -140,33 +141,39 @@
 (require 'pallet)
 (pallet-mode t)
 
+(eval-when-compile
+  (require 'use-package))
+(setq use-package-always-ensure t)
 (setq-default use-package-verbose t)
 
-(require 'req-package)
-
-(req-package epa-file
+(use-package diminish
   :config
-  (epa-file-enable))
+  (diminish 'auto-revert-mode))
+(use-package bind-key)
+(use-package buffer-move)
 
-(req-package buffer-move)
+;; Builtins
+(require 'epa-file)
+(epa-file-enable)
 
-(req-package session
-  :init
-  (setq session-save-file (expand-file-name ".session" user-emacs-directory))
-  (add-hook 'after-init-hook 'session-initialize))
+(use-package vlf
+  :config
+  (require 'vlf-setup)
+  (setq-default vlf-application 'dont-ask))
 
-(req-package exec-path-from-shell
+(use-package exec-path-from-shell
+  :ensure t
   :init
   (setq exec-path-from-shell-check-startup-files nil)
   :config
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "RUST_SRC_PATH"))
 
-(req-package crux
+(use-package crux
   :bind
   (("C-c o" . crux-open-with)
    ("C-k" . crux-smart-kill-line)
-   ("C-c n" . crux-cleanup-buffer-or-region)
+   ("C-c m" . crux-cleanup-buffer-or-region)
    ("C-c f" . crux-recentf-find-file)
    ("C-c D" . crux-delete-file-and-buffer)
    ("C-c r" . crux-rename-file-and-buffer)
@@ -175,16 +182,12 @@
   :config
   (crux-reopen-as-root-mode))
 
-(req-package diminish
-  :config
-  (diminish 'auto-revert-mode))
-
-(req-package rainbow-delimiters
+(use-package rainbow-delimiters
   :defer t
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(req-package ivy
+(use-package ivy
   :commands ivy-mode
   :diminish ivy-mode
   :init
@@ -193,8 +196,7 @@
   (setq ivy-count-format "(%d/%d) ")
   (ivy-mode 1))
 
-(req-package counsel
-  :require ivy
+(use-package counsel
   :bind
   (("M-x" . counsel-M-x)
    ("C-x C-f" . counsel-find-file)
@@ -208,18 +210,17 @@
    ("C-c k" . counsel-ag)
    ("C-x l" . counsel-locate)))
 
-(req-package swiper
-  :require counsel ivy
+(use-package swiper
   :bind
   (("C-s" . swiper)))
 
-(req-package undo-tree
+(use-package undo-tree
   :diminish undo-tree-mode
   :config
   (global-undo-tree-mode))
 
-(req-package flycheck
-  :commands (flycheck-mode)
+(use-package flycheck
+  :commands flycheck-mode
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode)
   :config
@@ -228,16 +229,16 @@
                         '(javascript-jshint)
                         '(python-flake8))))
 
-(req-package ag
+(use-package ag
   :defer t)
 
-(req-package ripgrep
+(use-package ripgrep
   :defer t)
 
-(req-package projectile-ripgrep
+(use-package projectile-ripgrep
   :defer t)
 
-(req-package counsel-projectile
+(use-package counsel-projectile
   :config
   (counsel-projectile-on))
 
@@ -249,7 +250,7 @@ FN is neotree-enter and ARGS is the arguments."
     (funcall fn)
     (neo-global--set-window-width w)))
 
-(req-package neotree
+(use-package neotree
   :commands neotree-projectile-action
   :init
   (setq neo-show-hidden-files t)
@@ -262,63 +263,59 @@ FN is neotree-enter and ARGS is the arguments."
 (setq-default projectile-completion-system 'ivy)
 (setq-default projectile-enable-caching t)
 (setq-default projectile-switch-project-action 'neotree-projectile-action)
-(req-package projectile
-  :requires swiper ag counsel-projectile neotree projectile-ripgrep)
+(use-package projectile)
 (projectile-mode)
 
-(req-package magit
-  :require swiper
+(use-package magit
   :bind (("C-c s" . magit-status))
-  :init
-  (setq magit-completing-read-function 'ivy-completing-read))
+  :config
+  (setq-default magit-completing-read-function 'ivy-completing-read))
 
-(req-package which-key
+(use-package which-key
   :diminish which-key-mode
   :config
   (which-key-mode))
 
-(req-package kurecolor
+(use-package kurecolor
   :defer t)
 
-(req-package rainbow-mode
-  :defer t
-  :require kurecolor)
+(use-package rainbow-mode
+  :defer t)
 
-(req-package diff-hl
-  :require magit
+(use-package diff-hl
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
   (global-diff-hl-mode 1))
 
-(req-package page-break-lines
+(use-package page-break-lines
   :diminish page-break-lines-mode
   :commands global-page-break-lines-mode page-break-lines-mode
   :init
   (add-hook 'after-init-hook 'global-page-break-lines-mode)
   (add-hook 'prog-mode-hook 'page-break-lines-mode))
 
-(req-package winner
+(use-package winner
   :config
   (winner-mode t))
 
-(req-package eshell
+(use-package eshell
   :defer t
   :init
-  (setq eshell-buffer-maximum-lines 20000
-        eshell-history-size 350
-        eshell-hist-ignoredups t
-        eshell-plain-echo-behavior t
-        eshell-directory-name
-        (concat user-cache-directory "eshell/")))
+  (setq-default eshell-buffer-maximum-lines 20000
+                eshell-history-size 350
+                eshell-hist-ignoredups t
+                eshell-plain-echo-behavior t
+                eshell-directory-name
+                (concat user-cache-directory "eshell/")))
 
-(req-package shell-pop
+(use-package shell-pop
   :bind (("C-t" . shell-pop))
   :init
   (setq shell-pop-shell-type
         '("eshell" "*eshell*" (lambda () (eshell)))))
 
-(req-package company
+(use-package company
   :diminish company-mode
   :bind (("C-;" . company-indent-or-complete-common))
   :init
@@ -326,7 +323,7 @@ FN is neotree-enter and ARGS is the arguments."
   :config
   (setq company-tooltip-align-annotations t))
 
-(req-package irony
+(use-package irony
   :diminish irony-mode
   :defer t
   :commands flycheck-irony-setup
@@ -342,59 +339,50 @@ FN is neotree-enter and ARGS is the arguments."
 
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
-(req-package flycheck-irony
-  :require flycheck irony
+(use-package company-irony
+  :config
+  (add-to-list 'company-backends 'company-irony))
+
+(use-package company-statistics
+  :diminish t
+  :init
+  (setq-default company-statistics-file
+                (concat user-cache-directory
+                        "company-statistics-cache.el"))
+  :config
+  (add-hook 'after-init-hook 'company-statistics-mode))
+
+(use-package flycheck-irony
   :defer t
   :commands flycheck-irony-mode
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
 
-(req-package company-irony
-  :require company irony
-  :config
-  (add-to-list 'company-backends 'company-irony))
-
-(req-package company-statistics
-  :require company
-  :diminish t
-  :init
-  (setq company-statistics-file
-        (concat user-cache-directory
-                "company-statistics-cache.el"))
-  (add-hook 'after-init-hook 'company-statistics-mode))
-
-(req-package nlinum
+(use-package nlinum
   :commands (nlinum-mode)
   :init
   (add-hook 'prog-mode-hook 'nlinum-mode))
 
-(req-package hl-line-mode
-  :defer t)
 
-(req-package flyspell
+
+(use-package flyspell
   :commands (flyspell-buffer flyspell-mode)
   :init
   (add-hook 'text-mode-hook 'flyspell-mode)
   (add-hook 'flyspell-mode-hook #'flyspell-popup-auto-correct-mode))
 
-(req-package flyspell-popup
-  :commands (flyspell-popup-auto-correct-mode)
-  :require flyspell)
+(use-package flyspell-popup
+  :commands (flyspell-popup-auto-correct-mode))
 
-(req-package twittering-mode
+(use-package twittering-mode
   :defer t)
 
-(req-package vlf-setup
-  :init
-  (setq vlf-application 'dont-ask))
-
-(req-package artbollocks-mode
+(use-package artbollocks-mode
   :config
   (add-hook 'text-mode-hook 'artbollocks-mode)
   (add-hook 'org-mode-hook 'artbollocks-mode))
 
-(req-package org
-  :require epa-file
+(use-package org
   :commands org-agenda-list
   :bind
   (("C-c l" . org-store-link)
@@ -404,108 +392,101 @@ FN is neotree-enter and ARGS is the arguments."
   (load-library "~/.emacs.d/secrets.el.gpg")
   (ensure-directory "~/SpiderOak Hive/org/")
   (ensure-directory "~/SpiderOak Hive/journal/")
-  (setq org-log-redeadline 'note)
-  (setq org-log-reschedule 'note)
-  (setq org-log-refile 'time)
-  (setq org-use-tag-inheritance t)
-  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-  (setq org-mobile-inbox-for-pull "~/SpiderOak Hive/org/notes.org")
-  (setq org-directory "~/SpiderOak Hive/org")
-  (setq org-agenda-files (list "~/SpiderOak Hive/org/work.org"
+  (setq-default org-log-redeadline 'note)
+  (setq-default org-log-reschedule 'note)
+  (setq-default org-log-refile 'time)
+  (setq-default org-use-tag-inheritance t)
+  (setq-default org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq-default org-mobile-inbox-for-pull "~/SpiderOak Hive/org/notes.org")
+  (setq-default org-directory "~/SpiderOak Hive/org")
+  (setq-default org-agenda-files (list "~/SpiderOak Hive/org/work.org"
                                "~/SpiderOak Hive/org/family.org"))
-  (setq org-default-notes-file "~/SpiderOak Hive/org/notes.org")
-  (setq org-agenda-window-setup 'only-window)
-  (setq org-hierarchical-todo-statistics nil)
-  (setq org-capture-templates
+  (setq-default org-default-notes-file "~/SpiderOak Hive/org/notes.org")
+  (setq-default org-agenda-window-setup 'only-window)
+  (setq-default org-hierarchical-todo-statistics nil)
+  (setq-default org-capture-templates
         '(("t" "Todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
           ("n" "Note" entry (file "~/SpiderOak Hive/org/notes.org")
            "* %?\nCaptured %<%Y-%m-%d %H:%M>")))
-  (setq org-tag-alist '((:startgroup . nil)
+  (setq-default org-tag-alist '((:startgroup . nil)
                         ("@work" . ?w) ("@home" . ?h)
                         (:endgroup . nil)
                         ("phone" . ?p) ("meeting" . ?m)
                         ("code" . ?c) ("writing" . ?r)))
-  (setq org-todo-keywords
+  (setq-default org-todo-keywords
         '((sequence "TODO(t)" "IN-PROGRESS(i!)" "WAITING(w@/!)" "|" "DONE(d@)" "CANCELED(c@)")))
-  (setq org-enforce-todo-dependencies t)
-  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+  (setq-default  org-enforce-todo-dependencies t)
+  (setq-default org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
   :config
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'org-mobile))
 
-(req-package org-alert
-  :require org
+(use-package org-alert
   :config
   (org-alert-enable))
 
-(req-package org-projectile
-  :require org
+(use-package org-projectile
   :bind
   (("C-c n p" . org-projectile:project-todo-completing-read))
   :config
-  (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
+  (setq-default org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
   (org-projectile:prompt))
 
-(req-package org-journal
+(use-package org-journal
   :bind
   ("C-c C-j" . org-journal-new-entry)
   :init
-  (setq org-journal-dir "~/SpiderOak Hive/journal/")
-  (setq org-support-shift-select t))
+  (setq-default org-journal-dir "~/SpiderOak Hive/journal/")
+  (setq-default org-support-shift-select t))
 
-(req-package cider
-  :require clojure-mode
+(use-package cider
   :defer t
   :bind
-  ("C-u M-x" . cider-jack-in))
+  ("C-c M-x" . cider-jack-in))
 
-(req-package writeroom-mode
+(use-package writeroom-mode
   :defer t)
 
-(req-package browse-kill-ring
+(use-package browse-kill-ring
   :config
   (browse-kill-ring-default-keybindings))
 
 
 ;; Programming modes
-(req-package ruby-mode
-  :require flycheck
+(use-package ruby-mode
   :mode "\\.rb\\'"
   :init
   (add-to-list 'completion-ignored-extensions ".rbc")
   :config
   (setq flycheck-rubocoprc nil))
 
-(req-package projectile-rails
+(use-package projectile-rails
   :defer t
-  :require projectile
   :commands projectile-rails-on
   :init
   (add-hook 'ruby-mode-hook 'projectile-rails-on))
 
-(req-package company-jedi
+(use-package company-jedi
   :defer t)
 
-(req-package elpy
-  :require company-jedi
+(use-package elpy
   :init
-  (setq yas-snippet-dirs nil)
+  (setq-default yas-snippet-dirs nil)
   :config
   (elpy-enable))
 
-(req-package pyvenv
+(use-package pyvenv
   :commands pyvenv-activate)
 
-(req-package cc-mode
+(use-package cc-mode
   :defer t
   :init
   (setq-default c-basic-offset 2)
   (setq-default c-default-style "linux"))
 
-(req-package platformio-mode
+(use-package platformio-mode
   :defer t
-  :require irony company
   :commands platformio-conditionally-enable
   :init
   (add-hook 'c++-mode-hook 'platformio-conditionally-enable))
@@ -514,60 +495,59 @@ FN is neotree-enter and ARGS is the arguments."
 (defun colorize-compilation-buffer()
   "Color compilation."
   (ansi-color-apply-on-region compilation-filter-start (point)))
-(req-package ansi-color
+(use-package ansi-color
   :init
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
 
-(req-package gdb-mi
-  :require cc-mode
+(use-package gdb-mi
   :commands gdb
   :defer t
   :init
-  (setq gdb-many-windows t)
-  (setq gdb-show-main t))
+  (setq-default gdb-many-windows t)
+  (setq-default gdb-show-main t))
 
-(req-package css-mode
+(use-package css-mode
   :mode "\\.css\\'"
-  :require kurecolor rainbow-mode
   :init
   (add-hook 'css-mode-hook 'rainbow-mode))
 
-(req-package csv-mode
+(use-package csv-mode
   :mode "\\.csv\\'")
 
-(req-package clojure-mode
+(use-package clojure-mode
   :mode "\\.clj\\'")
 
-(req-package lsp-mode)
+(use-package lsp-mode
+  :ensure t)
 
-(req-package lsp-rust
+(use-package lsp-rust
   :init
   (add-hook 'rust-mode-hook #'lsp-rust-enable))
 
-(req-package company-lsp
-  (push 'company-lsp company-backends))
+(use-package company-lsp
+  :config
+  (add-to-list 'company-backends 'company-lsp))
 
-(req-package rust-mode
+(use-package rust-mode
   :mode "\\.rs\\'"
   :init
   (setq rust-format-on-save t))
 
-(req-package toml-mode
+(use-package toml-mode
   :mode "\\.toml\\'")
 
-(req-package cargo
-  :require rust-mode
+(use-package cargo
   :commands cargo-minor-mode
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
-(req-package fish-mode
+(use-package fish-mode
   :mode "\\.fish\\'")
 
 (setq-default js-indent-level 2)
 (setq-default css-indent-offset 2)
 
-(req-package web-mode
+(use-package web-mode
   :mode
   (("\\.html?\\'" . web-mode)
    ("\\.erb\\'" . web-mode))
@@ -581,7 +561,7 @@ FN is neotree-enter and ARGS is the arguments."
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
 
-(req-package js2-mode
+(use-package js2-mode
   :mode
   (("\\.js\\'" . js2-mode))
   (("\\.jsx\\'" . js2-jsx-mode))
@@ -590,37 +570,36 @@ FN is neotree-enter and ARGS is the arguments."
   (setq js2-mode-show-parse-errors nil)
   (setq js2-mode-show-strict-warnings nil))
 
-(req-package json-mode
+(use-package json-mode
   :mode "\\.json\\'")
 
-(req-package tern
+(use-package tern
   :init
   (add-hook 'js-mode-hook (lambda () (tern-mode t)))
   :config
   (setq tern-command (append tern-command '("--no-port-file"))))
 
-(req-package company-tern
-  :require tern
+(use-package company-tern
+  :config
   (add-to-list 'company-backends 'company-tern))
 
-(req-package sql-indent
+(use-package sql-indent
   :defer t)
 
-(req-package sql
-  :require sql-indent
+(use-package sql
   :mode "\\.sql\\'"
   :init
   (setq sql-indent-offset 2))
 
-(req-package lua-mode
+(use-package lua-mode
   :mode "\\.lua$")
 
-(req-package scss-mode
+(use-package scss-mode
   :mode "\\.scss\\'"
   :init
   (setq scss-compile-at-save nil))
 
-(req-package markdown-mode
+(use-package markdown-mode
   :commands markdown-mode gfm-mode
   :mode
   (("README\\.md\\'" . gfm-mode)
@@ -629,26 +608,25 @@ FN is neotree-enter and ARGS is the arguments."
   :init
   (setq markdown-command "multimarkdown"))
 
-(req-package bison-mode
+(use-package bison-mode
   :mode
   (("\\.l\\'" . bison-mode))
   (("\\.y\\'" . bison-mode)))
 
-(req-package swift-mode
+(use-package swift-mode
   :mode "\\.swift\\'")
 
-(req-package go-mode
+(use-package go-mode
   :mode "\\.go\\'")
 
-(req-package flycheck-swift
+(use-package flycheck-swift
   :commands flycheck-swift-setup
   :init
   (add-hook 'swift-mode-hook 'flycheck-swift-setup))
 
 (when (eq system-type 'darwin)
-  (req-package company-sourcekit
-    :require swift-mode
-    :init
+  (use-package company-sourcekit
+        :init
     (add-to-list 'company-backends 'company-sourcekit)))
 
 
@@ -668,168 +646,154 @@ FN is neotree-enter and ARGS is the arguments."
   "Turn off 'auto-fill-mode'."
   (auto-fill-mode -1))
 
-(req-package org-mu4e
-  :require org)
+(require 'org-mu4e)
+(require 'mu4e)
+(setq-default mu4e-update-interval (* 60 5))
+(setq-default mu4e-get-mail-command "mbsync -aq; true")
+(setq-default mu4e-compose-dont-reply-to-self t)
+(setq-default mu4e-user-mail-address-list '("thejefflarson@gmail.com"
+                                            "jeff.larson@propublica.org"
+                                            "thejefflarson@riseup.net"))
+(setq-default mu4e-context-policy 'pick-first)
+(setq-default mu4e-maildir "~/.mail")
+(setq-default mu4e-attachment-dir "~/Downloads")
+(setq-default mu4e-headers-skip-duplicates t)
+(setq-default mu4e-headers-visible-lines 20)
+(setq-default mu4e-view-show-addresses 'long)
+(setq-default mu4e-compose-in-new-frame t)
+(setq-default mu4e-compose-complete-only-personal t)
+(setq-default mu4e-change-filenames-when-moving t)
+(setq-default message-kill-buffer-on-exit t)
+(setq-default message-send-mail-function 'message-send-mail-with-sendmail)
+(setq-default sendmail-program "/usr/local/bin/msmtp")
+(setq-default message-sendmail-extra-arguments '("--read-envelope-from"))
+(setq-default message-sendmail-f-is-evil t)
+(setq-default mu4e-bookmarks
+              `((,(concat "flag:unread date:today..now" my-interesting-mail)
+                 "Today's unread messages" ?u)
+                (,(concat "date:today..now" my-interesting-mail)
+                 "Today's messages" ?t)
+                (,(concat "date:7d..now" my-interesting-mail)
+                 "This week's messages" ?w)
+                (,my-interesting-mail
+                 "All messages" ?a)))
+(add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
+(add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
+(add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
+(add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+(add-hook 'mu4e-compose-mode-hook #'no-auto-fill)
+(add-to-list 'mu4e-view-actions
+             '("View In Browser" . mu4e-action-view-in-browser) t)
 
-(req-package mu4e
-  :init
-  (setq mu4e-update-interval (* 60 5))
-  (setq mu4e-get-mail-command "mbsync -aq; true")
-  (setq mu4e-compose-dont-reply-to-self t)
-  (setq mu4e-user-mail-address-list '("thejefflarson@gmail.com"
-                                      "jeff.larson@propublica.org"
-                                      "thejefflarson@riseup.net"))
-  (setq mu4e-context-policy 'pick-first)
-  (setq mu4e-maildir "~/.mail")
-  (setq mu4e-attachment-dir "~/Downloads")
-  (setq mu4e-headers-skip-duplicates t)
-  (setq mu4e-headers-visible-lines 20)
-  (setq mu4e-view-show-addresses 'long)
-  (setq mu4e-compose-in-new-frame t)
-  (setq mu4e-compose-complete-only-personal t)
-  (setq mu4e-change-filenames-when-moving t)
-  (setq message-kill-buffer-on-exit t)
-  (setq message-send-mail-function 'message-send-mail-with-sendmail)
-  (setq sendmail-program "/usr/local/bin/msmtp")
-  (setq message-sendmail-extra-arguments '("--read-envelope-from"))
-  (setq message-sendmail-f-is-evil t)
-  (setq mu4e-bookmarks
-        `((,(concat "flag:unread date:today..now" my-interesting-mail)
-           "Today's unread messages" ?u)
-          (,(concat "date:today..now" my-interesting-mail)
-           "Today's messages" ?t)
-          (,(concat "date:7d..now" my-interesting-mail)
-           "This week's messages" ?w)
-          (,my-interesting-mail
-           "All messages" ?a)))
-  (add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
-  (add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
-  (add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
-  (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
-  (add-hook 'mu4e-compose-mode-hook #'no-auto-fill)
-  :config
-  (add-to-list 'mu4e-view-actions
-               '("View In Browser" . mu4e-action-view-in-browser) t))
+(require 'mu4e-contrib)
+(setq-default mu4e-html2text-command 'mu4e-shr2text)
 
-(req-package mu4e-contrib
-  :require mu4e
+(use-package mu4e-maildirs-extension
   :init
-  (setq mu4e-html2text-command 'mu4e-shr2text))
-
-(req-package mu4e-maildirs-extension
-  :require mu4e
-  :init
-  (setq mu4e-maildirs-extension-fake-maildir-separator "\\.")
+  (setq-default mu4e-maildirs-extension-fake-maildir-separator "\\.")
   :config
   (mu4e-maildirs-extension))
 
-(req-package mu4e-alert
-  :require mu4e
-  :init
-  (setq mu4e-alert-interesting-mail-query
-        (concat
-         "flag:unread date:today..now"
-         my-interesting-mail))
+(use-package mu4e-alert
+  :config
   (add-hook 'after-init-hook 'mu4e-alert-enable-notifications)
-  :config
-  (mu4e-alert-set-default-style (if (eq system-type 'darwin)
-                                    'notifier 'notifications)))
+  (setq mu4e-alert-set-default-style (if (eq system-type 'darwin)
+                                         'notifier '(notifications)))
 
-(req-package epg-config
-  :init
-  (setq mml2015-use 'epg
-        mml2015-encrypt-to-self t
-        mml2015-sign-with-sender t))
+(require 'epg-config)
 
-(req-package mu4e-context
-  :config
-  (setq mu4e-contexts
-        `( ,(make-mu4e-context
-             :name "gmail"
-             :enter-func (lambda ()
-                           (mu4e-message "entering gmail"))
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match "gmail"
-                                           (mu4e-message-field msg :maildir))))
-             :vars '((mail-reply-to . "thejefflarson@gmail.com")
-                     (user-mail-address . "thejefflarson@gmail.com")
-                     (user-full-name . "Jeff Larson")
-                     (mu4e-sent-messages-behavior . delete)
-                     (mu4e-drafts-folder . "/gmail/[Gmail]/Drafts")
-                     (mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
-                     (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
-                     (mu4e-refile-folder . "/gmail/[Gmail]/All Mail")))
-           ,(make-mu4e-context
-             :name "work"
-             :enter-func (lambda ()
-                           (mu4e-message "entering work"))
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match "work"
-                                           (mu4e-message-field msg :maildir))))
-             :vars '((mail-reply-to . "jeff.larson@propublica.org")
-                     (user-mail-address . "jeff.larson@propublica.org")
-                     (user-full-name . "Jeff Larson")
-                     (mu4e-sent-messages-behavior . delete)
-                     (mu4e-drafts-folder . "/work/Drafts")
-                     (mu4e-sent-folder . "/work/Sent")
-                     (mu4e-trash-folder . "/work/Trash")
-                     (mu4e-refile-folder . "/work/archive/2017")))
-           ,(make-mu4e-context
-             :name "riseup"
-             :enter-func (lambda ()
-                           (mu4e-message "entering riseup"))
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match "riseup"
-                                           (mu4e-message-field msg :maildir))))
-             :vars '((mail-reply-to . "thejefflarson@riseup.net")
-                     (user-mail-address . "thejefflarson@riseup.net")
-                     (user-full-name . "Jeff Larson")
-                     (mu4e-sent-messages-behavior . sent)
-                     (mu4e-drafts-folder . "/riseup/Drafts")
-                     (mu4e-sent-folder . "/riseup/Sent")
-                     (mu4e-trash-folder . "/riseup/Trash")
-                     (mu4e-refile-folder . "/riseup/Archive")))
-           ,(make-mu4e-context
-             :name "columbia"
-             :enter-func (lambda ()
-                           (mu4e-message "entering columbia"))
-             :match-func (lambda (msg)
-                           (when msg
-                             (string-match "columbia"
-                                           (mu4e-message-field msg :maildir))))
-             :vars '((mail-reply-to . "jal2301@columbia.edu")
-                     (user-mail-address . "jal2301@columbia.edu")
-                     (user-full-name . "Jeff Larson")
-                     (mu4e-sent-messages-behavior . delete)
-                     (mu4e-drafts-folder . "/columbia/[Gmail]/Drafts")
-                     (mu4e-sent-folder . "/columbia/[Gmail]/Sent Mail")
-                     (mu4e-trash-folder . "/columbia/[Gmail]/Trash")
-                     (mu4e-refile-folder . "/columbia/[Gmail]/All Mail")))
-           )
-        )
-    )
+(setq-default mml2015-use 'epg
+              mml2015-encrypt-to-self t
+              mml2015-sign-with-sender t)
 
-(req-package mu4e-vars
-  :require mu4e
-  :config
-  (add-to-list 'mu4e-header-info-custom
-               '(:mail-directory .
-                                 (:name "Mail Directory"
-                                  :shortname "Dir"
-                                  :help "Mail Storage Directory"
-                                  :function
-                                  (lambda (msg)
-                                    (or
-                                     (mu4e-message-field msg :maildir) "")))))
-  (setq mu4e-headers-fields '((:mail-directory . 20)
-                              (:human-date     . 12)
-                              (:flags          .  6)
-                              (:mailing-list   . 10)
-                              (:from           . 22)
-                              (:subject        . nil))))
+(require 'mu4e-context)
+
+(setq-default mu4e-contexts
+              `( ,(make-mu4e-context
+                   :name "gmail"
+                   :enter-func (lambda ()
+                                 (mu4e-message "entering gmail"))
+                   :match-func (lambda (msg)
+                                 (when msg
+                                   (string-match "gmail"
+                                                 (mu4e-message-field msg :maildir))))
+                   :vars '((mail-reply-to . "thejefflarson@gmail.com")
+                           (user-mail-address . "thejefflarson@gmail.com")
+                           (user-full-name . "Jeff Larson")
+                           (mu4e-sent-messages-behavior . delete)
+                           (mu4e-drafts-folder . "/gmail/[Gmail]/Drafts")
+                           (mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
+                           (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
+                           (mu4e-refile-folder . "/gmail/[Gmail]/All Mail")))
+                 ,(make-mu4e-context
+                   :name "work"
+                   :enter-func (lambda ()
+                                 (mu4e-message "entering work"))
+                   :match-func (lambda (msg)
+                                 (when msg
+                                   (string-match "work"
+                                                 (mu4e-message-field msg :maildir))))
+                   :vars '((mail-reply-to . "jeff.larson@propublica.org")
+                           (user-mail-address . "jeff.larson@propublica.org")
+                           (user-full-name . "Jeff Larson")
+                           (mu4e-sent-messages-behavior . delete)
+                           (mu4e-drafts-folder . "/work/Drafts")
+                           (mu4e-sent-folder . "/work/Sent")
+                           (mu4e-trash-folder . "/work/Trash")
+                           (mu4e-refile-folder . "/work/archive/2017")))
+                 ,(make-mu4e-context
+                   :name "riseup"
+                   :enter-func (lambda ()
+                                 (mu4e-message "entering riseup"))
+                   :match-func (lambda (msg)
+                                 (when msg
+                                   (string-match "riseup"
+                                                 (mu4e-message-field msg :maildir))))
+                   :vars '((mail-reply-to . "thejefflarson@riseup.net")
+                           (user-mail-address . "thejefflarson@riseup.net")
+                           (user-full-name . "Jeff Larson")
+                           (mu4e-sent-messages-behavior . sent)
+                           (mu4e-drafts-folder . "/riseup/Drafts")
+                           (mu4e-sent-folder . "/riseup/Sent")
+                           (mu4e-trash-folder . "/riseup/Trash")
+                           (mu4e-refile-folder . "/riseup/Archive")))
+                 ,(make-mu4e-context
+                   :name "columbia"
+                   :enter-func (lambda ()
+                                 (mu4e-message "entering columbia"))
+                   :match-func (lambda (msg)
+                                 (when msg
+                                   (string-match "columbia"
+                                                 (mu4e-message-field msg :maildir))))
+                   :vars '((mail-reply-to . "jal2301@columbia.edu")
+                           (user-mail-address . "jal2301@columbia.edu")
+                           (user-full-name . "Jeff Larson")
+                           (mu4e-sent-messages-behavior . delete)
+                           (mu4e-drafts-folder . "/columbia/[Gmail]/Drafts")
+                           (mu4e-sent-folder . "/columbia/[Gmail]/Sent Mail")
+                           (mu4e-trash-folder . "/columbia/[Gmail]/Trash")
+                           (mu4e-refile-folder . "/columbia/[Gmail]/All Mail")))
+                 )
+              )
+
+
+(require 'mu4e-vars)
+
+(add-to-list 'mu4e-header-info-custom
+             '(:mail-directory .
+                               (:name "Mail Directory"
+                                :shortname "Dir"
+                                :help "Mail Storage Directory"
+                                :function
+                                (lambda (msg)
+                                  (or
+                                   (mu4e-message-field msg :maildir) "")))))
+(setq mu4e-headers-fields '((:mail-directory . 20)
+                            (:human-date     . 12)
+                            (:flags          .  6)
+                            (:mailing-list   . 10)
+                            (:from           . 22)
+                            (:subject        . nil))))
 
 
 ;; Theme
@@ -837,16 +801,16 @@ FN is neotree-enter and ARGS is the arguments."
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
-(req-package all-the-icons)
+(use-package all-the-icons
+  :ensure t)
 
-(req-package doom-themes
-  :require all-the-icons
+(use-package doom-themes
   :config
   (doom-themes-neotree-config)
   (load-theme 'doom-vibrant t)
   (doom-themes-org-config))
 
-(req-package solaire-mode
+(use-package solaire-mode
   :init
   (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
   (add-hook 'after-revert-hook #'turn-on-solaire-mode))
@@ -855,16 +819,14 @@ FN is neotree-enter and ARGS is the arguments."
       org-fontify-done-headline t
       org-fontify-quote-and-verse-blocks t)
 
-(req-package faces
-  :config
-    (when (eq system-type 'darwin)
-      (set-face-attribute 'default nil :family "Monaco")
-      (set-face-attribute 'default nil :height 120))
-    (when (eq system-type 'gnu/linux)
-      (set-face-attribute 'default nil :family "Source Code Pro")
-      (set-face-attribute 'default nil :height 100)))
+(require 'faces)
+(when (eq system-type 'darwin)
+  (set-face-attribute 'default nil :family "Monaco")
+  (set-face-attribute 'default nil :height 120))
+(when (eq system-type 'gnu/linux)
+  (set-face-attribute 'default nil :family "Source Code Pro")
+  (set-face-attribute 'default nil :height 100))
 
-(req-package-finish)
 (message "Loaded in `%s'" (emacs-init-time))
 
 (defun layout()
