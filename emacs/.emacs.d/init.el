@@ -172,7 +172,6 @@
 (use-package crux
   :bind
   (("C-c o" . crux-open-with)
-   ("C-k" . crux-smart-kill-line)
    ("C-c m" . crux-cleanup-buffer-or-region)
    ("C-c f" . crux-recentf-find-file)
    ("C-c D" . crux-delete-file-and-buffer)
