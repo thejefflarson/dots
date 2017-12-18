@@ -143,13 +143,12 @@
 
 (eval-when-compile
   (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+(diminish 'auto-revert-mode)
 (setq use-package-always-ensure t)
 (setq-default use-package-verbose t)
-
-(use-package diminish
-  :config
-  (diminish 'auto-revert-mode))
-(use-package bind-key)
+(use-package use-package-ensure-system-package)
 (use-package buffer-move)
 
 ;; Builtins
@@ -522,7 +521,8 @@ FN is neotree-enter and ARGS is the arguments."
 
 (use-package lsp-rust
   :init
-  (add-hook 'rust-mode-hook #'lsp-rust-enable))
+  (add-hook 'rust-mode-hook #'lsp-rust-enable)
+  (setq-default lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
 
 (use-package company-lsp
   :config
@@ -569,6 +569,14 @@ FN is neotree-enter and ARGS is the arguments."
   (setq js2-basic-offset 2)
   (setq js2-mode-show-parse-errors nil)
   (setq js2-mode-show-strict-warnings nil))
+
+(use-package prettier-js
+  :ensure-system-package (prettier . "npm i prettier -g")
+  :config
+  (add-hook 'js2-mode-hook 'prettier-js-mode)
+  (add-hook 'web-mode-hook 'prettier-js-mode)
+  (add-hook 'css-mode-hook 'prettier-js-mode)
+  (add-hook 'scss-mode-map 'prettier-js-mode))
 
 (use-package json-mode
   :mode "\\.json\\'")
