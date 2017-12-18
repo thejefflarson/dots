@@ -182,8 +182,7 @@
 
 (use-package rainbow-delimiters
   :defer t
-  :init
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package ivy
   :commands ivy-mode
@@ -219,8 +218,7 @@
 
 (use-package flycheck
   :commands flycheck-mode
-  :init
-  (add-hook 'prog-mode-hook 'flycheck-mode)
+  :hook (prog-mode . flycheck-mode)
   :config
   (setq-default flycheck-disabled-checkers
                 (append flycheck-disabled-checkers
@@ -274,24 +272,20 @@ FN is neotree-enter and ARGS is the arguments."
   :config
   (which-key-mode))
 
-(use-package kurecolor
-  :defer t)
+(use-package kurecolor)
 
 (use-package rainbow-mode
-  :defer t)
+  :hook css-mode)
 
 (use-package diff-hl
-  :init
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+  :hook (magit-post-refresh . diff-hl-magit-post-refresh)
   :config
   (global-diff-hl-mode 1))
 
 (use-package page-break-lines
   :diminish page-break-lines-mode
-  :commands global-page-break-lines-mode page-break-lines-mode
-  :init
-  (add-hook 'after-init-hook 'global-page-break-lines-mode)
-  (add-hook 'prog-mode-hook 'page-break-lines-mode))
+  :config
+  (global-page-break-lines-mode))
 
 (use-package winner
   :config
@@ -316,26 +310,24 @@ FN is neotree-enter and ARGS is the arguments."
 (use-package company
   :diminish company-mode
   :bind (("C-;" . company-indent-or-complete-common))
-  :init
-  (add-hook 'prog-mode-hook 'company-mode)
+  :hook (prog-mode . company-mode)
   :config
   (setq company-tooltip-align-annotations t))
+
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
 
 (use-package irony
   :diminish irony-mode
   :defer t
   :commands flycheck-irony-setup
-  :init
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+  :hook ((c++-mode . irony-mode)
+         (c-mode . irony-mode)
+         (irony-mode . my-irony-mode-hook)
+         (iron-mode . irony-cdb-autosetup-compile-options)))
 
 (use-package company-irony
   :config
@@ -347,27 +339,18 @@ FN is neotree-enter and ARGS is the arguments."
   (setq-default company-statistics-file
                 (concat user-cache-directory
                         "company-statistics-cache.el"))
-  :config
-  (add-hook 'after-init-hook 'company-statistics-mode))
+  :hook (after-init . company-statistics-mode))
 
 (use-package flycheck-irony
-  :defer t
   :commands flycheck-irony-mode
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
+  :hook (flycheck-mode . flycheck-irony-setup))
 
 (use-package nlinum
-  :commands (nlinum-mode)
-  :init
-  (add-hook 'prog-mode-hook 'nlinum-mode))
-
-
+  :hook (prog-mode . nlinum-mode))
 
 (use-package flyspell
-  :commands (flyspell-buffer flyspell-mode)
-  :init
-  (add-hook 'text-mode-hook 'flyspell-mode)
-  (add-hook 'flyspell-mode-hook #'flyspell-popup-auto-correct-mode))
+  :hook ((text-mode . flyspell-mode)
+         (flyspell-mode . flyspell-popup-auto-correct-mode)))
 
 (use-package flyspell-popup
   :commands (flyspell-popup-auto-correct-mode))
@@ -376,9 +359,7 @@ FN is neotree-enter and ARGS is the arguments."
   :defer t)
 
 (use-package artbollocks-mode
-  :config
-  (add-hook 'text-mode-hook 'artbollocks-mode)
-  (add-hook 'org-mode-hook 'artbollocks-mode))
+  :hook ((text-mode org-mode) . artbollocks-mode))
 
 (use-package org
   :commands org-agenda-list
@@ -460,13 +441,11 @@ FN is neotree-enter and ARGS is the arguments."
   (setq flycheck-rubocoprc nil))
 
 (use-package projectile-rails
-  :defer t
-  :commands projectile-rails-on
-  :init
-  (add-hook 'ruby-mode-hook 'projectile-rails-on))
+  :hook (ruby-mode . projectile-rails-on))
 
 (use-package company-jedi
-  :defer t)
+  :config
+  (add-to-list 'company-backends 'company-jedi))
 
 (use-package elpy
   :init
@@ -484,18 +463,14 @@ FN is neotree-enter and ARGS is the arguments."
   (setq-default c-default-style "linux"))
 
 (use-package platformio-mode
-  :defer t
-  :commands platformio-conditionally-enable
-  :init
-  (add-hook 'c++-mode-hook 'platformio-conditionally-enable))
+  :hook (c++-mode . platformio-conditionally-enable))
 
 ;; dunno why this needs to be non async but ok
 (defun colorize-compilation-buffer()
   "Color compilation."
   (ansi-color-apply-on-region compilation-filter-start (point)))
 (use-package ansi-color
-  :init
-  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
+  :hook (compilation-filter . colorize-compilation-buffer))
 
 (use-package gdb-mi
   :commands gdb
@@ -505,9 +480,7 @@ FN is neotree-enter and ARGS is the arguments."
   (setq-default gdb-show-main t))
 
 (use-package css-mode
-  :mode "\\.css\\'"
-  :init
-  (add-hook 'css-mode-hook 'rainbow-mode))
+  :mode "\\.css\\'")
 
 (use-package csv-mode
   :mode "\\.csv\\'")
@@ -519,8 +492,8 @@ FN is neotree-enter and ARGS is the arguments."
   :ensure t)
 
 (use-package lsp-rust
+  :hook (rust-mode . lsp-rust-enable)
   :init
-  (add-hook 'rust-mode-hook #'lsp-rust-enable)
   (setq-default lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
 
 (use-package company-lsp
@@ -536,9 +509,7 @@ FN is neotree-enter and ARGS is the arguments."
   :mode "\\.toml\\'")
 
 (use-package cargo
-  :commands cargo-minor-mode
-  :config
-  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+  :hook (rust-mode . cargo-minor-mode))
 
 (use-package fish-mode
   :mode "\\.fish\\'")
@@ -569,20 +540,16 @@ FN is neotree-enter and ARGS is the arguments."
   (setq js2-mode-show-parse-errors nil)
   (setq js2-mode-show-strict-warnings nil))
 
+
 (use-package prettier-js
   :ensure-system-package (prettier . "npm i prettier -g")
-  :config
-  (add-hook 'js2-mode-hook 'prettier-js-mode)
-  (add-hook 'web-mode-hook 'prettier-js-mode)
-  (add-hook 'css-mode-hook 'prettier-js-mode)
-  (add-hook 'scss-mode-map 'prettier-js-mode))
+  :hook ((js2-mode js2-jsx-mode css-mode  scss-mode) . prettier-js-mode))
 
 (use-package json-mode
   :mode "\\.json\\'")
 
 (use-package tern
-  :init
-  (add-hook 'js-mode-hook (lambda () (tern-mode t)))
+  :hook ((js-mode js2-mode js2-jsx-mode) . tern-mode)
   :config
   (setq tern-command (append tern-command '("--no-port-file"))))
 
@@ -628,8 +595,7 @@ FN is neotree-enter and ARGS is the arguments."
 
 (use-package flycheck-swift
   :commands flycheck-swift-setup
-  :init
-  (add-hook 'swift-mode-hook 'flycheck-swift-setup))
+  :hook (swift-mode . flycheck-swift-setup))
 
 (when (eq system-type 'darwin)
   (use-package company-sourcekit
@@ -702,8 +668,8 @@ FN is neotree-enter and ARGS is the arguments."
   (mu4e-maildirs-extension))
 
 (use-package mu4e-alert
+  :hook (after-init . mu4e-alert-enable-notifications)
   :config
-  (add-hook 'after-init-hook 'mu4e-alert-enable-notifications)
   (setq mu4e-alert-set-default-style (if (eq system-type 'darwin)
                                          'notifier '(notifications)))
 
@@ -818,9 +784,7 @@ FN is neotree-enter and ARGS is the arguments."
   (doom-themes-org-config))
 
 (use-package solaire-mode
-  :init
-  (add-hook 'after-change-major-mode-hook #'turn-on-solaire-mode)
-  (add-hook 'after-revert-hook #'turn-on-solaire-mode))
+  :hook ((after-change-major-mode after-revert) . turn-on-solaire-mode))
 
 (setq-default org-fontify-whole-heading-line t
       org-fontify-done-headline t
