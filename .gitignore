@@ -3,3 +3,5 @@
 *.orig
 flycheck_init.el
 /config/.config/fish/functions/fisher.fish
+emacs/.emacs.d/projectile-bookmarks.eld
+recentf

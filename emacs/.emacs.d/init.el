@@ -151,7 +151,36 @@
 (use-package use-package-ensure-system-package)
 (use-package buffer-move)
 
-;; Builtins
+
+;; Theme
+(defadvice load-theme
+    (before theme-dont-propagate activate)
+  (mapc #'disable-theme custom-enabled-themes))
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package doom-themes
+  :config
+  (load-theme 'doom-vibrant t)
+  (doom-themes-org-config))
+
+(use-package solaire-mode
+  :hook ((after-change-major-mode after-revert) . turn-on-solaire-mode))
+
+(setq-default org-fontify-whole-heading-line t
+      org-fontify-done-headline t
+      org-fontify-quote-and-verse-blocks t)
+
+(require 'faces)
+(when (eq system-type 'darwin)
+  (set-face-attribute 'default nil :family "Monaco")
+  (set-face-attribute 'default nil :height 120))
+(when (eq system-type 'gnu/linux)
+  (set-face-attribute 'default nil :family "Source Code Pro")
+  (set-face-attribute 'default nil :height 100))
+
+;; More Packages
 (require 'epa-file)
 (epa-file-enable)
 
@@ -159,6 +188,10 @@
   :config
   (require 'vlf-setup)
   (setq-default vlf-application 'dont-ask))
+
+(use-package golden-ratio
+  :config
+  (golden-ratio-mode 1))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -234,33 +267,23 @@
 (use-package projectile-ripgrep
   :defer t)
 
-(use-package counsel-projectile
+
+(use-package treemacs
   :config
-  (counsel-projectile-on))
+  (treemacs-filewatch-mode t)
+  (treemacs-git-mode 'extended))
 
-;; Fixes an annoying behavior of neotree: https://github.com/jaypei/emacs-neotree/issues/262
-(defun neotree-keep-size (fn &rest args)
-  "This function will reset the neotree width back to my adjusted width.
-FN is neotree-enter and ARGS is the arguments."
-  (let ((w (window-width)))
-    (funcall fn)
-    (neo-global--set-window-width w)))
+(use-package treemacs-projectile
+  :config
+  (setq treemacs-header-function #'treemacs-projectile-create-header))
 
-(use-package neotree
-  :commands neotree-projectile-action
+(use-package projectile
   :init
-  (setq neo-show-hidden-files t)
-  (setq neo-window-fixed-size nil)
-  (setq neo-window-width 30)
-  (setq neo-force-change-root t)
+  (setq projectile-completion-system 'ivy)
+  (setq projectile-enable-caching t)
+  (setq projectile-switch-project-action #'treemacs-projectile)
   :config
-  (advice-add 'neotree-enter :around 'neotree-keep-size))
-
-(setq-default projectile-completion-system 'ivy)
-(setq-default projectile-enable-caching t)
-(setq-default projectile-switch-project-action 'neotree-projectile-action)
-(use-package projectile)
-(projectile-mode)
+  (projectile-mode))
 
 (use-package magit
   :bind (("C-c s" . magit-status))
@@ -543,7 +566,7 @@ FN is neotree-enter and ARGS is the arguments."
 
 (use-package prettier-js
   :ensure-system-package (prettier . "npm i prettier -g")
-  :hook ((js2-mode js2-jsx-mode css-mode  scss-mode) . prettier-js-mode))
+  :hook ((js2-mode js2-jsx-mode css-mode scss-mode) . prettier-js-mode))
 
 (use-package json-mode
   :mode "\\.json\\'")
@@ -768,35 +791,6 @@ FN is neotree-enter and ARGS is the arguments."
                             (:from           . 22)
                             (:subject        . nil))))
 
-
-;; Theme
-(defadvice load-theme
-    (before theme-dont-propagate activate)
-  (mapc #'disable-theme custom-enabled-themes))
-
-(use-package all-the-icons
-  :ensure t)
-
-(use-package doom-themes
-  :config
-  (doom-themes-neotree-config)
-  (load-theme 'doom-vibrant t)
-  (doom-themes-org-config))
-
-(use-package solaire-mode
-  :hook ((after-change-major-mode after-revert) . turn-on-solaire-mode))
-
-(setq-default org-fontify-whole-heading-line t
-      org-fontify-done-headline t
-      org-fontify-quote-and-verse-blocks t)
-
-(require 'faces)
-(when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family "Monaco")
-  (set-face-attribute 'default nil :height 120))
-(when (eq system-type 'gnu/linux)
-  (set-face-attribute 'default nil :family "Source Code Pro")
-  (set-face-attribute 'default nil :height 100))
 
 (message "Loaded in `%s'" (emacs-init-time))
 
