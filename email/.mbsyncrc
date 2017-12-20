@@ -30,6 +30,7 @@ User jlarson
 PassCmd "getpasswd mail.propublica.org jeff.larson@propublica.org"
 SSLType None
 AuthMechs LOGIN
+Timeout 300
 
 IMAPStore work-remote
 Account work
