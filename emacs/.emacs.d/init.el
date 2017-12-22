@@ -234,10 +234,6 @@
 (use-package projectile-ripgrep
   :defer t)
 
-(use-package counsel-projectile
-  :config
-  (counsel-projectile-on))
-
 ;; Fixes an annoying behavior of neotree: https://github.com/jaypei/emacs-neotree/issues/262
 (defun neotree-keep-size (fn &rest args)
   "This function will reset the neotree width back to my adjusted width.
