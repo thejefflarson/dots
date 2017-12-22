@@ -269,6 +269,7 @@
 (use-package projectile-ripgrep
   :defer t)
 
+<<<<<<< HEAD
 
 (use-package treemacs
   :config
