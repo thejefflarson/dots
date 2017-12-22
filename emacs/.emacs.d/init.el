@@ -269,8 +269,6 @@
 (use-package projectile-ripgrep
   :defer t)
 
-<<<<<<< HEAD
-
 (use-package treemacs
   :config
   (treemacs-filewatch-mode t)
