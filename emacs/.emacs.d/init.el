@@ -97,6 +97,8 @@
 ;; Revert when file changes
 (global-auto-revert-mode t)
 
+(setq-default imenu-auto-rescan t)
+
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
   (setq insert-directory-program "/usr/local/bin/gls")
@@ -516,8 +518,8 @@
 
 (use-package lsp-rust
   :hook (rust-mode . lsp-rust-enable)
-  :init
-  (setq-default lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
+  :config
+  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
 
 (use-package company-lsp
   :config
@@ -572,6 +574,7 @@
   :mode "\\.json\\'")
 
 (use-package tern
+  :ensure-system-package (tern . "npm i tern -g")
   :hook ((js-mode js2-mode js2-jsx-mode) . tern-mode)
   :config
   (setq tern-command (append tern-command '("--no-port-file"))))
@@ -584,7 +587,7 @@
   :defer t)
 
 (use-package sql
-  :mode "\\.sql\\'"
+  :mode "\\.sql$"
   :init
   (setq sql-indent-offset 2))
 
