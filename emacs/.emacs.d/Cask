@@ -118,6 +118,7 @@
 (depends-on "subatomic-theme")
 (depends-on "swift-mode")
 (depends-on "swiper")
+(depends-on "system-packages")
 (depends-on "tao-theme")
 (depends-on "tern")
 (depends-on "test-simple")

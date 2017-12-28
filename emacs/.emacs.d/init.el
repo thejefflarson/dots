@@ -516,9 +516,8 @@
   :ensure t)
 
 (use-package lsp-rust
-  :hook (rust-mode . lsp-rust-enable)
-  :config
-  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
+  :ensure-system-package (rls . "rustup component add rls-preview")
+  :hook (rust-mode . lsp-rust-enable))
 
 (use-package company-lsp
   :config
