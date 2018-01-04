@@ -351,7 +351,7 @@
   :hook ((c++-mode . irony-mode)
          (c-mode . irony-mode)
          (irony-mode . my-irony-mode-hook)
-         (iron-mode . irony-cdb-autosetup-compile-options)))
+         (irony-mode . irony-cdb-autosetup-compile-options)))
 
 (use-package company-irony
   :config
@@ -366,7 +366,7 @@
   :hook (after-init . company-statistics-mode))
 
 (use-package flycheck-irony
-  :commands flycheck-irony-mode
+  :commands flycheck-irony-mode flycheck-irony-setup
   :hook (flycheck-mode . flycheck-irony-setup))
 
 (use-package nlinum
