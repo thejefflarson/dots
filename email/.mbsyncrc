@@ -24,30 +24,13 @@ Remove Both
 SyncState *
 
 IMAPAccount work
-Host 0.0.0.0
-Port 1143
-User jlarson
+Host outlook.office365.com
+User jeff.larson@propublica.org
 PassCmd "getpasswd mail.propublica.org jeff.larson@propublica.org"
-SSLType None
+SSLType IMAPS
 AuthMechs LOGIN
+CertificateFile ~/.certs
 Timeout 300
-
-IMAPStore work-remote
-Account work
-
-MaildirStore work-local
-SubFolders Verbatim
-Path ~/.mail/work/
-Inbox ~/.mail/work/Inbox
-
-Channel work
-Master :work-remote:
-Slave :work-local:
-Patterns *
-Create Both
-Expunge Both
-Remove Both
-SyncState *
 
 IMAPAccount riseup
 Host imap.riseup.net
