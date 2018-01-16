@@ -13,3 +13,5 @@
 	smudge = git-lfs smudge -- %f
 	required = true
 	process = git-lfs filter-process
+[diff]
+	submodule = log
