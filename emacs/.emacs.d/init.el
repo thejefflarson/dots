@@ -526,7 +526,6 @@
 (use-package rust-mode
   :mode "\\.rs\\'"
   :init
-  (setq rust-rustfmt-bin "rustup run nightly rustfmt")
   (setq rust-format-on-save t))
 
 (use-package toml-mode
