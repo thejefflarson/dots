@@ -512,12 +512,12 @@
 (use-package clojure-mode
   :mode "\\.clj\\'")
 
-(use-package lsp-mode
-  :ensure t)
+(use-package lsp-mode)
 
 (use-package lsp-rust
   :ensure-system-package (rls . "rustup component add rls-preview")
-  :hook (rust-mode . lsp-rust-enable))
+  :hook ((rust-mode . lsp-mode)
+         (rust-mode . lsp-rust-enable)))
 
 (use-package company-lsp
   :config
