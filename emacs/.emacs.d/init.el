@@ -357,6 +357,8 @@
   :config
   (add-to-list 'company-backends 'company-irony))
 
+(use-package cmake-mode)
+
 (use-package company-statistics
   :diminish t
   :init
@@ -477,8 +479,9 @@
   :config
   (elpy-enable))
 
-(use-package pyvenv
-  :commands pyvenv-activate)
+(use-package pipenv
+  :ensure-system-package (pipenv . "pip install pipenv")
+  :hook (python-mode . pipenv-mode))
 
 (use-package cc-mode
   :defer t
@@ -581,6 +584,15 @@
   :config
   (add-to-list 'company-backends 'company-tern))
 
+(use-package tide
+  :ensure-system-package
+  ((tsc . "npm i typescript -g")
+   (tslint . "npm i tslint -g"))
+  :hook ((before-save-hook . tide-format-before-save)
+         (typescript-mode . tide-mode))
+  :config
+  (tide-setup))
+
 (use-package sql-indent
   :defer t)
 
@@ -645,6 +657,7 @@
 
 (require 'org-mu4e)
 (require 'mu4e)
+
 (setq-default mu4e-update-interval (* 60 5))
 (setq-default mu4e-get-mail-command "mbsync -aq; true")
 (setq-default mu4e-compose-dont-reply-to-self t)
