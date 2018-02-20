@@ -95,6 +95,7 @@
 (depends-on "package-build")
 (depends-on "page-break-lines")
 (depends-on "pallet")
+(depends-on "pipenv")
 (depends-on "platformio-mode")
 (depends-on "powerline")
 (depends-on "prettier-js")
