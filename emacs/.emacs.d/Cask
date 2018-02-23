@@ -136,6 +136,7 @@
 (depends-on "treemacs")
 (depends-on "treemacs-projectile")
 (depends-on "twittering-mode")
+(depends-on "typescript-mode")
 (depends-on "undo-tree")
 (depends-on "use-package")
 (depends-on "use-package-ensure-system-package")
