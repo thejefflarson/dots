@@ -459,6 +459,12 @@
 
 
 ;; Programming modes
+(use-package yasnippet
+  :config
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets)
+
 (use-package ruby-mode
   :mode "\\.rb\\'"
   :init
@@ -474,8 +480,6 @@
   (add-to-list 'company-backends 'company-jedi))
 
 (use-package elpy
-  :init
-  (setq-default yas-snippet-dirs nil)
   :config
   (elpy-enable))
 

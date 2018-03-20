@@ -147,3 +147,4 @@
 (depends-on "with-editor")
 (depends-on "writeroom-mode")
 (depends-on "yasnippet")
+(depends-on "yasnippet-snippets")
