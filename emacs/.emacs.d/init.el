@@ -483,6 +483,10 @@
   :config
   (elpy-enable))
 
+(use-package blacken
+  :ensure-system-package (black . "pip install black")
+  :hook (python-mode . blacken-mode))
+
 (use-package pipenv
   :ensure-system-package (pipenv . "pip install pipenv")
   :hook (python-mode . pipenv-mode))
