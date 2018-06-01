@@ -457,6 +457,13 @@
   :config
   (browse-kill-ring-default-keybindings))
 
+(use-package auto-package-update
+   :ensure t
+   :config
+   (setq auto-package-update-delete-old-versions t
+         auto-package-update-interval 4)
+   (auto-package-update-maybe))
+
 
 ;; Programming modes
 (use-package yasnippet
@@ -530,6 +537,9 @@
   :hook ((rust-mode . lsp-mode)
          (rust-mode . lsp-rust-enable)))
 
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode))
+
 (use-package company-lsp
   :config
   (add-to-list 'company-backends 'company-lsp))
@@ -593,6 +603,14 @@
 (use-package company-tern
   :config
   (add-to-list 'company-backends 'company-tern))
+
+(use-package lsp-javascript-flow
+  :ensure-system-package (flow-language-server . "npm install -g flow-language-server")
+  :hook ((flow-minor-mode . lsp-javascript-flow-enable)))
+
+(use-package flow-minor-mode
+  :ensure-system-package (flow . "npm install -g flow-bin")
+  :hook (js2-mode . flow-minor-enable-automatically))
 
 (use-package tide
   :ensure-system-package

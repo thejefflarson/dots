@@ -6,7 +6,7 @@ for i in $(ls -d */);
 do
   stow -v -t ~/ -R ${i%%/};
 done
-mkdir -p ~/.mail/{gmail,work,riseup}
+mkdir -p ~/.mail/{gmail,fastmail,riseup}
 
 echo "
 Please remember to install the following packages:

@@ -23,15 +23,6 @@ Expunge Both
 Remove Both
 SyncState *
 
-IMAPAccount work
-Host outlook.office365.com
-User jeff.larson@propublica.org
-PassCmd "getpasswd mail.propublica.org jeff.larson@propublica.org"
-SSLType IMAPS
-AuthMechs LOGIN
-CertificateFile ~/.certs
-Timeout 300
-
 IMAPAccount riseup
 Host imap.riseup.net
 User thejefflarson@riseup.net
@@ -50,6 +41,30 @@ Inbox ~/.mail/riseup/Inbox
 Channel riseup
 Master :riseup-remote:
 Slave :riseup-local:
+Patterns *
+Create Both
+Expunge Both
+Remove Both
+SyncState *
+
+IMAPAccount fastmail
+Host imap.fastmail.com
+User thejefflarson@fastmail.com
+PassCmd "getpasswd imap.fastmail.com thejefflarson@fastmail.com"
+SSLType IMAPS
+CertificateFile ~/.certs
+
+IMAPStore fastmail-remote
+Account fastmail
+
+MaildirStore fastmail-local
+SubFolders Verbatim
+Path ~/.mail/fastmail/
+Inbox ~/.mail/fastmail/Inbox
+
+Channel fastmail
+Master :fastmail-remote:
+Slave :fastmail-local:
 Patterns *
 Create Both
 Expunge Both

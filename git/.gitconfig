@@ -15,3 +15,5 @@
 	process = git-lfs filter-process
 [diff]
 	submodule = log
+[core]
+	excludesfile = /Users/jeff/.gitignore_global
