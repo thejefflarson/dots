@@ -534,15 +534,16 @@
 
 (use-package lsp-rust
   :ensure-system-package (rls . "rustup component add rls-preview")
-  :hook ((rust-mode . lsp-mode)
-         (rust-mode . lsp-rust-enable)))
+  :hook (rust-mode . lsp-rust-enable))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode))
 
 (use-package company-lsp
+  :init
+  (add-to-list 'company-backends 'company-lsp)
   :config
-  (add-to-list 'company-backends 'company-lsp))
+  (setq company-lsp-async t))
 
 (use-package rust-mode
   :mode "\\.rs\\'"
@@ -594,19 +595,14 @@
 (use-package json-mode
   :mode "\\.json\\'")
 
-(use-package tern
-  :ensure-system-package (tern . "npm i tern -g")
-  :hook ((js-mode js2-mode js2-jsx-mode) . tern-mode)
-  :config
-  (setq tern-command (append tern-command '("--no-port-file"))))
-
-(use-package company-tern
-  :config
-  (add-to-list 'company-backends 'company-tern))
+(use-package rjsx-mode)
 
 (use-package lsp-javascript-flow
   :ensure-system-package (flow-language-server . "npm install -g flow-language-server")
-  :hook ((flow-minor-mode . lsp-javascript-flow-enable)))
+  :hook ((flow-minor-mode . lsp-javascript-flow-enable)
+         (js-mode . lsp-javascript-flow-enable)
+         (js2-mode . lsp-javascript-flow-enable)
+         (rjsx-mode . lsp-javascript-flow-enable)))
 
 (use-package flow-minor-mode
   :ensure-system-package (flow . "npm install -g flow-bin")
@@ -689,7 +685,7 @@
 (setq-default mu4e-get-mail-command "mbsync -aq; true")
 (setq-default mu4e-compose-dont-reply-to-self t)
 (setq-default mu4e-user-mail-address-list '("thejefflarson@gmail.com"
-                                            "jeff.larson@propublica.org"
+                                            "thejefflarson@fastmail.com"
                                             "thejefflarson@riseup.net"))
 (setq-default mu4e-context-policy 'pick-first)
 (setq-default mu4e-maildir "~/.mail")
@@ -763,21 +759,21 @@
                            (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
                            (mu4e-refile-folder . "/gmail/[Gmail]/All Mail")))
                  ,(make-mu4e-context
-                   :name "work"
+                   :name "fastmail"
                    :enter-func (lambda ()
-                                 (mu4e-message "entering work"))
+                                 (mu4e-message "entering fastmail"))
                    :match-func (lambda (msg)
                                  (when msg
-                                   (string-match "work"
+                                   (string-match "fastmail"
                                                  (mu4e-message-field msg :maildir))))
-                   :vars '((mail-reply-to . "jeff.larson@propublica.org")
-                           (user-mail-address . "jeff.larson@propublica.org")
+                   :vars '((mail-reply-to . "thejefflarson@fastmail.com")
+                           (user-mail-address . "thejefflarson@fastmail.com")
                            (user-full-name . "Jeff Larson")
                            (mu4e-sent-messages-behavior . delete)
-                           (mu4e-drafts-folder . "/work/Drafts")
-                           (mu4e-sent-folder . "/work/Sent")
-                           (mu4e-trash-folder . "/work/Trash")
-                           (mu4e-refile-folder . "/work/archive/2017")))
+                           (mu4e-drafts-folder . "/fastmail/Drafts")
+                           (mu4e-sent-folder . "/fastmail/Sent")
+                           (mu4e-trash-folder . "/fastmail/Trash")
+                           (mu4e-refile-folder . "/fastmail/Archive")))
                  ,(make-mu4e-context
                    :name "riseup"
                    :enter-func (lambda ()
@@ -794,22 +790,6 @@
                            (mu4e-sent-folder . "/riseup/Sent")
                            (mu4e-trash-folder . "/riseup/Trash")
                            (mu4e-refile-folder . "/riseup/Archive")))
-                 ,(make-mu4e-context
-                   :name "columbia"
-                   :enter-func (lambda ()
-                                 (mu4e-message "entering columbia"))
-                   :match-func (lambda (msg)
-                                 (when msg
-                                   (string-match "columbia"
-                                                 (mu4e-message-field msg :maildir))))
-                   :vars '((mail-reply-to . "jal2301@columbia.edu")
-                           (user-mail-address . "jal2301@columbia.edu")
-                           (user-full-name . "Jeff Larson")
-                           (mu4e-sent-messages-behavior . delete)
-                           (mu4e-drafts-folder . "/columbia/[Gmail]/Drafts")
-                           (mu4e-sent-folder . "/columbia/[Gmail]/Sent Mail")
-                           (mu4e-trash-folder . "/columbia/[Gmail]/Trash")
-                           (mu4e-refile-folder . "/columbia/[Gmail]/All Mail")))
                  )
               )
 
