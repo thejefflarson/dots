@@ -1,4 +1,4 @@
-;;; jeffs-init --- various bits and boops to make emacs a nicer place
+;; jeffs-init --- various bits and boops to make emacs a nicer place
 
 ;;; Commentary:
 ;; Too many late nights copying and pasting from the internet,
@@ -107,6 +107,7 @@
 ;; other niceties
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'prog-mode-hook 'whitespace-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (setq-default whitespace-style '(face trailing lines-tail))
 (setq-default whitespace-line-column 100)
 (show-paren-mode 1)
@@ -191,9 +192,7 @@
   (require 'vlf-setup)
   (setq-default vlf-application 'dont-ask))
 
-(use-package golden-ratio
-  :config
-  (golden-ratio-mode 1))
+(use-package alert)
 
 (use-package exec-path-from-shell
   :ensure t
@@ -370,9 +369,6 @@
 (use-package flycheck-irony
   :commands flycheck-irony-mode flycheck-irony-setup
   :hook (flycheck-mode . flycheck-irony-setup))
-
-(use-package nlinum
-  :hook (prog-mode . nlinum-mode))
 
 (use-package flyspell
   :hook ((text-mode . flyspell-mode)
@@ -664,14 +660,11 @@
 
 ;; Mu4e
 (defconst my-interesting-mail
-  (concat " \(maildir:/work/INBOX"
-          " OR maildir:/gmail/INBOX"
+  (concat " \(maildir:/fastmail/Inbox"
+          " OR maildir:/gmail/Inbox"
           " OR maildir:/gmail/[Gmail]/.All\ Mail"
           " OR maildir:/gmail/[Gmail]/.Important"
-          " OR maildir:/columbia/INBOX"
-          " OR maildir:/columbia/[Gmail]/.All\ Mail"
-          " OR maildir:/columbia/[Gmail]/.Important"
-          " OR maildir:/riseup/INBOX\)")
+          " OR maildir:/riseup/Inbox\)")
   "Interesting mail suffix.")
 
 (defun no-auto-fill ()
@@ -769,7 +762,7 @@
                    :vars '((mail-reply-to . "thejefflarson@fastmail.com")
                            (user-mail-address . "thejefflarson@fastmail.com")
                            (user-full-name . "Jeff Larson")
-                           (mu4e-sent-messages-behavior . delete)
+                           (mu4e-sent-messages-behavior . sent)
                            (mu4e-drafts-folder . "/fastmail/Drafts")
                            (mu4e-sent-folder . "/fastmail/Sent")
                            (mu4e-trash-folder . "/fastmail/Trash")
