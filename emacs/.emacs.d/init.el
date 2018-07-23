@@ -190,14 +190,15 @@
 (use-package vlf
   :config
   (require 'vlf-setup)
-  (setq-default vlf-application 'dont-ask))
+  :custom
+  (vlf-application 'dont-ask))
 
 (use-package alert)
 
 (use-package exec-path-from-shell
   :ensure t
-  :init
-  (setq exec-path-from-shell-check-startup-files nil)
+  :custom
+  (exec-path-from-shell-check-startup-files nil)
   :config
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "RUST_SRC_PATH"))
@@ -221,27 +222,38 @@
 (use-package ivy
   :commands ivy-mode
   :diminish ivy-mode
-  :init
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-height 10)
-  (setq ivy-count-format "(%d/%d) ")
-  (ivy-mode 1))
+  :bind
+  (("C-x b" . ivy-switch-buffer)
+   ("C-x C-b" . ivy-switch-buffer)
+   ("C-x B" . ivy-switch-buffer-other-window)
+   ("C-c C-r" . ivy-resume))
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-height 10)
+  (ivy-count-format "(%d/%d) ")
+  :config
+  (ivy-mode))
 
 (use-package counsel
+  :after ivy
+  :diminish counsel-mode
   :bind
   (("M-x" . counsel-M-x)
    ("C-x C-f" . counsel-find-file)
-   ("<f1> f" . counsel-describe-function)
-   ("<f1> v" . counsel-describe-variable)
-   ("<f1> l" . counsel-load-library)
-   ("<f2> i" . counsel-info-lookup-symbol)
-   ("<f2> u" . counsel-unicode-char)
+   ("C-c f" . counsel-describe-function)
+   ("C-c v" . counsel-describe-variable)
+   ("C-c l" . counsel-load-library)
+   ("C-c i" . counsel-info-lookup-symbol)
+   ("C-c u" . counsel-unicode-char)
    ("C-c g" . counsel-git)
    ("C-c j" . counsel-git-grep)
    ("C-c k" . counsel-ag)
-   ("C-x l" . counsel-locate)))
+   ("C-x l" . counsel-locate))
+  :config
+  (counsel-mode))
 
 (use-package swiper
+  :after ivy
   :bind
   (("C-s" . swiper)))
 
@@ -253,11 +265,9 @@
 (use-package flycheck
   :commands flycheck-mode
   :hook (prog-mode . flycheck-mode)
-  :config
-  (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(javascript-jshint)
-                        '(python-flake8))))
+  :custom
+  (flycheck-disabled-checkers
+   '(javascript-jshint python-flake8)))
 
 (use-package ag
   :defer t)
@@ -274,21 +284,21 @@
   (treemacs-git-mode 'extended))
 
 (use-package treemacs-projectile
-  :config
-  (setq treemacs-header-function #'treemacs-projectile-create-header))
+  :custom
+  (treemacs-header-function #'treemacs-projectile-create-header))
 
 (use-package projectile
-  :init
-  (setq projectile-completion-system 'ivy)
-  (setq projectile-enable-caching t)
-  (setq projectile-switch-project-action #'treemacs-projectile)
+  :custom
+  (projectile-completion-system 'ivy)
+  (projectile-enable-caching t)
+  (projectile-switch-project-action #'treemacs-projectile)
   :config
   (projectile-mode))
 
 (use-package magit
   :bind (("C-c s" . magit-status))
-  :config
-  (setq-default magit-completing-read-function 'ivy-completing-read))
+  :custom
+  (magit-completing-read-function 'ivy-completing-read))
 
 (use-package which-key
   :diminish which-key-mode
@@ -316,26 +326,26 @@
 
 (use-package eshell
   :defer t
-  :init
-  (setq-default eshell-buffer-maximum-lines 20000
-                eshell-history-size 350
-                eshell-hist-ignoredups t
-                eshell-plain-echo-behavior t
-                eshell-directory-name
-                (concat user-cache-directory "eshell/")))
+  :custom
+  (eshell-buffer-maximum-lines 20000)
+  (eshell-history-size 350)
+  (eshell-hist-ignoredups t)
+  (eshell-plain-echo-behavior t)
+  (eshell-directory-name
+   (concat user-cache-directory "eshell/")))
 
 (use-package shell-pop
   :bind (("C-t" . shell-pop))
-  :init
-  (setq shell-pop-shell-type
+  :custom
+  (shell-pop-shell-type
         '("eshell" "*eshell*" (lambda () (eshell)))))
 
 (use-package company
   :diminish company-mode
   :bind (("C-;" . company-indent-or-complete-common))
   :hook (prog-mode . company-mode)
-  :config
-  (setq company-tooltip-align-annotations t))
+  :custom
+  (company-tooltip-align-annotations t))
 
 (defun my-irony-mode-hook ()
   (define-key irony-mode-map [remap completion-at-point]
@@ -360,10 +370,10 @@
 
 (use-package company-statistics
   :diminish t
-  :init
-  (setq-default company-statistics-file
-                (concat user-cache-directory
-                        "company-statistics-cache.el"))
+  :custom
+  (company-statistics-file
+   (concat user-cache-directory
+           "company-statistics-cache.el"))
   :hook (after-init . company-statistics-mode))
 
 (use-package flycheck-irony
@@ -393,32 +403,33 @@
   (load-library "~/.emacs.d/secrets.el.gpg")
   (ensure-directory "~/SpiderOak Hive/org/")
   (ensure-directory "~/SpiderOak Hive/journal/")
-  (setq-default org-log-redeadline 'note)
-  (setq-default org-log-reschedule 'note)
-  (setq-default org-log-refile 'time)
-  (setq-default org-use-tag-inheritance t)
-  (setq-default org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-  (setq-default org-mobile-inbox-for-pull "~/SpiderOak Hive/org/notes.org")
-  (setq-default org-directory "~/SpiderOak Hive/org")
-  (setq-default org-agenda-files (list "~/SpiderOak Hive/org/work.org"
-                               "~/SpiderOak Hive/org/family.org"))
-  (setq-default org-default-notes-file "~/SpiderOak Hive/org/notes.org")
-  (setq-default org-agenda-window-setup 'only-window)
-  (setq-default org-hierarchical-todo-statistics nil)
-  (setq-default org-capture-templates
+  :custom
+  (org-log-redeadline 'note)
+  (org-log-reschedule 'note)
+  (org-log-refile 'time)
+  (org-use-tag-inheritance t)
+  (org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (org-mobile-inbox-for-pull "~/SpiderOak Hive/org/notes.org")
+  (org-directory "~/SpiderOak Hive/org")
+  (org-agenda-files (list "~/SpiderOak Hive/org/work.org"
+                          "~/SpiderOak Hive/org/family.org"))
+  (org-default-notes-file "~/SpiderOak Hive/org/notes.org")
+  (org-agenda-window-setup 'only-window)
+  (org-hierarchical-todo-statistics nil)
+  (org-capture-templates
         '(("t" "Todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
           ("n" "Note" entry (file "~/SpiderOak Hive/org/notes.org")
            "* %?\nCaptured %<%Y-%m-%d %H:%M>")))
-  (setq-default org-tag-alist '((:startgroup . nil)
+  (org-tag-alist '((:startgroup . nil)
                         ("@work" . ?w) ("@home" . ?h)
                         (:endgroup . nil)
                         ("phone" . ?p) ("meeting" . ?m)
                         ("code" . ?c) ("writing" . ?r)))
-  (setq-default org-todo-keywords
+  (org-todo-keywords
         '((sequence "TODO(t)" "IN-PROGRESS(i!)" "WAITING(w@/!)" "|" "DONE(d@)" "CANCELED(c@)")))
-  (setq-default  org-enforce-todo-dependencies t)
-  (setq-default org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+  (org-enforce-todo-dependencies t)
+  (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
   :config
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'org-mobile))
@@ -437,9 +448,9 @@
 (use-package org-journal
   :bind
   ("C-c C-j" . org-journal-new-entry)
-  :init
-  (setq-default org-journal-dir "~/SpiderOak Hive/journal/")
-  (setq-default org-support-shift-select t))
+  :custom
+  (org-journal-dir "~/SpiderOak Hive/journal/")
+  (org-support-shift-select t))
 
 (use-package cider
   :defer t
@@ -455,9 +466,10 @@
 
 (use-package auto-package-update
    :ensure t
+   :custom
+   (auto-package-update-delete-old-versions t)
+   (auto-package-update-interval 4)
    :config
-   (setq auto-package-update-delete-old-versions t
-         auto-package-update-interval 4)
    (auto-package-update-maybe))
 
 
@@ -472,8 +484,8 @@
   :mode "\\.rb\\'"
   :init
   (add-to-list 'completion-ignored-extensions ".rbc")
-  :config
-  (setq flycheck-rubocoprc nil))
+  :custom
+  (flycheck-rubocoprc nil))
 
 (use-package projectile-rails
   :hook (ruby-mode . projectile-rails-on))
@@ -496,9 +508,9 @@
 
 (use-package cc-mode
   :defer t
-  :init
-  (setq-default c-basic-offset 2)
-  (setq-default c-default-style "linux"))
+  :custom
+  (c-basic-offset 2)
+  (c-default-style "linux"))
 
 (use-package platformio-mode
   :hook (c++-mode . platformio-conditionally-enable))
@@ -513,9 +525,9 @@
 (use-package gdb-mi
   :commands gdb
   :defer t
-  :init
-  (setq-default gdb-many-windows t)
-  (setq-default gdb-show-main t))
+  :custom
+  (gdb-many-windows t)
+  (gdb-show-main t))
 
 (use-package css-mode
   :mode "\\.css\\'")
@@ -538,13 +550,13 @@
 (use-package company-lsp
   :init
   (add-to-list 'company-backends 'company-lsp)
-  :config
-  (setq company-lsp-async t))
+  :custom
+  (company-lsp-async t))
 
 (use-package rust-mode
   :mode "\\.rs\\'"
-  :init
-  (setq rust-format-on-save t))
+  :custom
+  (rust-format-on-save t))
 
 (use-package toml-mode
   :mode "\\.toml\\'")
@@ -565,24 +577,24 @@
   :mode
   (("\\.html?\\'" . web-mode)
    ("\\.erb\\'" . web-mode))
-  :init
-  (setq web-mode-enable-auto-pairing t)
-  (setq web-mode-enable-current-element-highlight t)
-  (setq web-mode-enable-part-face t)
-  (setq web-mode-enable-block-face t)
-  (setq web-mode-enable-current-column-highlight t)
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2))
+  :custom
+  (web-mode-enable-auto-pairing t)
+  (web-mode-enable-current-element-highlight t)
+  (web-mode-enable-part-face t)
+  (web-mode-enable-block-face t)
+  (web-mode-enable-current-column-highlight t)
+  (web-mode-markup-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2))
 
 (use-package js2-mode
   :mode
   (("\\.js\\'" . js2-mode))
   (("\\.jsx\\'" . js2-jsx-mode))
-  :init
-  (setq js2-basic-offset 2)
-  (setq js2-mode-show-parse-errors nil)
-  (setq js2-mode-show-strict-warnings nil))
+  :custom
+  (js2-basic-offset 2)
+  (js2-mode-show-parse-errors nil)
+  (js2-mode-show-strict-warnings nil))
 
 (use-package prettier-js
   :ensure-system-package (prettier . "npm i prettier -g")
@@ -617,16 +629,16 @@
 
 (use-package sql
   :mode "\\.sql$"
-  :init
-  (setq sql-indent-offset 2))
+  :custom
+  (sql-indent-offset 2))
 
 (use-package lua-mode
   :mode "\\.lua$")
 
 (use-package scss-mode
   :mode "\\.scss\\'"
-  :init
-  (setq scss-compile-at-save nil))
+  :custom
+  (scss-compile-at-save nil))
 
 (use-package markdown-mode
   :commands markdown-mode gfm-mode
@@ -634,8 +646,8 @@
   (("README\\.md\\'" . gfm-mode)
    ("\\.md\\'" . markdown-mode)
    ("\\.markdown\\'" . markdown-mode))
-  :init
-  (setq markdown-command "multimarkdown"))
+  :custom
+  (markdown-command "multimarkdown"))
 
 (use-package bison-mode
   :mode
@@ -715,8 +727,8 @@
 (setq-default mu4e-html2text-command 'mu4e-shr2text)
 
 (use-package mu4e-maildirs-extension
-  :init
-  (setq-default mu4e-maildirs-extension-fake-maildir-separator "\\.")
+  :custom
+  (mu4e-maildirs-extension-fake-maildir-separator "\\.")
   :config
   (mu4e-maildirs-extension))
 
