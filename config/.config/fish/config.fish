@@ -27,9 +27,9 @@ if test -d "/usr/local/share/chruby"
 	chruby 2.4.2
 end
 
-status --is-interactive; and source (pyenv init -|psub)
+status is-interactive; and source (pyenv init -|psub)
 
-if status --is-login
+if status is-login
         set -g fish_user_paths ~/bin $fish_user_paths
         set -g fish_user_paths ~/.cask/bin $fish_user_paths
         set -g fish_user_paths ~/.cargo/bin $fish_user_paths
@@ -41,4 +41,6 @@ if status --is-login
         set -x CC (which clang)
         set -x CXX (which clang++)
         set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
+        set -x NVM_DIR ~/.nvm
+        set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 end

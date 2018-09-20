@@ -15,7 +15,8 @@
       user-mail-address "thejefflarson@gmail.com"
       load-prefer-newer t
       cursor-in-non-selected-windows nil
-      highlight-nonselected-windows nil)
+      highlight-nonselected-windows nil
+      column-number-mode t)
 
 (setq window-divider-default-places t
       window-divider-default-bottom-width 1
@@ -231,6 +232,7 @@
   (ivy-use-virtual-buffers t)
   (ivy-height 10)
   (ivy-count-format "(%d/%d) ")
+  (ivy-use-selectable-prompt t)
   :config
   (ivy-mode))
 
@@ -288,6 +290,9 @@
   (treemacs-header-function #'treemacs-projectile-create-header))
 
 (use-package projectile
+  :bind
+  (("C-c p" . projectile-switch-project)
+   ("s-p" . projectile-command-map))
   :custom
   (projectile-completion-system 'ivy)
   (projectile-enable-caching t)
@@ -381,17 +386,13 @@
   :hook (flycheck-mode . flycheck-irony-setup))
 
 (use-package flyspell
-  :hook ((text-mode . flyspell-mode)
-         (flyspell-mode . flyspell-popup-auto-correct-mode)))
+  :hook ((flyspell-mode . flyspell-popup-auto-correct-mode)))
 
 (use-package flyspell-popup
   :commands (flyspell-popup-auto-correct-mode))
 
 (use-package twittering-mode
   :defer t)
-
-(use-package artbollocks-mode
-  :hook ((text-mode org-mode) . artbollocks-mode))
 
 (use-package org
   :commands org-agenda-list
@@ -486,6 +487,12 @@
   (add-to-list 'completion-ignored-extensions ".rbc")
   :custom
   (flycheck-rubocoprc nil))
+
+(use-package yaml-mode
+  :mode "\\.yaml\\'")
+
+(use-package jinja2-mode
+  :mode "\\.twig\\'")
 
 (use-package projectile-rails
   :hook (ruby-mode . projectile-rails-on))
@@ -606,7 +613,7 @@
 (use-package rjsx-mode)
 
 (use-package lsp-javascript-flow
-  :ensure-system-package (flow-language-server . "npm install -g flow-language-server")
+  :ensure-system-package (flow . "npm install -g flow-language-server")
   :hook ((flow-minor-mode . lsp-javascript-flow-enable)
          (js-mode . lsp-javascript-flow-enable)
          (js2-mode . lsp-javascript-flow-enable)
@@ -648,6 +655,10 @@
    ("\\.markdown\\'" . markdown-mode))
   :custom
   (markdown-command "multimarkdown"))
+
+(use-package terraform-mode
+  :config
+  (terraform-format-on-save-mode))
 
 (use-package bison-mode
   :mode

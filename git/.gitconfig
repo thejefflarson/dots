@@ -1,11 +1,11 @@
 [user]
 	name = Jeff Larson
 	email = thejefflarson@gmail.com
-	signingkey = 54119264
+	signingkey = 6EBB4D1554119264
 [color]
 	ui = true
 [push]
-	default = matching
+	default = current
 [commit]
 	gpgsign = true
 [filter "lfs"]
@@ -17,3 +17,7 @@
 	submodule = log
 [core]
 	excludesfile = /Users/jeff/.gitignore_global
+[diff "sopsdiffer"]
+	textconv = sops -d
+[pull]
+	default = current
