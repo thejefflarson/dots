@@ -24,7 +24,7 @@ end
 if test -d "/usr/local/share/chruby"
 	. /usr/local/share/chruby/chruby.fish
 	. /usr/local/share/chruby/auto.fish
-	chruby 2.4.2
+	chruby 2.5.1
 end
 
 status is-interactive; and source (pyenv init -|psub)
@@ -43,4 +43,5 @@ if status is-login
         set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
         set -x NVM_DIR ~/.nvm
         set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+        set -g fish_user_paths "/usr/local/opt/gnu-getopt/bin" $fish_user_paths
 end

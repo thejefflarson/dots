@@ -140,10 +140,6 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
-(require 'pallet)
-(pallet-mode t)
 
 (eval-when-compile
   (require 'use-package))
@@ -269,7 +265,7 @@
   :hook (prog-mode . flycheck-mode)
   :custom
   (flycheck-disabled-checkers
-   '(javascript-jshint python-flake8)))
+   '(javascript-jshint python-flake8 rust)))
 
 (use-package ag
   :defer t)
@@ -286,10 +282,12 @@
   (treemacs-git-mode 'extended))
 
 (use-package treemacs-projectile
+  :requires treemacs
   :custom
   (treemacs-header-function #'treemacs-projectile-create-header))
 
 (use-package projectile
+  :requires treemacs-projectile
   :bind
   (("C-c p" . projectile-switch-project)
    ("s-p" . projectile-command-map))
@@ -481,6 +479,10 @@
 
 (use-package yasnippet-snippets)
 
+(use-package chruby
+  :custom
+  (chruby "2.5.1"))
+
 (use-package ruby-mode
   :mode "\\.rb\\'"
   :init
@@ -545,20 +547,22 @@
 (use-package clojure-mode
   :mode "\\.clj\\'")
 
-(use-package lsp-mode)
-
-(use-package lsp-rust
+(use-package lsp-mode
+  :commands lsp
   :ensure-system-package (rls . "rustup component add rls-preview")
-  :hook (rust-mode . lsp-rust-enable))
+  :hook (prog-mode . lsp))
 
 (use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode))
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-max-width 30)
+  (lsp-ui-doc-max-height 5))
 
 (use-package company-lsp
   :init
   (add-to-list 'company-backends 'company-lsp)
   :custom
-  (company-lsp-async t))
+  (company-lsp-async t))                ;
 
 (use-package rust-mode
   :mode "\\.rs\\'"
@@ -612,17 +616,6 @@
 
 (use-package rjsx-mode)
 
-(use-package lsp-javascript-flow
-  :ensure-system-package (flow . "npm install -g flow-language-server")
-  :hook ((flow-minor-mode . lsp-javascript-flow-enable)
-         (js-mode . lsp-javascript-flow-enable)
-         (js2-mode . lsp-javascript-flow-enable)
-         (rjsx-mode . lsp-javascript-flow-enable)))
-
-(use-package flow-minor-mode
-  :ensure-system-package (flow . "npm install -g flow-bin")
-  :hook (js2-mode . flow-minor-enable-automatically))
-
 (use-package tide
   :ensure-system-package
   ((tsc . "npm i typescript -g")
@@ -636,6 +629,8 @@
 
 (use-package sql
   :mode "\\.sql$"
+  :requires sql-indent chruby
+  :hook sqlind-minor-mode
   :custom
   (sql-indent-offset 2))
 
