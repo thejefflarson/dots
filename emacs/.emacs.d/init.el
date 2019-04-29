@@ -86,7 +86,6 @@
 (when (featurep 'scroll-bar)
   (scroll-bar-mode -1))
 (setq inhibit-startup-screen t)
-(blink-cursor-mode -1)
 (setq ring-bell-function #'ignore)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -829,6 +828,7 @@
 (message "Loaded in `%s'" (emacs-init-time))
 
 (defun layout()
+  "Create my custom layout."
   (interactive)
   (select-frame (make-frame '((user-position . t)
                               (width . 120)
