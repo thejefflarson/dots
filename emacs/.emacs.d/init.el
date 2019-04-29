@@ -47,6 +47,8 @@
   (setq mac-command-modifier 'meta)
   (setq mac-pass-command-to-system nil)
   (setq mac-emulate-three-button-mouse t)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
   (define-key global-map [home] 'beginning-of-line)
   (define-key global-map [end] 'end-of-line)
