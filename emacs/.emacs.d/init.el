@@ -275,7 +275,7 @@
   :defer t)
 
 (use-package projectile-ripgrep
-  :defer t)
+   :defer t)
 
 (use-package treemacs
   :config
@@ -283,12 +283,20 @@
   (treemacs-git-mode 'extended))
 
 (use-package treemacs-projectile
-  :requires treemacs
+  :after treemacs projectile
   :custom
   (treemacs-header-function #'treemacs-projectile-create-header))
 
+(use-package treemacs-magit
+  :after treemacs magit
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :ensure t
+  :config (treemacs-icons-dired-mode))
+
 (use-package projectile
-  :requires treemacs-projectile
   :bind
   (("C-c p" . projectile-switch-project)
    ("s-p" . projectile-command-map))
@@ -630,7 +638,7 @@
 
 (use-package sql
   :mode "\\.sql$"
-  :requires sql-indent chruby
+  :after sql-indent chruby
   :hook sqlind-minor-mode
   :custom
   (sql-indent-offset 2))
@@ -841,7 +849,7 @@
                               (height . 40)
                               (top . 0)
                               (left . -1))))
-  (mu4e))
+   (mu4e))
 
 (provide 'init)
 ;;; init.el ends here
