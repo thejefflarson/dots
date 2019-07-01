@@ -158,8 +158,7 @@
     (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
-(use-package all-the-icons
-  :ensure t)
+(use-package all-the-icons)
 
 (use-package doom-themes
   :config
@@ -167,11 +166,26 @@
   (doom-themes-org-config))
 
 (use-package solaire-mode
-  :hook ((after-change-major-mode after-revert) . turn-on-solaire-mode))
+  :hook
+  ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
+  (minibuffer-setup . solaire-mode-in-minibuffer)
+  :config
+  (solaire-global-mode +1)
+  (solaire-mode-swap-bg))
+
+(use-package heaven-and-hell
+  :init
+  (setq-default heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
+  (setq-default heaven-and-hell-themes
+        '((light . doom-one-light)
+          (dark . doom-vibrant))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
+  :hook (after-init . heaven-and-hell-init-hook)
+  :bind (("C-c <f6>" . heaven-and-hell-load-default-theme)
+         ("<f6>" . heaven-and-hell-toggle-theme)))
 
 (setq-default org-fontify-whole-heading-line t
-      org-fontify-done-headline t
-      org-fontify-quote-and-verse-blocks t)
+              org-fontify-done-headline t
+              org-fontify-quote-and-verse-blocks t)
 
 (require 'faces)
 (when (eq system-type 'darwin)
@@ -191,10 +205,11 @@
   :custom
   (vlf-application 'dont-ask))
 
-(use-package alert)
+(use-package alert
+  :custom
+  (alert-default-style 'osx-notifier))
 
 (use-package exec-path-from-shell
-  :ensure t
   :custom
   (exec-path-from-shell-check-startup-files nil)
   :config
@@ -231,10 +246,9 @@
   (ivy-count-format "(%d/%d) ")
   (ivy-use-selectable-prompt t)
   :config
-  (ivy-mode))
+  (ivy-mode 1))
 
 (use-package counsel
-  :after ivy
   :diminish counsel-mode
   :bind
   (("M-x" . counsel-M-x)
@@ -252,7 +266,6 @@
   (counsel-mode))
 
 (use-package swiper
-  :after ivy
   :bind
   (("C-s" . swiper)))
 
@@ -288,13 +301,7 @@
   (treemacs-header-function #'treemacs-projectile-create-header))
 
 (use-package treemacs-magit
-  :after treemacs magit
-  :ensure t)
-
-(use-package treemacs-icons-dired
-  :after treemacs dired
-  :ensure t
-  :config (treemacs-icons-dired-mode))
+  :after treemacs magit)
 
 (use-package projectile
   :bind
@@ -359,25 +366,6 @@
   :custom
   (company-tooltip-align-annotations t))
 
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map [remap completion-at-point]
-    'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async))
-
-(use-package irony
-  :diminish irony-mode
-  :defer t
-  :commands flycheck-irony-setup
-  :hook ((c++-mode . irony-mode)
-         (c-mode . irony-mode)
-         (irony-mode . my-irony-mode-hook)
-         (irony-mode . irony-cdb-autosetup-compile-options)))
-
-(use-package company-irony
-  :config
-  (add-to-list 'company-backends 'company-irony))
-
 (use-package cmake-mode)
 
 (use-package company-statistics
@@ -387,10 +375,6 @@
    (concat user-cache-directory
            "company-statistics-cache.el"))
   :hook (after-init . company-statistics-mode))
-
-(use-package flycheck-irony
-  :commands flycheck-irony-mode flycheck-irony-setup
-  :hook (flycheck-mode . flycheck-irony-setup))
 
 (use-package flyspell
   :hook ((flyspell-mode . flyspell-popup-auto-correct-mode)))
@@ -442,10 +426,6 @@
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'org-mobile))
 
-(use-package org-alert
-  :config
-  (org-alert-enable))
-
 (use-package org-projectile
   :bind
   (("C-c n p" . org-projectile-project-todo-completing-read))
@@ -473,7 +453,6 @@
   (browse-kill-ring-default-keybindings))
 
 (use-package auto-package-update
-   :ensure t
    :custom
    (auto-package-update-delete-old-versions t)
    (auto-package-update-interval 4)
@@ -511,10 +490,6 @@
 (use-package company-jedi
   :config
   (add-to-list 'company-backends 'company-jedi))
-
-(use-package elpy
-  :config
-  (elpy-enable))
 
 (use-package blacken
   :ensure-system-package (black . "pip install black")
@@ -556,16 +531,22 @@
 (use-package clojure-mode
   :mode "\\.clj\\'")
 
-(use-package lsp-mode
-  :commands lsp
-  :ensure-system-package (rls . "rustup component add rls-preview")
-  :hook (prog-mode . lsp))
-
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
   (lsp-ui-doc-max-width 30)
-  (lsp-ui-doc-max-height 5))
+  (lsp-ui-doc-max-height 5)
+  :config
+  (lsp-ui-flycheck-enable 1))
+
+(use-package lsp-mode
+  :commands lsp
+  :ensure-system-package
+  (rls . "rustup component add rls-preview")
+  :hook
+  (prog-mode . lsp)
+  :custom
+  (lsp-prefer-flymake nil))
 
 (use-package company-lsp
   :init
@@ -596,7 +577,8 @@
 (use-package web-mode
   :mode
   (("\\.html?\\'" . web-mode)
-   ("\\.erb\\'" . web-mode))
+   ("\\.erb\\'" . web-mode)
+   ("\\.tsx\\'" . web-mode))
   :custom
   (web-mode-enable-auto-pairing t)
   (web-mode-enable-current-element-highlight t)
@@ -605,7 +587,10 @@
   (web-mode-enable-current-column-highlight t)
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)
-  (web-mode-code-indent-offset 2))
+  (web-mode-code-indent-offset 2)
+  :hook (web-mode . (lambda ()
+                    (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                      (tide-setup)))))
 
 (use-package js2-mode
   :mode
@@ -630,8 +615,14 @@
   ((tsc . "npm i typescript -g")
    (tslint . "npm i -g tslint")
    (tsfmt . "npm i -g typescript-formatter"))
-  :hook ((before-save . tide-format-before-save)
-         (typescript-mode . tide-setup)))
+  :after
+  (typescript-mode company flycheck)
+  :hook
+  ((typescript-mode . tide-setup)
+   (typescript-mode . lsp-mode)
+   (typescript-mode . tide-hl-identifier-mode)
+   (before-save . tide-format-before-save))
+  :mode (("\\.ts\\'" . typescript-mode)))
 
 (use-package sql-indent
   :defer t)
@@ -681,7 +672,7 @@
 
 (when (eq system-type 'darwin)
   (use-package company-sourcekit
-        :init
+    :init
     (add-to-list 'company-backends 'company-sourcekit)))
 
 

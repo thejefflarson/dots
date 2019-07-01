@@ -26,14 +26,15 @@ if status is-login
     set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/bison/bin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/flex/bin" $fish_user_paths
+    set -g fish_user_paths ~/dev/esp/xtensa-esp32-elf/bin/ $fish_user_paths
     set -x CC (which clang)
     set -x CXX (which clang++)
     set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
     set -x NVM_DIR ~/.nvm
+    set -x IDF_PATH ~/dev/esp/esp-idf
     set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/gnu-getopt/bin" $fish_user_paths
 end
-
 
 if test -d "/usr/local/share/chruby"
     . /usr/local/share/chruby/chruby.fish
@@ -41,7 +42,7 @@ if test -d "/usr/local/share/chruby"
     chruby 2.5.1
 end
 
-if status is-interactive
+if status is-login
     source (pyenv init -|psub)
     pyenv shell 3.7.3
 end
