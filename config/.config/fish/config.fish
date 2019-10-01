@@ -17,7 +17,7 @@ set -x HOMEBREW_NO_ANALYTICS 1
 set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc -a emacs"
 
-if test -d "~/.config/fish/local.fish"
+if test -e $HOME/.config/fish/local.fish
     . ~/.config/fish/local.fish
 end
 
