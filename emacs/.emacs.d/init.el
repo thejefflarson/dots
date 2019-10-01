@@ -43,6 +43,7 @@
 
 ;; OS X specific configuration
 (when (eq system-type 'darwin)
+  (setenv "SHELL" "/usr/local/bin/fish")
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta)
   (setq mac-pass-command-to-system nil)
@@ -210,11 +211,8 @@
   (alert-default-style 'osx-notifier))
 
 (use-package exec-path-from-shell
-  :custom
-  (exec-path-from-shell-check-startup-files nil)
   :config
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "RUST_SRC_PATH"))
+  (exec-path-from-shell-initialize))
 
 (use-package crux
   :bind
@@ -525,6 +523,16 @@
 (use-package css-mode
   :mode "\\.css\\'")
 
+(use-package protobuf-mode
+  :mode "\\.proto\\'")
+
+(use-package bazel-mode
+  :mode "\\.bazel\\'")
+
+(use-package go-mode
+  :hook (go-mode . lsp-deferred)
+  :mode "\\.go\\'")
+
 (use-package csv-mode
   :mode "\\.csv\\'")
 
@@ -541,8 +549,6 @@
 
 (use-package lsp-mode
   :commands lsp
-  :ensure-system-package
-  (rls . "rustup component add rls-preview")
   :hook
   (prog-mode . lsp)
   :custom
@@ -556,6 +562,8 @@
 
 (use-package rust-mode
   :mode "\\.rs\\'"
+  :ensure-system-package
+  (rls . "rustup component add rls rust-analysis rust-src")
   :custom
   (rust-format-on-save t))
 
@@ -664,7 +672,10 @@
   :mode "\\.swift\\'")
 
 (use-package go-mode
-  :mode "\\.go\\'")
+  :mode "\\.go\\'"
+  :ensure-system-package
+  (gopls . "go get golang.org/x/tools/gopls@latest")
+  :hook (go-mode . gofmt-before-save))
 
 (use-package flycheck-swift
   :commands flycheck-swift-setup

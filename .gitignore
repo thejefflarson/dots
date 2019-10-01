@@ -10,3 +10,4 @@ recentf
 /config/.config/fish/functions/__bass.py
 /config/.config/fish/functions/bass.fish
 /config/.config/fish/functions/nvm.fish
+local.fish

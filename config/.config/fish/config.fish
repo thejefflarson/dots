@@ -17,8 +17,13 @@ set -x HOMEBREW_NO_ANALYTICS 1
 set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc -a emacs"
 
+if test -d "~/.config/fish/local.fish"
+    . ~/.config/fish/local.fish
+end
+
 if status is-login
     set -g fish_user_paths ~/bin $fish_user_paths
+    set -g fish_user_paths ~/go/bin $fish_user_paths
     set -g fish_user_paths ~/.cask/bin $fish_user_paths
     set -g fish_user_paths ~/.cargo/bin $fish_user_paths
     set -g fish_user_paths /usr/local/bin $fish_user_paths
