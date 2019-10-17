@@ -529,9 +529,8 @@
 (use-package bazel-mode
   :mode "\\.bazel\\'")
 
-(use-package go-mode
-  :hook (go-mode . lsp-deferred)
-  :mode "\\.go\\'")
+(use-package graphql-mode
+  :mode "\\.graphql\\'")
 
 (use-package csv-mode
   :mode "\\.csv\\'")
@@ -675,7 +674,9 @@
   :mode "\\.go\\'"
   :ensure-system-package
   (gopls . "go get golang.org/x/tools/gopls@latest")
-  :hook (go-mode . gofmt-before-save))
+  :hook
+  ((before-save . gofmt-before-save)
+   (go-mode . lsp-defferred)))
 
 (use-package flycheck-swift
   :commands flycheck-swift-setup
