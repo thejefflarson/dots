@@ -676,7 +676,7 @@
   (gopls . "go get golang.org/x/tools/gopls@latest")
   :hook
   ((before-save . gofmt-before-save)
-   (go-mode . lsp-defferred)))
+   (go-mode . lsp-deferred)))
 
 (use-package flycheck-swift
   :commands flycheck-swift-setup
