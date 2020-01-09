@@ -469,6 +469,12 @@
   :custom
   (chruby "2.5.1"))
 
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :bind
+  ("<tab>" . python-indent-shift-right)
+  ("S-<tab>" . python-indent-shift-left))
+
 (use-package ruby-mode
   :mode "\\.rb\\'"
   :init

@@ -26,19 +26,23 @@ if status is-login
     set -g fish_user_paths ~/go/bin $fish_user_paths
     set -g fish_user_paths ~/.cask/bin $fish_user_paths
     set -g fish_user_paths ~/.cargo/bin $fish_user_paths
+    set -g fish_user_paths ~/dev/go/bin $fish_user_paths
     set -g fish_user_paths /usr/local/bin $fish_user_paths
     set -g fish_user_paths ~/.local/bin $fish_user_paths
-    set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
+    set -g fish_user_paths $fish_user_paths "/usr/local/opt/llvm/bin"
     set -g fish_user_paths "/usr/local/opt/bison/bin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/flex/bin" $fish_user_paths
     set -g fish_user_paths ~/dev/esp/xtensa-esp32-elf/bin/ $fish_user_paths
-    set -x CC (which clang)
-    set -x CXX (which clang++)
+    set -g fish_user_paths ~/bin $fish_user_paths
+    set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+    set -g fish_user_paths "/usr/local/opt/gnu-getopt/bin" $fish_user_paths
     set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
     set -x NVM_DIR ~/.nvm
     set -x IDF_PATH ~/dev/esp/esp-idf
-    set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
-    set -g fish_user_paths "/usr/local/opt/gnu-getopt/bin" $fish_user_paths
+    set -x KUBECONFIG $HOME/.kube/config:$HOME/.kube/pi
+    set -x GOPATH ~/dev/go
+    set -x GOBIN ~/dev/go/bin
+    set -x GO111MODULE on
 end
 
 if test -d "/usr/local/share/chruby"
