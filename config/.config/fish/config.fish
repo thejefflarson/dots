@@ -10,7 +10,7 @@ set __fish_git_prompt_char_upstream_ahead '↑'
 set __fish_git_prompt_char_upstream_behind '↓'
 set __fish_git_prompt_char_upstream_equal '='
 set -x fish_greeting
-set -x LSCOLORS Gxfxcxdxbxegedabagacad
+set -x LSCOLORS gxfxbEaEBxxEhEhBaDaCaD
 
 set -x EDITOR 'emacsclient -c -a emacs'
 set -x HOMEBREW_NO_ANALYTICS 1
@@ -48,6 +48,6 @@ if test -d "/usr/local/share/chruby"
 end
 
 if status is-login
-    source (pyenv init -|psub)
+    pyenv init - | source
     pyenv shell 3.7.3
 end

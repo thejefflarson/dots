@@ -1,13 +1,10 @@
 [user]
 	name = Jeff Larson
 	email = thejefflarson@gmail.com
-	signingkey = 6EBB4D1554119264
 [color]
 	ui = true
 [push]
 	default = current
-[commit]
-	gpgsign = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

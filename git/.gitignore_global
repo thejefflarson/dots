@@ -1,3 +1,6 @@
 .#*
 .tern-port
 .DS_Store
+*~
+\#*\#
+codegen*

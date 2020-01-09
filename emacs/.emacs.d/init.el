@@ -610,7 +610,7 @@
 
 (use-package prettier-js
   :ensure-system-package (prettier . "npm i prettier -g")
-  :hook ((js2-mode js2-jsx-mode css-mode scss-mode) . prettier-js-mode))
+  :hook ((js2-mode json-mode js2-jsx-mode css-mode scss-mode tide-mode) . prettier-js-mode))
 
 (use-package json-mode
   :mode "\\.json\\'")
@@ -622,14 +622,10 @@
   ((tsc . "npm i typescript -g")
    (tslint . "npm i -g tslint")
    (tsfmt . "npm i -g typescript-formatter"))
-  :after
-  (typescript-mode company flycheck)
   :hook
   ((typescript-mode . tide-setup)
    (typescript-mode . lsp-mode)
-   (typescript-mode . tide-hl-identifier-mode)
-   (before-save . tide-format-before-save))
-  :mode (("\\.ts\\'" . typescript-mode)))
+   (typescript-mode . tide-hl-identifier-mode)))
 
 (use-package sql-indent
   :defer t)
