@@ -17,10 +17,6 @@ set -x HOMEBREW_NO_ANALYTICS 1
 set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc -a emacs"
 
-if test -e $HOME/.config/fish/local.fish
-    . ~/.config/fish/local.fish
-end
-
 if status is-login
     set -g fish_user_paths ~/bin $fish_user_paths
     set -g fish_user_paths ~/go/bin $fish_user_paths
@@ -36,6 +32,7 @@ if status is-login
     set -g fish_user_paths ~/bin $fish_user_paths
     set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/gnu-getopt/bin" $fish_user_paths
+    set -g fish_user_paths "/usr/local/opt/qt/bin" $fish_user_paths
     set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
     set -x NVM_DIR ~/.nvm
     set -x IDF_PATH ~/dev/esp/esp-idf
@@ -45,13 +42,8 @@ if status is-login
     set -x GO111MODULE on
 end
 
-if test -d "/usr/local/share/chruby"
-    . /usr/local/share/chruby/chruby.fish
-    . /usr/local/share/chruby/auto.fish
-    chruby 2.5.1
+if test -e $HOME/.config/fish/local.fish
+    source ~/.config/fish/local.fish
 end
 
-if status is-login
-    source (pyenv init -|psub)
-    pyenv shell 3.7.3
-end
+source /usr/local/opt/asdf/asdf.fish

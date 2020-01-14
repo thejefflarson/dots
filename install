@@ -17,10 +17,13 @@ Please remember to install the following packages:
   terminal-notifier
   cask
   rustup
-  pyenv
+  asdf
 
 Installing requirements...
 "
+brew install asdf
+asdf plugin install python
+asdf install python latest
 pip install -U flake8 jedi autopep8 yapf importmagic
 npm i -g eslint stylelint tern
 cargo install racer

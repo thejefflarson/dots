@@ -272,6 +272,7 @@
   :config
   (global-undo-tree-mode))
 
+(setq-default flycheck-verilog-verilator-executable "verilator")
 (use-package flycheck
   :commands flycheck-mode
   :hook (prog-mode . flycheck-mode)
@@ -292,6 +293,10 @@
   :config
   (treemacs-filewatch-mode t)
   (treemacs-git-mode 'extended))
+
+(use-package lsp-treemacs
+  :config
+  (lsp-treemacs-sync-mode 1))
 
 (use-package treemacs-projectile
   :after treemacs projectile
@@ -559,11 +564,20 @@
   :custom
   (lsp-prefer-flymake nil))
 
+(use-package verilog-mode
+  :ensure-system-package
+  :hook
+  (verilog-mode . (lambda ()
+                    (setq flycheck-checker 'verilog-verilator)))
+  :config
+  ;; Jesus autocomplete sucks in this mode, just because you can doesn't mean you should
+  (clear-abbrev-table verilog-mode-abbrev-table))
+
 (use-package company-lsp
   :init
   (add-to-list 'company-backends 'company-lsp)
   :custom
-  (company-lsp-async t))                ;
+  (company-lsp-async t))
 
 (use-package rust-mode
   :mode "\\.rs\\'"
