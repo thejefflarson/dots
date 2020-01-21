@@ -490,6 +490,9 @@
 (use-package yaml-mode
   :mode "\\.yaml\\'")
 
+(add-hook 'makefile-mode-hook
+  (lambda () (setq indent-tabs-mode t)))
+
 (use-package jinja2-mode
   :mode "\\.twig\\'")
 
@@ -564,11 +567,16 @@
   :custom
   (lsp-prefer-flymake nil))
 
+(setq-default lsp-clients-verilog-executable "svls")
 (use-package verilog-mode
-  :ensure-system-package
   :hook
   (verilog-mode . (lambda ()
                     (setq flycheck-checker 'verilog-verilator)))
+  :custom
+  (verilog-indent-level 2)
+  (verilog-case-indent-level 2)
+  (verilog-indent-level-module 2)
+  (verilog-indent-level-behavioral 2)
   :config
   ;; Jesus autocomplete sucks in this mode, just because you can doesn't mean you should
   (clear-abbrev-table verilog-mode-abbrev-table))
