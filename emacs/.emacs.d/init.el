@@ -573,9 +573,12 @@
 
 (setq-default lsp-clients-verilog-executable "svls")
 (use-package verilog-mode
+  :ensure-system-package
+  (svls . "cargo install svls")
   :hook
   (verilog-mode . (lambda ()
-                    (setq flycheck-checker 'verilog-verilator)))
+                    (setq flycheck-checker 'verilog-verilator)
+                    (flycheck-add-next-checker 'verilog-verilator 'lsp-ui)))
   :custom
   (verilog-indent-level 2)
   (verilog-case-indent-level 2)
