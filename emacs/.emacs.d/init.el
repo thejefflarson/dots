@@ -535,7 +535,8 @@
   :mode "\\.css\\'")
 
 (use-package protobuf-mode
-  :mode "\\.proto\\'")
+  :mode "\\.proto\\'"
+  :hook (protobuf-mode . (lambda () (c-add-style "protobuf-style" '((c-basic-offset 4)) t))))
 
 (use-package bazel-mode
   :mode "\\.bazel\\'")
@@ -565,7 +566,6 @@
   (lsp-prefer-flymake nil))
 
 (use-package verilog-mode
-  :ensure-system-package
   :hook
   (verilog-mode . (lambda ()
                     (setq flycheck-checker 'verilog-verilator)))

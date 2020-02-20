@@ -16,6 +16,7 @@ set -x EDITOR 'emacsclient -c -a emacs'
 set -x HOMEBREW_NO_ANALYTICS 1
 set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc -a emacs"
+alias bazel="bazelisk"
 
 if status is-login
     set -g fish_user_paths ~/bin $fish_user_paths
@@ -33,6 +34,7 @@ if status is-login
     set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/gnu-getopt/bin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/qt/bin" $fish_user_paths
+    set -g fish_user_paths ~/.poetry/bin $fish_user_paths
     set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
     set -x NVM_DIR ~/.nvm
     set -x IDF_PATH ~/dev/esp/esp-idf
