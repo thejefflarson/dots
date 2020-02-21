@@ -164,7 +164,9 @@
 (use-package doom-themes
   :config
   (load-theme 'doom-vibrant t)
-  (doom-themes-org-config))
+  (doom-themes-org-config)
+  (setq-default doom-themes-treemacs-theme "doom-colors")
+  (doom-themes-treemacs-config))
 
 (use-package solaire-mode
   :hook
@@ -559,14 +561,15 @@
   (lsp-ui-doc-max-width 30)
   (lsp-ui-doc-max-height 5)
   :config
-  (lsp-ui-flycheck-enable 1))
+  (lsp-flycheck-enable 1))
 
 (use-package lsp-mode
   :commands lsp
   :hook
   (prog-mode . lsp)
   :custom
-  (lsp-prefer-flymake nil))
+  (lsp-prefer-flymake nil)
+  (lsp-enable-file-watchers nil))
 
 (setq-default lsp-clients-verilog-executable "svls")
 (use-package verilog-mode
