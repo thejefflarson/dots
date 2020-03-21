@@ -18,20 +18,21 @@ set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc -a emacs"
 alias bazel="bazelisk"
 
+source /usr/local/opt/asdf/asdf.fish
+asdf global python 3.8.1
+
 if status is-login
     set -g fish_user_paths ~/bin $fish_user_paths
     set -g fish_user_paths ~/go/bin $fish_user_paths
     set -g fish_user_paths ~/.cask/bin $fish_user_paths
     set -g fish_user_paths ~/.cargo/bin $fish_user_paths
     set -g fish_user_paths ~/dev/go/bin $fish_user_paths
-    set -g fish_user_paths /usr/local/bin $fish_user_paths
     set -g fish_user_paths ~/.local/bin $fish_user_paths
     set -g fish_user_paths $fish_user_paths "/usr/local/opt/llvm/bin"
     set -g fish_user_paths "/usr/local/opt/bison/bin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/flex/bin" $fish_user_paths
     set -g fish_user_paths ~/dev/esp/xtensa-esp32-elf/bin/ $fish_user_paths
     set -g fish_user_paths ~/bin $fish_user_paths
-    set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/gnu-getopt/bin" $fish_user_paths
     set -g fish_user_paths "/usr/local/opt/qt/bin" $fish_user_paths
     set -g fish_user_paths ~/.poetry/bin $fish_user_paths
@@ -47,5 +48,3 @@ end
 if test -e $HOME/.config/fish/local.fish
     source ~/.config/fish/local.fish
 end
-
-source /usr/local/opt/asdf/asdf.fish
