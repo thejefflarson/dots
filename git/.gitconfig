@@ -18,3 +18,4 @@
 	textconv = sops -d
 [pull]
 	default = current
+	rebase = true

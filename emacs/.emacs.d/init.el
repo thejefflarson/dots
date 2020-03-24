@@ -193,7 +193,9 @@
 (require 'faces)
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Monaco")
-  (set-face-attribute 'default nil :height 120))
+  (set-face-attribute 'default nil :height 120)
+  (set-face-attribute 'variable-pitch nil :family "Monaco")
+  (set-face-attribute 'variable-pitch nil :height 120))
 (when (eq system-type 'gnu/linux)
   (set-face-attribute 'default nil :family "Source Code Pro")
   (set-face-attribute 'default nil :height 100))
@@ -230,6 +232,7 @@
 
 (use-package rainbow-delimiters
   :defer t
+  :diminish rainbow-delimiters-mode
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package ivy
@@ -296,10 +299,6 @@
   (treemacs-filewatch-mode t)
   (treemacs-git-mode 'extended))
 
-(use-package lsp-treemacs
-  :config
-  (lsp-treemacs-sync-mode 1))
-
 (use-package treemacs-projectile
   :after treemacs projectile
   :custom
@@ -332,7 +331,7 @@
 (use-package kurecolor)
 
 (use-package rainbow-mode
-  :hook css-mode)
+  :hook (css-mode web-mode typescript-mode))
 
 (use-package diff-hl
   :hook (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -369,7 +368,9 @@
   :bind (("C-;" . company-indent-or-complete-common))
   :hook (prog-mode . company-mode)
   :custom
-  (company-tooltip-align-annotations t))
+  (company-tooltip-align-annotations t)
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.5))
 
 (use-package cmake-mode)
 
@@ -558,7 +559,7 @@
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
-  (lsp-ui-doc-max-width 30)
+  (lsp-ui-doc-max-width 50)
   (lsp-ui-doc-max-height 5)
   :config
   (lsp-flycheck-enable 1))
@@ -566,10 +567,16 @@
 (use-package lsp-mode
   :commands lsp
   :hook
-  (prog-mode . lsp)
+  ((prog-mode . lsp)
+   (lsp-mode . lsp-enable-which-key-integration))
   :custom
+  (lsp-keymap-prefix "s-l")
   (lsp-prefer-flymake nil)
   (lsp-enable-file-watchers nil))
+
+(use-package company-lsp :commands company-lsp)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 (setq-default lsp-clients-verilog-executable "svls")
 (use-package verilog-mode
@@ -587,12 +594,6 @@
   :config
   ;; Jesus autocomplete sucks in this mode, just because you can doesn't mean you should
   (clear-abbrev-table verilog-mode-abbrev-table))
-
-(use-package company-lsp
-  :init
-  (add-to-list 'company-backends 'company-lsp)
-  :custom
-  (company-lsp-async t))
 
 (use-package rust-mode
   :mode "\\.rs\\'"
@@ -706,8 +707,7 @@
   :ensure-system-package
   (gopls . "go get golang.org/x/tools/gopls@latest")
   :hook
-  ((before-save . gofmt-before-save)
-   (go-mode . lsp-deferred)))
+  ((before-save . gofmt-before-save)))
 
 (use-package flycheck-swift
   :commands flycheck-swift-setup
