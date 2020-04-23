@@ -42,6 +42,8 @@ if status is-login
     set -x KUBECONFIG $HOME/.kube/config:$HOME/.kube/pi
     set -x GOPATH ~/dev/go
     set -x GOBIN ~/dev/go/bin
+    set -x GATSBY_TELEMETRY_DISABLED 1
+    set -x HOMEBREW_NO_ANALYTICS 1
     set -x GO111MODULE on
 end
 
