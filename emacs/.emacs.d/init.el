@@ -557,12 +557,11 @@
   :mode "\\.clj\\'")
 
 (use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
+  :commands lsp-ui-mode
   :custom
   (lsp-ui-doc-max-width 50)
   (lsp-ui-doc-max-height 5)
-  :config
-  (lsp-flycheck-enable 1))
+  (lsp-diagnostic-package :flycheck))
 
 (use-package lsp-mode
   :commands lsp
@@ -570,9 +569,7 @@
   ((prog-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration))
   :custom
-  (lsp-keymap-prefix "s-l")
-  (lsp-prefer-flymake nil)
-  (lsp-enable-file-watchers nil))
+  (lsp-keymap-prefix "s-l"))
 
 (use-package company-lsp :commands company-lsp)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
