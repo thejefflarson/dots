@@ -315,6 +315,7 @@
   (projectile-completion-system 'ivy)
   (projectile-enable-caching t)
   (projectile-switch-project-action #'treemacs-projectile)
+  (treemacs-file-face 'default)
   :config
   (projectile-mode))
 
