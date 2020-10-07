@@ -49,5 +49,5 @@ if status is-login
 end
 
 if test -e $HOME/.config/fish/local.fish
-    source ~/.config/fish/local.fish
+    . ~/.config/fish/local.fish
 end

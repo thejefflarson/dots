@@ -46,8 +46,8 @@
   (setenv "SHELL" "/usr/local/bin/fish")
   (setq mac-option-modifier 'super)
   (setq mac-command-modifier 'meta)
-  (setq mac-pass-command-to-system nil)
-  (setq mac-emulate-three-button-mouse t)
+  (setq-default mac-pass-command-to-system nil)
+  (setq-default mac-emulate-three-button-mouse t)
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (add-to-list 'default-frame-alist '(ns-appearance . dark))
   (define-key key-translation-map (kbd "<s-mouse-1>") (kbd "<mouse-2>"))
@@ -109,10 +109,7 @@
 
 ;; other niceties
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-hook 'prog-mode-hook 'whitespace-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(setq-default whitespace-style '(face trailing lines-tail))
-(setq-default whitespace-line-column 100)
 (show-paren-mode 1)
 (electric-pair-mode 1)
 (recentf-mode)
@@ -156,7 +153,7 @@
 
 ;; Theme
 (defadvice load-theme
-    (before theme-dont-propagate activate)
+  (before theme-dont-propagate activate)
   (mapc #'disable-theme custom-enabled-themes))
 
 (use-package all-the-icons)
@@ -205,8 +202,7 @@
 (epa-file-enable)
 
 (use-package vlf
-  :config
-  (require 'vlf-setup)
+  :requires 'vlf-setup
   :custom
   (vlf-application 'dont-ask))
 
@@ -389,9 +385,6 @@
 (use-package flyspell-popup
   :commands (flyspell-popup-auto-correct-mode))
 
-(use-package twittering-mode
-  :defer t)
-
 (use-package org
   :commands org-agenda-list
   :bind
@@ -515,11 +508,17 @@
   :ensure-system-package (pipenv . "pip install pipenv")
   :hook (python-mode . pipenv-mode))
 
-(use-package cc-mode
-  :defer t
-  :custom
-  (c-basic-offset 2)
-  (c-default-style "linux"))
+(setq-default c-basic-offset 2)
+(setq-default c-syntactic-indentation nil)
+(setq-default c-tab-always-indent t)
+(setq-default tab-width 2)
+(setq-default c-toggle-auto-newline 1)
+
+(use-package clang-format+
+  :diminish clang-format+-mode
+  :hook
+  ((c-mode . clang-format+-mode)
+   (c++-mode . clang-format+-mode)))
 
 (use-package platformio-mode
   :hook (c++-mode . platformio-conditionally-enable))
@@ -558,11 +557,13 @@
   :mode "\\.clj\\'")
 
 (use-package lsp-ui
-  :commands lsp-ui-mode
+  :hook (lsp-mode . lsp-ui-mode)
   :custom
   (lsp-ui-doc-max-width 50)
   (lsp-ui-doc-max-height 5)
   (lsp-diagnostic-package :flycheck))
+  (lsp-enable-indentation nil)
+  (lsp-enable-on-type-formatting nil))
 
 (use-package lsp-mode
   :commands lsp
@@ -570,20 +571,22 @@
   ((prog-mode . lsp)
    (lsp-mode . lsp-enable-which-key-integration))
   :custom
-  (lsp-keymap-prefix "s-l"))
+  (lsp-keymap-prefix "s-l")
+  (lsp-prefer-flymake nil)
+  (lsp-enable-file-watchers nil))
 
 (use-package company-lsp :commands company-lsp)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-(setq-default lsp-clients-verilog-executable "svls")
+;; (setq-default lsp-clients-verilog-executable "svls")
 (use-package verilog-mode
   :ensure-system-package
   (svls . "cargo install svls")
-  :hook
-  (verilog-mode . (lambda ()
-                    (setq flycheck-checker 'verilog-verilator)
-                    (flycheck-add-next-checker 'verilog-verilator 'lsp-ui)))
+  ;; :hook
+  ;; (verilog-mode . (lambda ()
+  ;;                   (setq flycheck-checker 'verilog-verilator)
+  ;;                   (flycheck-add-next-checker 'verilog-verilator 'lsp)))
   :custom
   (verilog-indent-level 2)
   (verilog-case-indent-level 2)
@@ -622,7 +625,7 @@
    ("\\.tsx\\'" . web-mode))
   :custom
   (web-mode-enable-auto-pairing t)
-  (web-mode-enable-current-element-highlight t)
+  (web-mode-enable-current-element-highlight nil)
   (web-mode-enable-part-face t)
   (web-mode-enable-block-face t)
   (web-mode-enable-current-column-highlight t)
