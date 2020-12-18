@@ -320,6 +320,9 @@
   :custom
   (magit-completing-read-function 'ivy-completing-read))
 
+(use-package kubernetes
+  :commands (kubernetes-overview))
+
 (use-package which-key
   :diminish which-key-mode
   :config
@@ -561,7 +564,7 @@
   :custom
   (lsp-ui-doc-max-width 50)
   (lsp-ui-doc-max-height 5)
-  (lsp-diagnostic-package :flycheck))
+  (lsp-diagnostic-package :flycheck)
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil))
 
