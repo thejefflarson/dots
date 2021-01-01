@@ -196,6 +196,12 @@
 (when (eq system-type 'gnu/linux)
   (set-face-attribute 'default nil :family "Source Code Pro")
   (set-face-attribute 'default nil :height 100))
+
+(use-package unicode-fonts
+   :ensure t
+   :config
+   (unicode-fonts-setup))
+
 
 ;; More Packages
 (require 'epa-file)
