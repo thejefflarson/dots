@@ -200,6 +200,12 @@
 (when (eq system-type 'gnu/linux)
   (set-face-attribute 'default nil :family "Source Code Pro")
   (set-face-attribute 'default nil :height 100))
+
+(use-package unicode-fonts
+   :ensure t
+   :config
+   (unicode-fonts-setup))
+
 
 ;; More Packages
 (require 'epa-file)
@@ -323,6 +329,9 @@
   :bind (("C-c s" . magit-status))
   :custom
   (magit-completing-read-function 'ivy-completing-read))
+
+(use-package kubernetes
+  :commands (kubernetes-overview))
 
 (use-package which-key
   :diminish which-key-mode
