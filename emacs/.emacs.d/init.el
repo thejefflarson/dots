@@ -99,11 +99,14 @@
 
 ;; Revert when file changes
 (global-auto-revert-mode t)
-
 (setq-default imenu-auto-rescan t)
+
+;; text-mode should wrap
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
+  (setq dired-use-ls-dired t)
   (setq insert-directory-program "/usr/local/bin/gls")
   (setq dired-listing-switches "-aBhl --group-directories-first"))
 
@@ -152,9 +155,10 @@
 
 
 ;; Theme
-(defadvice load-theme
-  (before theme-dont-propagate activate)
+(defadvice load-theme (before theme-dont-propagate activate)
+  "Disable current color scheme, before enabling another."
   (mapc #'disable-theme custom-enabled-themes))
+(ad-activate 'load-theme)
 
 (use-package all-the-icons)
 
@@ -391,27 +395,28 @@
   (("C-c l" . org-store-link)
    ("C-c a" . org-agenda)
    ("C-c c" . org-capture))
+  :hook
+  (org . org-indent-mode)
   :init
-  (load-library "~/.emacs.d/secrets.el.gpg")
-  (ensure-directory "~/SpiderOak Hive/org/")
-  (ensure-directory "~/SpiderOak Hive/journal/")
+  (ensure-directory "~/Documents/org/")
+  (ensure-directory "~/Documents/journal/")
   :custom
   (org-log-redeadline 'note)
   (org-log-reschedule 'note)
   (org-log-refile 'time)
   (org-use-tag-inheritance t)
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-  (org-mobile-inbox-for-pull "~/SpiderOak Hive/org/notes.org")
-  (org-directory "~/SpiderOak Hive/org")
-  (org-agenda-files (list "~/SpiderOak Hive/org/work.org"
-                          "~/SpiderOak Hive/org/family.org"))
-  (org-default-notes-file "~/SpiderOak Hive/org/notes.org")
+  (org-mobile-inbox-for-pull "~/Documents/org/notes.org")
+  (org-directory "~/Documents/org")
+  (org-agenda-files (list "~/Documents/org/work.org"
+                          "~/Documents/org/family.org"))
+  (org-default-notes-file "~/Documents/org/notes.org")
   (org-agenda-window-setup 'only-window)
   (org-hierarchical-todo-statistics nil)
   (org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/SpiderOak Hive/org/work.org" "Tasks")
+        '(("t" "Todo" entry (file+headline "~/Documents/org/work.org" "Tasks")
            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
-          ("n" "Note" entry (file "~/SpiderOak Hive/org/notes.org")
+          ("n" "Note" entry (file "~/Documents/org/notes.org")
            "* %?\nCaptured %<%Y-%m-%d %H:%M>")))
   (org-tag-alist '((:startgroup . nil)
                         ("@work" . ?w) ("@home" . ?h)
@@ -426,18 +431,40 @@
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'org-mobile))
 
+(ensure-directory "~/Documents/org/roam")
+(ensure-directory "~/Documents/org/roam/daily")
+(use-package org-roam
+  :hook
+  (after-init . org-roam-mode)
+  :bind
+  (("C-c b f" . org-roam-find-file)
+   ("C-c b i" . org-roam-insert)
+   ("C-c b d" . org-roam-dailies-find-today))
+  :diminish t
+  :custom
+  (org-roam-complete-everywhere t)
+  (org-roam-directory "~/Documents/org/roam")
+  (org-roam-dailies-directory "~/Documents/org/roam/daily")
+  (org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         #'org-roam-capture--get-point
+         "* %?"
+         :file-name "daily/%<%Y-%m-%d>"
+         :head "#+title: %<%Y-%m-%d>\n\n"))))
+
 (use-package org-projectile
+  :after org
   :bind
   (("C-c n p" . org-projectile-project-todo-completing-read))
-  :config
-  (setq org-projectile-projects-file "~/SpiderOak Hive/org/work.org")
-  (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
+  :custom
+  (org-projectile-projects-file "~/Documents/org/work.org")
+  (org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
 
 (use-package org-journal
   :bind
   ("C-c C-j" . org-journal-new-entry)
   :custom
-  (org-journal-dir "~/SpiderOak Hive/journal/")
+  (org-journal-dir "~/Documents/journal/")
   (org-support-shift-select t))
 
 (use-package cider
@@ -561,7 +588,7 @@
   :custom
   (lsp-ui-doc-max-width 50)
   (lsp-ui-doc-max-height 5)
-  (lsp-diagnostic-package :flycheck))
+  (lsp-diagnostic-package :flycheck)
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil))
 
@@ -573,7 +600,8 @@
   :custom
   (lsp-keymap-prefix "s-l")
   (lsp-prefer-flymake nil)
-  (lsp-enable-file-watchers nil))
+  (lsp-enable-file-watchers nil)
+  (lsp-rust-server 'rust-analyzer))
 
 (use-package company-lsp :commands company-lsp)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
@@ -599,7 +627,8 @@
 (use-package rust-mode
   :mode "\\.rs\\'"
   :ensure-system-package
-  (rls . "rustup component add rls rust-analysis rust-src")
+  ((rls . "rustup component add rls rust-analysis rust-src")
+  (rust-analyzer . "curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-mac -o ~/bin/rust-analyzer; chmod +x ~/bin/rust-analyzer"))
   :custom
   (rust-format-on-save t))
 
