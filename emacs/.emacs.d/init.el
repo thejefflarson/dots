@@ -179,10 +179,10 @@
 
 (use-package heaven-and-hell
   :init
-  (setq-default heaven-and-hell-theme-type 'dark) ;; Omit to use light by default
+  (setq-default heaven-and-hell-theme-type 'dark)
   (setq-default heaven-and-hell-themes
         '((light . doom-one-light)
-          (dark . doom-vibrant))) ;; Themes can be the list: (dark . (tsdh-dark wombat))
+          (dark . doom-vibrant)))
   :hook (after-init . heaven-and-hell-init-hook)
   :bind (("C-c <f6>" . heaven-and-hell-load-default-theme)
          ("<f6>" . heaven-and-hell-toggle-theme)))
