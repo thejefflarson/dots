@@ -104,6 +104,7 @@
 ;; text-mode should wrap
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
+
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
   (setq dired-use-ls-dired t)
@@ -393,7 +394,9 @@
   :hook (after-init . company-statistics-mode))
 
 (use-package flyspell
-  :hook ((flyspell-mode . flyspell-popup-auto-correct-mode)))
+  :hook
+  ((flyspell-mode . flyspell-popup-auto-correct-mode)
+   (text-mode . flyspell-mode)))
 
 (use-package flyspell-popup
   :commands (flyspell-popup-auto-correct-mode))
