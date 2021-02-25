@@ -543,9 +543,9 @@
   :ensure-system-package (black . "pip install black")
   :hook (python-mode . blacken-mode))
 
-(use-package pipenv
-  :ensure-system-package (pipenv . "pip install pipenv")
-  :hook (python-mode . pipenv-mode))
+(use-package poetry
+  :ensure-system-package (poetry . "pip install poetry")
+  :hook (python-mode . poetry-tracking-mode))
 
 (setq-default c-basic-offset 2)
 (setq-default c-syntactic-indentation nil)
