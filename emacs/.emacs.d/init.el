@@ -9,8 +9,9 @@
 (setq gc-cons-threshold (eval-when-compile (* 100 1024 1024)))
 
 (setq-default indent-tabs-mode nil
+              tab-width 2
               fill-column 100)
-
+(setq indent-line-function 'insert-tab)
 (setq user-full-name "Jeff Larson"
       user-mail-address "thejefflarson@gmail.com"
       load-prefer-newer t
@@ -550,7 +551,6 @@
 (setq-default c-basic-offset 2)
 (setq-default c-syntactic-indentation nil)
 (setq-default c-tab-always-indent t)
-(setq-default tab-width 2)
 (setq-default c-toggle-auto-newline 1)
 
 (use-package clang-format+
@@ -658,6 +658,7 @@
 (setq-default js2-basic-offset 2)
 (setq-default js3-indent-level 2)
 (setq-default typescript-indent-level 2)
+(setq-default tide-format-options '(:indentSize 2 :tabSize 2))
 
 (use-package web-mode
   :mode
