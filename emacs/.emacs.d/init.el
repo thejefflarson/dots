@@ -107,7 +107,7 @@
 
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
-  (setq dired-use-ls-dired t)
+  (setq-default dired-use-ls-dired t)
   (setq insert-directory-program "/usr/local/bin/gls")
   (setq dired-listing-switches "-aBhl --group-directories-first"))
 
@@ -380,8 +380,7 @@
   :hook (prog-mode . company-mode)
   :custom
   (company-tooltip-align-annotations t)
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.5))
+  (company-minimum-prefix-length 1))
 
 (use-package cmake-mode)
 
@@ -446,6 +445,7 @@
 (ensure-directory "~/Documents/org/roam")
 (ensure-directory "~/Documents/org/roam/daily")
 (use-package org-roam
+  :diminish t
   :hook
   (after-init . org-roam-mode)
   :bind
@@ -615,23 +615,24 @@
   (lsp-enable-file-watchers nil)
   (lsp-rust-server 'rust-analyzer))
 
-(use-package company-lsp :commands company-lsp)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-;; (setq-default lsp-clients-verilog-executable "svls")
+(setq-default lsp-clients-verilog-executable "svls")
 (use-package verilog-mode
   :ensure-system-package
   (svls . "cargo install svls")
-  ;; :hook
-  ;; (verilog-mode . (lambda ()
-  ;;                   (setq flycheck-checker 'verilog-verilator)
-  ;;                   (flycheck-add-next-checker 'verilog-verilator 'lsp)))
+  :hook
+  (verilog-mode . (lambda ()
+                    (setq flycheck-checker 'verilog-verilator)
+                    (flycheck-add-next-checker 'verilog-verilator 'lsp)))
   :custom
   (verilog-indent-level 2)
   (verilog-case-indent-level 2)
   (verilog-indent-level-module 2)
   (verilog-indent-level-behavioral 2)
+  (verilog-indent-declaration 2)
+  (verilog-auto-newline nil)
   :config
   ;; Jesus autocomplete sucks in this mode, just because you can doesn't mean you should
   (clear-abbrev-table verilog-mode-abbrev-table))

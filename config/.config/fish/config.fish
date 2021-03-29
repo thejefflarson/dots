@@ -11,11 +11,10 @@ set __fish_git_prompt_char_upstream_behind '↓'
 set __fish_git_prompt_char_upstream_equal '='
 set -x fish_greeting
 set -x LSCOLORS gxfxbEaEBxxEhEhBaDaCaD
-
-set -x EDITOR 'emacsclient -c -a emacs'
+set -x EDITOR 'emacsclient -c'
 set -x HOMEBREW_NO_ANALYTICS 1
 set -x PIPENV_SHELL_COMPAT 1
-alias e "emacsclient -nc -a emacs"
+alias e "emacsclient -nc"
 alias bazel="bazelisk"
 
 source /usr/local/opt/asdf/asdf.fish
