@@ -18,7 +18,6 @@ alias e "emacsclient -nc"
 alias bazel="bazelisk"
 
 source /usr/local/opt/asdf/asdf.fish
-asdf global python 3.8.1
 
 if status is-login
     set -g fish_user_paths ~/bin $fish_user_paths
