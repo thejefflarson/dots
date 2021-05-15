@@ -11,7 +11,7 @@
 (setq-default indent-tabs-mode nil
               tab-width 2
               fill-column 100)
-(setq indent-line-function 'insert-tab)
+
 (setq user-full-name "Jeff Larson"
       user-mail-address "thejefflarson@gmail.com"
       load-prefer-newer t
@@ -590,13 +590,6 @@
 (use-package css-mode
   :mode "\\.css\\'")
 
-(use-package protobuf-mode
-  :mode "\\.proto\\'"
-  :hook (protobuf-mode . (lambda () (c-add-style "protobuf-style" '((c-basic-offset 4)) t))))
-
-(use-package bazel-mode
-  :mode "\\.bazel\\'")
-
 (use-package graphql-mode
   :mode "\\.graphql\\'")
 
@@ -932,13 +925,7 @@
                               (height . 40)
                               (top . -1)
                               (left . -1))))
-  (org-agenda-list)
-  (select-frame (make-frame '((user-position . t)
-                              (width . 120)
-                              (height . 40)
-                              (top . 0)
-                              (left . -1))))
-   (mu4e))
+  (org-agenda-list))
 
 (provide 'init)
 ;;; init.el ends here
