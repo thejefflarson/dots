@@ -401,6 +401,16 @@
 (use-package flyspell-popup
   :commands (flyspell-popup-auto-correct-mode))
 
+(use-package deft
+  :after org
+  :bind
+  ("C-x C-g" . deft)
+  :custom
+  (deft-recursive t)
+  (deft-use-filter-string-for-filename t)
+  (deft-default-extension "org")
+  (deft-directory "~/Documents/org/"))
+
 (use-package org
   :commands org-agenda-list
   :bind
@@ -411,7 +421,7 @@
   (org . org-indent-mode)
   :init
   (ensure-directory "~/Documents/org/")
-  (ensure-directory "~/Documents/journal/")
+  (ensure-directory "~/Documents/org/roam")
   :custom
   (org-log-redeadline 'note)
   (org-log-reschedule 'note)
@@ -420,13 +430,12 @@
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (org-mobile-inbox-for-pull "~/Documents/org/notes.org")
   (org-directory "~/Documents/org")
-  (org-agenda-files (list "~/Documents/org/work.org"
-                          "~/Documents/org/family.org"))
+  (org-agenda-files (list "~/Documents/org/todos.org"))
   (org-default-notes-file "~/Documents/org/notes.org")
   (org-agenda-window-setup 'only-window)
   (org-hierarchical-todo-statistics nil)
   (org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/Documents/org/work.org" "Tasks")
+        '(("t" "Todo" entry (file+headline "~/Documents/org/todos.org" "Tasks")
            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
           ("n" "Note" entry (file "~/Documents/org/notes.org")
            "* %?\nCaptured %<%Y-%m-%d %H:%M>")))
@@ -470,12 +479,14 @@
   :bind
   (("C-c n p" . org-projectile-project-todo-completing-read))
   :custom
-  (org-projectile-projects-file "~/Documents/org/work.org")
+  (org-projectile-projects-file "~/Documents/org/todos.org")
   (org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
 
 (use-package org-journal
   :bind
   ("C-c C-j" . org-journal-new-entry)
+  :init
+  (ensure-directory "~/Documents/journal/")
   :custom
   (org-journal-dir "~/Documents/journal/")
   (org-support-shift-select t))
