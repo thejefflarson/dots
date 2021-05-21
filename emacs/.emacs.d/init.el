@@ -9,19 +9,19 @@
 (setq gc-cons-threshold (eval-when-compile (* 100 1024 1024)))
 
 (setq-default indent-tabs-mode nil
-              tab-width 2
-              fill-column 100)
+             tab-width 2
+             fill-column 100)
 (setq indent-line-function 'insert-tab)
 (setq user-full-name "Jeff Larson"
-      user-mail-address "thejefflarson@gmail.com"
-      load-prefer-newer t
-      cursor-in-non-selected-windows nil
-      highlight-nonselected-windows nil
-      column-number-mode t)
+     user-mail-address "thejefflarson@gmail.com"
+     load-prefer-newer t
+     cursor-in-non-selected-windows nil
+     highlight-nonselected-windows nil
+     column-number-mode t)
 
 (setq window-divider-default-places t
-      window-divider-default-bottom-width 1
-      window-divider-default-right-width 1)
+     window-divider-default-bottom-width 1
+     window-divider-default-right-width 1)
 (window-divider-mode)
 (tooltip-mode -1)
 ;; Allow the -l flag to find the right emacs directory
@@ -512,10 +512,7 @@
   (chruby "2.5.1"))
 
 (use-package python
-  :mode ("\\.py\\'" . python-mode)
-  :bind
-  ("<tab>" . python-indent-shift-right)
-  ("S-<tab>" . python-indent-shift-left))
+  :mode ("\\.py\\'" . python-mode))
 
 (use-package ruby-mode
   :mode "\\.rb\\'"
@@ -675,6 +672,9 @@
   (web-mode-markup-indent-offset 2)
   (web-mode-css-indent-offset 2)
   (web-mode-code-indent-offset 2)
+  (web-mode-markup-indent-offset 2)
+  (web-mode-attr-indent-offset 2)
+  (web-mode-attr-value-indent-offset 2)
   :hook (web-mode . (lambda ()
                     (when (string-equal "tsx" (file-name-extension buffer-file-name))
                       (tide-setup)))))
