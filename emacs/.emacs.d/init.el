@@ -34,6 +34,13 @@
    (concat user-emacs-directory ".cache"))
   "Directory for temporary files.")
 
+(defconst user-lisp-directory
+  (file-name-as-directory
+   (concat user-emacs-directory "lisp"))
+  "Directory for extra lisp files.")
+(add-to-list 'load-path user-lisp-directory)
+
+
 (defun ensure-directory (dir)
   "Make directory DIR if it doesn't exist."
   (unless (and (file-exists-p dir)
@@ -105,7 +112,6 @@
 ;; text-mode should wrap
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
-
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
   (setq-default dired-use-ls-dired t)
@@ -114,14 +120,12 @@
 
 ;; other niceties
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (show-paren-mode 1)
 (electric-pair-mode 1)
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 (delete-selection-mode 1)
 (windmove-default-keybindings 'super)
-(global-hl-line-mode 1)
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
 
@@ -164,51 +168,24 @@
 
 (use-package all-the-icons)
 
-(use-package doom-themes
-  :config
-  (load-theme 'doom-vibrant t)
-  (doom-themes-org-config)
-  (setq-default doom-themes-treemacs-theme "doom-colors")
-  (doom-themes-treemacs-config))
+(require 'elegance)
 
-(use-package solaire-mode
-  :hook
-  ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
-  (minibuffer-setup . solaire-mode-in-minibuffer)
-  :config
-  (solaire-global-mode +1)
-  (solaire-mode-swap-bg))
-
-(use-package heaven-and-hell
-  :init
-  (setq-default heaven-and-hell-theme-type 'dark)
-  (setq-default heaven-and-hell-themes
-        '((light . doom-one-light)
-          (dark . doom-vibrant)))
-  :hook (after-init . heaven-and-hell-init-hook)
-  :bind (("C-c <f6>" . heaven-and-hell-load-default-theme)
-         ("<f6>" . heaven-and-hell-toggle-theme)))
+(lexical-let (light true)
+  (defun heaven-and-hell ()
+    (interactive)
+    (if light (elegance-light) (elegance-dark))
+    (setq light (not light))))
+(bind-key "<f6>" 'heaven-and-hell)
 
 (setq-default org-fontify-whole-heading-line t
               org-fontify-done-headline t
               org-fontify-quote-and-verse-blocks t)
-
-(require 'faces)
-(when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family "Monaco")
-  (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'variable-pitch nil :family "Monaco")
-  (set-face-attribute 'variable-pitch nil :height 120))
-(when (eq system-type 'gnu/linux)
-  (set-face-attribute 'default nil :family "Source Code Pro")
-  (set-face-attribute 'default nil :height 100))
 
 (use-package unicode-fonts
    :ensure t
    :config
    (unicode-fonts-setup))
 
-
 ;; More Packages
 (require 'epa-file)
 (epa-file-enable)
@@ -314,6 +291,8 @@
 
 (use-package treemacs-magit
   :after treemacs magit)
+
+(use-package treemacs-all-the-icons)
 
 (use-package projectile
   :bind
@@ -614,7 +593,8 @@
   (lsp-keymap-prefix "s-l")
   (lsp-prefer-flymake nil)
   (lsp-enable-file-watchers nil)
-  (lsp-rust-server 'rust-analyzer))
+  (lsp-rust-server 'rust-analyzer)
+  (lsp-headerline-breadcrumb-enable nil))
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
