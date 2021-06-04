@@ -17,24 +17,12 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program. If not, see <http://www.gnu.org/licenses/>
 ;; -------------------------------------------------------------------
-
-
-;; Only necessary for the splash screen mockup
-;; -------------------------------------------------------------------
-(with-eval-after-load 'org
-  (setq org-display-inline-images t)
-  (setq org-redisplay-inline-images t)
-  (setq org-startup-with-inline-images "inlineimages")
-  (setq org-hide-emphasis-markers t)
-  (setq org-confirm-elisp-link-function nil)
-  (setq org-link-frame-setup '((file . find-file))))
-;; -------------------------------------------------------------------
-
+;;; Code:
 
 ;; Font and frame size
 (set-face-font 'default "Roboto Mono Light 14")
 (setq default-frame-alist
-      (append (list '(width  . 72) '(height . 40)
+      (append (list '(width  . 120) '(height . 40)
                     '(vertical-scroll-bars . nil)
                     '(internal-border-width . 24)
                     '(font . "Roboto Mono Light 14")
@@ -43,13 +31,13 @@
                      'internal-border-width 24)
 
 ;; Line spacing, can be 0 for code and 1 or 2 for text
-(setq-default line-spacing 0)
+(setq-default line-spacing 2)
 
 ;; Underline line at descent position, not baseline position
 (setq x-underline-at-descent-line t)
 
 ;; No ugly button for checkboxes
-(setq widget-image-enable nil)
+(setq-default widget-image-enable nil)
 
 ;; Line cursor and no blink
 (set-default 'cursor-type  '(bar . 2))
@@ -65,7 +53,7 @@
 ;; Paren mode is part of the theme
 (show-paren-mode t)
 
-(fringe-mode '(0 . nil))
+(fringe-mode '(0 . 0))
 
 ;; When we set a face, we take care of removing any previous settings
 (defun set-face (face style)
