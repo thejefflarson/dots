@@ -52,7 +52,7 @@
 (setq widget-image-enable nil)
 
 ;; Line cursor and no blink
-(set-default 'cursor-type  '(bar . 1))
+(set-default 'cursor-type  '(bar . 2))
 (blink-cursor-mode 0)
 
 ;; No sound
@@ -65,17 +65,7 @@
 ;; Paren mode is part of the theme
 (show-paren-mode t)
 
-;; No fringe but nice glyphs for truncated and wrapped lines
-(fringe-mode '(0 . 0))
-(defface fallback '((t :family "Fira Code Light"
-                       :inherit 'face-faded)) "Fallback")
-(set-display-table-slot standard-display-table 'truncation
-                        (make-glyph-code ?… 'fallback))
-(set-display-table-slot standard-display-table 'wrap
-                        (make-glyph-code ?↩ 'fallback))
-(set-display-table-slot standard-display-table 'selective-display
-                        (string-to-vector " …"))
-
+(fringe-mode '(0 . nil))
 
 ;; When we set a face, we take care of removing any previous settings
 (defun set-face (face style)
@@ -179,43 +169,14 @@ background color that is barely perceptible."
 (defun set-modeline-faces ()
   ;; Mode line at top
   (set-face 'header-line                                 'face-strong)
-  (set-face-attribute 'header-line nil
-                      ;;:underline (face-foreground 'default))
-                      )
+  (set-face-attribute 'header-line nil)
   (set-face-attribute 'mode-line nil
                       :height 10
-                      ;;:underline (face-foreground 'default)
                       :overline nil
                       :box nil
                       :foreground (face-background 'default)
                       :background (face-background 'default))
   (set-face 'mode-line-inactive                            'mode-line)
-
-  ;; Mode line at bottom
-  ;; (set-face 'header-line                                 'face-strong)
-  ;; (set-face-attribute 'mode-line nil
-  ;;                     :height 1.0
-  ;;                     :overline (face-background 'default)
-  ;;                     :underline nil
-  ;;                     :foreground (face-foreground 'default)
-  ;;                     :background (face-background 'face-subtle)
-  ;;                     :box `(:line-width 2
-  ;;                            :color ,(face-background 'face-subtle)
-  ;;                            :style nil))
-  ;; (set-face 'mode-line-highlight '(face-popout mode-line))
-  ;; (set-face 'mode-line-emphasis  'face-strong)
-  ;; (set-face-attribute 'mode-line-buffer-id nil :weight 'regular)
-  ;; (set-face-attribute 'mode-line-inactive nil
-  ;;                     :height 1.0
-  ;;                     :overline (face-background 'default)
-  ;;                     :underline nil
-  ;;                     :foreground (face-foreground 'face-faded)
-  ;;                     :background (face-background 'face-subtle)
-  ;;                     :box `(:line-width 2
-  ;;                            :color ,(face-background 'face-subtle)
-  ;;                            :style nil))
-
-
   (set-face-attribute 'cursor nil
                       :background (face-foreground 'default))
   (set-face-attribute 'window-divider nil
@@ -259,43 +220,38 @@ background color that is barely perceptible."
   (set-face-attribute 'default nil
                       :foreground (face-foreground 'default)
                       :background (face-background 'default))
-  (set-face-attribute 'face-critical nil :foreground "#ffffff"
-                      :background "#ff6347")
-  (set-face-attribute 'face-popout nil :foreground "#ffa07a")
+  (set-face-attribute 'face-critical nil :foreground "#ff6347" :background nil)
+  (set-face-attribute 'face-popout nil :foreground "#bf616a")
   (set-face-attribute 'face-strong nil :foreground "#111111"
                       :weight 'bold)
-  (set-face-attribute 'face-salient nil :foreground "#00008b"
+  (set-face-attribute 'face-salient nil :foreground "#5e81ac"
                       :weight 'light)
   (set-face-attribute 'face-faded nil :foreground "#999999"
                       :weight 'light)
-  (set-face-attribute 'face-subtle nil :background "#f0f0f0")
+  (set-face-attribute 'face-subtle nil :background "#d8dee9")
   (set-modeline-faces)
   (with-eval-after-load 'cus-edit (set-button-faces)))
 
 ;; Dark theme
 (defun elegance-dark ()
   (setq frame-background-mode 'dark)
-  (set-background-color "#000000")
-  (set-foreground-color "#ffffff")
+  (set-background-color "#111111")
+  (set-foreground-color "#eceff4")
   (set-cursor-color "#ffffff")
   (set-face-attribute 'default nil
                       :foreground (face-foreground 'default)
                       :background (face-background 'default))
-  (set-face-attribute 'face-critical nil :foreground "#385f38"
-                      :background "#f8f893")
-  (set-face-attribute 'face-popout nil :foreground "#f0dfaf")
-  (set-face-attribute 'face-strong nil :foreground "#ededed"
+  (set-face-attribute 'face-critical nil :foreground "#bf616a" :background nil)
+  (set-face-attribute 'face-popout nil :foreground "#d08770")
+  (set-face-attribute 'face-strong nil :foreground "#eceff4"
                       :weight 'bold)
-  (set-face-attribute 'face-salient nil :foreground "#dca3a3"
+  (set-face-attribute 'face-salient nil :foreground "#b48ead"
                       :weight 'light)
-  (set-face-attribute 'face-faded nil :foreground "#777767"
+  (set-face-attribute 'face-faded nil :foreground "#4c566a"
                       :weight 'light)
-  (set-face-attribute 'face-subtle nil :background "#4f4f4f")
+  (set-face-attribute 'face-subtle nil :background "#3b4252")
   (set-modeline-faces)
   (with-eval-after-load 'cus-edit (set-button-faces)))
-
-;; Set theme
-(elegance-dark)
 
 ;; Structural
 (set-face 'bold                                          'face-strong)

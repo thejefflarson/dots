@@ -162,8 +162,6 @@
   (mapc #'disable-theme custom-enabled-themes))
 (ad-activate 'load-theme)
 
-(use-package all-the-icons)
-
 (require 'elegance)
 
 (lexical-let (light true)
@@ -172,6 +170,7 @@
     (if light (elegance-light) (elegance-dark))
     (setq light (not light))))
 (bind-key "<f6>" 'heaven-and-hell)
+(elegance-light)
 
 (setq-default org-fontify-whole-heading-line t
               org-fontify-done-headline t
@@ -276,9 +275,13 @@
    :defer t)
 
 (use-package treemacs
+  :after treemacs-all-the-icons
   :config
   (treemacs-filewatch-mode t)
-  (treemacs-git-mode 'extended))
+  (treemacs-git-mode 'extended)
+  (treemacs-load-theme "all-the-icons"))
+(use-package all-the-icons)
+(use-package treemacs-all-the-icons)
 
 (use-package treemacs-projectile
   :after treemacs projectile
@@ -287,8 +290,6 @@
 
 (use-package treemacs-magit
   :after treemacs magit)
-
-(use-package treemacs-all-the-icons)
 
 (use-package projectile
   :bind
@@ -318,7 +319,7 @@
 (use-package kurecolor)
 
 (use-package rainbow-mode
-  :hook (css-mode web-mode typescript-mode))
+  :hook (css-mode web-mode typescript-mode emacs-list-mode))
 
 (use-package diff-hl
   :hook (magit-post-refresh . diff-hl-magit-post-refresh)
