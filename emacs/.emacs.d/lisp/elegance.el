@@ -180,10 +180,11 @@ background color that is barely perceptible."
   ;; Mode line at top
   (set-face 'header-line                                 'face-strong)
   (set-face-attribute 'header-line nil
-                      :underline (face-foreground 'default))
+                      ;;:underline (face-foreground 'default))
+                      )
   (set-face-attribute 'mode-line nil
                       :height 10
-                      :underline (face-foreground 'default)
+                      ;;:underline (face-foreground 'default)
                       :overline nil
                       :box nil
                       :foreground (face-background 'default)
@@ -494,7 +495,6 @@ function is a convenience wrapper used by `describe-package-1'."
   (set-face 'org-agenda-filter-effort                     'face-faded)
   (set-face 'org-agenda-filter-regexp                     'face-faded)
   (set-face 'org-agenda-filter-tags                       'face-faded)
-  ;; fixes issue #18 (set-face 'org-agenda-property-face                     'face-faded)
   (set-face 'org-agenda-restriction-lock                  'face-faded)
   (set-face 'org-agenda-structure                        'face-faded))
 

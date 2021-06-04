@@ -19,10 +19,6 @@
      highlight-nonselected-windows nil
      column-number-mode t)
 
-(setq window-divider-default-places t
-     window-divider-default-bottom-width 1
-     window-divider-default-right-width 1)
-(window-divider-mode)
 (tooltip-mode -1)
 ;; Allow the -l flag to find the right emacs directory
 (defconst user-emacs-directory
@@ -130,7 +126,7 @@
 (setq-default doc-view-resolution 300)
 
 ;; Blinky hairline cursor
-(setq-default cursor-type '(bar . 1))
+(setq-default cursor-type '(bar . 2))
 (blink-cursor-mode 1)
 
 ;; Enable narrowing
