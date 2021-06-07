@@ -455,8 +455,7 @@
   :bind
   (("C-c n p" . org-projectile-project-todo-completing-read))
   :custom
-  (org-projectile-projects-file "~/Documents/org/todos.org")
-  (org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
+  (org-projectile-projects-file "~/Documents/org/todos.org"))
 
 (use-package org-journal
   :bind

@@ -28,7 +28,7 @@
                     '(font . "Roboto Mono Light 14")
                     '(ns-transparent-titlebar . t))))
 (set-frame-parameter (selected-frame)
-                     'internal-border-width 24)
+                     'internal-border-width 20)
 
 ;; Line spacing, can be 0 for code and 1 or 2 for text
 (setq-default line-spacing 2)
@@ -53,7 +53,7 @@
 ;; Paren mode is part of the theme
 (show-paren-mode t)
 
-(fringe-mode '(0 . 0))
+(fringe-mode nil)
 
 ;; When we set a face, we take care of removing any previous settings
 (defun set-face (face style)
@@ -132,7 +132,7 @@ background color that is barely perceptible."
               '((:eval
                  (mode-line-render
                   (format-mode-line (list
-                                     (propertize "☰" 'face `(:inherit mode-line-buffer-id)
+                                     (propertize " ☰" 'face `(:inherit mode-line-buffer-id)
                                                  'help-echo "Mode(s) menu"
                                                  'mouse-face 'mode-line-highlight
                                                  'local-map   mode-line-major-mode-keymap)
@@ -217,6 +217,7 @@ background color that is barely perceptible."
   (set-face-attribute 'face-faded nil :foreground "#999999"
                       :weight 'light)
   (set-face-attribute 'face-subtle nil :background "#d8dee9")
+  (set-face-attribute 'highlight nil :background "#eceff4")
   (set-modeline-faces)
   (with-eval-after-load 'cus-edit (set-button-faces)))
 
@@ -238,6 +239,7 @@ background color that is barely perceptible."
   (set-face-attribute 'face-faded nil :foreground "#4c566a"
                       :weight 'light)
   (set-face-attribute 'face-subtle nil :background "#3b4252")
+  (set-face-attribute 'highlight nil :background "#2e3440")
   (set-modeline-faces)
   (with-eval-after-load 'cus-edit (set-button-faces)))
 
@@ -246,7 +248,6 @@ background color that is barely perceptible."
 (set-face 'italic                                         'face-faded)
 (set-face 'bold-italic                                   'face-strong)
 (set-face 'region                                        'face-subtle)
-(set-face 'highlight                                     'face-subtle)
 (set-face 'fixed-pitch                                       'default)
 (set-face 'fixed-pitch-serif                                 'default)
 (set-face 'variable-pitch                                    'default)
