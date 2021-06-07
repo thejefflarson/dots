@@ -154,7 +154,7 @@
 (setq-default use-package-verbose t)
 (use-package use-package-ensure-system-package)
 (use-package buffer-move)
-
+(use-package gnu-elpa-keyring-update)
 
 ;; Theme
 (defadvice load-theme (before theme-dont-propagate activate)
@@ -172,12 +172,8 @@
   (doom-themes-treemacs-config))
 
 (use-package solaire-mode
-  :hook
-  ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
-  (minibuffer-setup . solaire-mode-in-minibuffer)
   :config
-  (solaire-global-mode +1)
-  (solaire-mode-swap-bg))
+  (solaire-global-mode +1))
 
 (use-package heaven-and-hell
   :init
