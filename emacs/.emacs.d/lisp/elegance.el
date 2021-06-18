@@ -544,4 +544,15 @@ function is a convenience wrapper used by `describe-package-1'."
   (set-face 'mu4e-view-body-face                             'default)
   (set-face 'mu4e-warning-face                            'face-faded))
 
+(with-eval-after-load 'web-mode
+  (set-face 'web-mode-style-face 'default)
+  (set-face 'web-mode-script-face 'default)
+  (set-face 'web-mode-symbol-face 'face-strong)
+  (set-face 'web-mode-string-face 'face-popout)
+  (set-face 'web-mode-html-attr-value-face 'face-popout)
+  (set-face 'web-mode-html-attr-name-face 'face-salient)
+  (set-face 'web-mode-css-property-name-face 'default)
+  (set-face 'web-mode-html-tag-face 'face-salient)
+  (set-face 'web-mode-current-column-highlight-face `face-subtle))
+
 (provide 'elegance)
