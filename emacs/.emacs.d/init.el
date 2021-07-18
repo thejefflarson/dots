@@ -1,3 +1,4 @@
+
 ;; jeffs-init --- various bits and boops to make emacs a nicer place
 
 ;;; Commentary:
@@ -430,25 +431,27 @@
 
 (ensure-directory "~/Documents/org/roam")
 (ensure-directory "~/Documents/org/roam/daily")
+(setq-default org-roam-v2-ack t)
+
 (use-package org-roam
   :diminish t
   :hook
-  (after-init . org-roam-mode)
+  (after-init . org-roam-setup)
   :bind
   (("C-c b f" . org-roam-find-file)
-   ("C-c b i" . org-roam-insert)
+   ("C-c b i" . org-roam-node-insert)
    ("C-c b d" . org-roam-dailies-find-today))
   :diminish t
   :custom
+  (org-roam-v2-ack t)
   (org-roam-complete-everywhere t)
   (org-roam-directory "~/Documents/org/roam")
   (org-roam-dailies-directory "~/Documents/org/roam/daily")
   (org-roam-dailies-capture-templates
       '(("d" "default" entry
-         #'org-roam-capture--get-point
          "* %?"
-         :file-name "daily/%<%Y-%m-%d>"
-         :head "#+title: %<%Y-%m-%d>\n\n"))))
+         :if-new (file+head "%<%Y-%m-%d>.org"
+                            "#+title: %<%Y-%m-%d>\n")))))
 
 (use-package org-projectile
   :after org
