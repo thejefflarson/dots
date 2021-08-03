@@ -553,6 +553,10 @@ function is a convenience wrapper used by `describe-package-1'."
   (set-face 'web-mode-html-attr-name-face 'face-salient)
   (set-face 'web-mode-css-property-name-face 'default)
   (set-face 'web-mode-html-tag-face 'face-salient)
-  (set-face 'web-mode-current-column-highlight-face `face-subtle))
+  (set-face 'web-mode-current-column-highlight-face `face-subtle)
+  (set-face 'web-mode-html-entity-face 'face-popout)
+  (set-face 'web-mode-json-key-face 'face-popout)
+  (set-face 'web-mode-inlay-face 'face-subtle)
+  (set-face 'web-mode-block-face 'face-subtle))
 
 (provide 'elegance)
