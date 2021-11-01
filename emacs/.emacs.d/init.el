@@ -156,6 +156,7 @@
 (use-package use-package-ensure-system-package)
 (use-package buffer-move)
 (use-package gnu-elpa-keyring-update)
+(use-package cl-lib)
 
 ;; Theme
 (defadvice load-theme (before theme-dont-propagate activate)
@@ -164,7 +165,7 @@
 (ad-activate 'load-theme)
 
 (require 'elegance)
-
+(require 'cl-lib)
 (lexical-let (light true)
   (defun heaven-and-hell ()
     (interactive)
@@ -621,7 +622,7 @@
   :mode "\\.rs\\'"
   :ensure-system-package
   ((rls . "rustup component add rls rust-analysis rust-src")
-  (rust-analyzer . "curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-mac -o ~/bin/rust-analyzer; chmod +x ~/bin/rust-analyzer"))
+  (rust-analyzer . "curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/2021-10-25/rust-analyzer-aarch64-apple-darwin.gz | gunzip  > ~/bin/rust-analyzer; chmod +x ~/bin/rust-analyzer"))
   :custom
   (rust-format-on-save t))
 
@@ -739,11 +740,6 @@
 (use-package flycheck-swift
   :commands flycheck-swift-setup
   :hook (swift-mode . flycheck-swift-setup))
-
-(when (eq system-type 'darwin)
-  (use-package company-sourcekit
-    :init
-    (add-to-list 'company-backends 'company-sourcekit)))
 
 
 ;; Mu4e
