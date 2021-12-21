@@ -584,6 +584,11 @@
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil))
 
+(use-package dap-mode
+  :hook (lsp-mode)
+  :custom
+  (dap-auto-configure-mode))
+
 (use-package lsp-mode
   :commands lsp
   :hook

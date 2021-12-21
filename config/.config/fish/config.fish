@@ -36,6 +36,7 @@ if status is-login
     set -g fish_user_paths "/usr/local/opt/qt/bin" $fish_user_paths
     set -g fish_user_paths ~/.poetry/bin $fish_user_paths
     set -g fish_user_paths /usr/local/sbin/ $fish_user_paths
+    set -g fish_complete_path /opt/homebrew/share/fish/vendor_completions.d/ /opt/homebrew/share/fish/completions/ $fish_complete_path
     set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
     set -x NVM_DIR ~/.nvm
     set -x IDF_PATH ~/dev/esp/esp-idf
