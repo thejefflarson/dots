@@ -1,4 +1,3 @@
-
 ;; jeffs-init --- various bits and boops to make emacs a nicer place
 
 ;;; Commentary:

@@ -17,7 +17,7 @@ set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc"
 alias bazel="bazelisk"
 bass source $HOME/.cargo/env
-eval (/opt/homebrew/bin/brew shellenv)
+eval (brew shellenv)
 source (brew --prefix)/opt/asdf/asdf.fish
 
 if status is-login
@@ -27,16 +27,16 @@ if status is-login
     set -g fish_user_paths ~/.cargo/bin $fish_user_paths
     set -g fish_user_paths ~/dev/go/bin $fish_user_paths
     set -g fish_user_paths ~/.local/bin $fish_user_paths
-    set -g fish_user_paths $fish_user_paths "/usr/local/opt/llvm/bin"
-    set -g fish_user_paths "/usr/local/opt/bison/bin" $fish_user_paths
-    set -g fish_user_paths "/usr/local/opt/flex/bin" $fish_user_paths
+    set -g fish_user_paths $fish_user_paths (brew --prefix)/opt/llvm/bin
+    set -g fish_user_paths (brew --prefix)/opt/bison/bin $fish_user_paths
+    set -g fish_user_paths (brew --prefix)/opt/flex/bin $fish_user_paths
     set -g fish_user_paths ~/dev/esp/xtensa-esp32-elf/bin/ $fish_user_paths
     set -g fish_user_paths ~/bin $fish_user_paths
-    set -g fish_user_paths "/usr/local/opt/gnu-getopt/bin" $fish_user_paths
-    set -g fish_user_paths "/usr/local/opt/qt/bin" $fish_user_paths
+    set -g fish_user_paths (brew --prefix)/opt/gnu-getopt/bin $fish_user_paths
+    set -g fish_user_paths (brew --prefix)/usr/local/opt/qt/bin $fish_user_paths
     set -g fish_user_paths ~/.poetry/bin $fish_user_paths
     set -g fish_user_paths /usr/local/sbin/ $fish_user_paths
-    set -g fish_complete_path /opt/homebrew/share/fish/vendor_completions.d/ /opt/homebrew/share/fish/completions/ $fish_complete_path
+    set -g fish_complete_path (brew --prefix)/share/fish/vendor_completions.d/ (brew --prefix)/share/fish/completions/ $fish_complete_path
     set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
     set -x NVM_DIR ~/.nvm
     set -x IDF_PATH ~/dev/esp/esp-idf
