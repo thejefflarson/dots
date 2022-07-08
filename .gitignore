@@ -1,6 +1,16 @@
-.DS_Store *.elc *.orig flycheck_init.el /config/.config/fish/functions/fisher.fish
-emacs/.emacs.d/projectile-bookmarks.eld recentf /emacs/.authinfo /emacs/.emacs.d/.cask
-/config/.config/fish/functions/__bass.py /config/.config/fish/functions/bass.fish
-/config/.config/fish/functions/nvm.fish /config/.config/fish/completions/
-/config/.config/fish/fish_plugins local.fish config/.config/fish/conf.d
+.DS_Store *.elc
+*.orig
+flycheck_init.el
+/config/.config/fish/functions/fisher.fish
+emacs/.emacs.d/projectile-bookmarks.eld
+recentf
+/emacs/.authinfo
+/emacs/.emacs.d/.cask
+/config/.config/fish/functions/__bass.py
+/config/.config/fish/functions/bass.fish
+/config/.config/fish/functions/nvm.fish
+/config/.config/fish/completions/
+/config/.config/fish/fish_plugins
+local.fish
+/config/.config/fish/conf.d
 /config/.config/fish/fish_variables
