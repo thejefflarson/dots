@@ -1,4 +1,5 @@
-.DS_Store *.elc
+.DS_Store
+*.elc
 *.orig
 flycheck_init.el
 /config/.config/fish/functions/fisher.fish
