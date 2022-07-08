@@ -13,7 +13,7 @@
 [diff]
 	submodule = log
 [core]
-	excludesfile = /Users/jeff/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [diff "sopsdiffer"]
 	textconv = sops -d
 [pull]
