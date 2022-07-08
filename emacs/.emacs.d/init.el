@@ -33,9 +33,8 @@
 (defconst user-lisp-directory
   (file-name-as-directory
    (concat user-emacs-directory "lisp"))
-  "Directory for extra lisp files.")
+  "Directory for extra Lisp files.")
 (add-to-list 'load-path user-lisp-directory)
-
 
 (defun ensure-directory (dir)
   "Make directory DIR if it doesn't exist."
@@ -82,6 +81,7 @@
       version-control t)
 (setq-default delete-old-versions t)
 (setq auto-save-file-name-transforms `((".*" ,user-cache-directory t)))
+(setq create-lockfiles nil)
 
 ;; Turn off a bunch of useless stuff
 (when (featurep 'menu-bar)
@@ -111,7 +111,7 @@
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
   (setq-default dired-use-ls-dired t)
-  (setq insert-directory-program "/usr/local/bin/gls")
+  (setq insert-directory-program "/opt/homebrew/bin/gls")
   (setq dired-listing-switches "-aBhl --group-directories-first"))
 
 ;; other niceties
@@ -124,6 +124,9 @@
 (windmove-default-keybindings 'super)
 (setq-default abbrev-mode -1)
 (setq-default doc-view-resolution 300)
+(setq-default indicate-empty-lines t)
+(setq-default indicate-buffer-boundaries 'left)
+(setq sentence-end-double-space nil)
 
 ;; Blinky hairline cursor
 (setq-default cursor-type '(bar . 2))
@@ -256,7 +259,9 @@
 (use-package undo-tree
   :diminish undo-tree-mode
   :config
-  (global-undo-tree-mode))
+  (global-undo-tree-mode)
+  :custom
+  (undo-tree-auto-save-history nil))
 
 (setq-default flycheck-verilog-verilator-executable "verilator")
 (use-package flycheck
@@ -372,8 +377,7 @@
 
 (use-package flyspell
   :hook
-  ((flyspell-mode . flyspell-popup-auto-correct-mode)
-   (text-mode . flyspell-mode)))
+  ((flyspell-mode . flyspell-popup-auto-correct-mode)))
 
 (use-package flyspell-popup
   :commands (flyspell-popup-auto-correct-mode))
