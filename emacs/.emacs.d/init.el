@@ -673,16 +673,17 @@
 
 (use-package js2-mode
   :mode
-  (("\\.js\\'" . js2-mode))
-  (("\\.jsx\\'" . js2-jsx-mode))
+  (("\\.js\\'" . js-mode))
+  (("\\.jsx\\'" . js-mode))
+  :hook ((js-mode) . js2-minor-mode)
   :custom
-  (js2-basic-offset 2)
-  (js2-mode-show-parse-errors nil)
-  (js2-mode-show-strict-warnings nil))
+  (js-basic-offset 2)
+  (js-mode-show-parse-errors nil)
+  (js-mode-show-strict-warnings nil))
 
 (use-package prettier-js
   :ensure-system-package (prettier . "npm i prettier -g")
-  :hook ((js2-mode json-mode js2-jsx-mode css-mode scss-mode tide-mode) . prettier-js-mode))
+  :hook ((js-mode json-mode css-mode scss-mode tide-mode) . prettier-js-mode))
 
 (use-package json-mode
   :mode "\\.json\\'")
