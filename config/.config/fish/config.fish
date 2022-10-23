@@ -17,6 +17,7 @@ set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc"
 alias bazel="bazelisk"
 bass source $HOME/.cargo/env
+set -g fish_user_paths /opt/homebrew/bin $fish_user_paths
 eval (brew shellenv)
 source (brew --prefix)/opt/asdf/asdf.fish
 
