@@ -147,11 +147,10 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
-
+;;(require 'cl)
 (eval-when-compile
   (require 'use-package))
 (require 'diminish)
-(require 'bind-key)
 (diminish 'auto-revert-mode)
 (setq use-package-always-ensure t)
 (setq-default use-package-verbose t)
@@ -385,7 +384,7 @@
 (use-package deft
   :after org
   :bind
-  ("C-x C-g" . deft)
+  ("C-x n d" . deft)
   :custom
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
@@ -451,6 +450,7 @@
   (org-roam-complete-everywhere t)
   (org-roam-directory "~/Documents/org/roam")
   (org-roam-dailies-directory "~/Documents/org/roam/daily")
+  (org-roam-db-autosync-mode)
   (org-roam-dailies-capture-templates
       '(("d" "default" entry
          "* %?"
@@ -463,15 +463,6 @@
   (("C-c n p" . org-projectile-project-todo-completing-read))
   :custom
   (org-projectile-projects-file "~/Documents/org/todos.org"))
-
-(use-package org-journal
-  :bind
-  ("C-c C-j" . org-journal-new-entry)
-  :init
-  (ensure-directory "~/Documents/journal/")
-  :custom
-  (org-journal-dir "~/Documents/journal/")
-  (org-support-shift-select t))
 
 (use-package cider
   :defer t
@@ -750,153 +741,6 @@
   :commands flycheck-swift-setup
   :hook (swift-mode . flycheck-swift-setup))
 
-
-;; Mu4e
-(defconst my-interesting-mail
-  (concat " \(maildir:/fastmail/Inbox"
-          " OR maildir:/gmail/Inbox"
-          " OR maildir:/gmail/[Gmail]/.All\ Mail"
-          " OR maildir:/gmail/[Gmail]/.Important"
-          " OR maildir:/riseup/Inbox\)")
-  "Interesting mail suffix.")
-
-(defun no-auto-fill ()
-  "Turn off 'auto-fill-mode'."
-  (auto-fill-mode -1))
-
-(require 'org-mu4e)
-(require 'mu4e)
-
-(setq-default mu4e-update-interval (* 60 5))
-(setq-default mu4e-get-mail-command "mbsync -aq; true")
-(setq-default mu4e-compose-dont-reply-to-self t)
-(setq-default mu4e-user-mail-address-list '("thejefflarson@gmail.com"
-                                            "thejefflarson@fastmail.com"
-                                            "thejefflarson@riseup.net"))
-(setq-default mu4e-context-policy 'pick-first)
-(setq-default mu4e-maildir "~/.mail")
-(setq-default mu4e-attachment-dir "~/Downloads")
-(setq-default mu4e-headers-skip-duplicates t)
-(setq-default mu4e-headers-visible-lines 20)
-(setq-default mu4e-view-show-addresses 'long)
-(setq-default mu4e-compose-in-new-frame t)
-(setq-default mu4e-compose-complete-only-personal t)
-(setq-default mu4e-change-filenames-when-moving t)
-(setq-default message-kill-buffer-on-exit t)
-(setq-default message-send-mail-function 'message-send-mail-with-sendmail)
-(setq-default sendmail-program "/usr/local/bin/msmtp")
-(setq-default message-sendmail-extra-arguments '("--read-envelope-from"))
-(setq-default message-sendmail-f-is-evil t)
-(setq-default mu4e-bookmarks
-              `((,(concat "flag:unread date:today..now" my-interesting-mail)
-                 "Today's unread messages" ?u)
-                (,(concat "date:today..now" my-interesting-mail)
-                 "Today's messages" ?t)
-                (,(concat "date:7d..now" my-interesting-mail)
-                 "This week's messages" ?w)
-                (,my-interesting-mail
-                 "All messages" ?a)))
-(add-hook 'mu4e-compose-mode-hook 'epa-mail-mode)
-(add-hook 'mu4e-compose-mode-hook 'visual-line-mode)
-(add-hook 'mu4e-view-mode-hook 'epa-mail-mode)
-(add-hook 'mu4e-view-mode-hook 'visual-line-mode)
-(add-hook 'mu4e-compose-mode-hook #'no-auto-fill)
-(add-to-list 'mu4e-view-actions
-             '("View In Browser" . mu4e-action-view-in-browser) t)
-
-(require 'mu4e-contrib)
-(setq-default mu4e-html2text-command 'mu4e-shr2text)
-
-(use-package mu4e-maildirs-extension
-  :custom
-  (mu4e-maildirs-extension-fake-maildir-separator "\\.")
-  :config
-  (mu4e-maildirs-extension))
-
-(use-package mu4e-alert
-  :hook (after-init . mu4e-alert-enable-notifications)
-  :config
-  (setq mu4e-alert-set-default-style (if (eq system-type 'darwin)
-                                         'notifier '(notifications)))
-
-(require 'epg-config)
-
-(setq-default mml2015-use 'epg
-              mml2015-encrypt-to-self t
-              mml2015-sign-with-sender t)
-
-(require 'mu4e-context)
-
-(setq-default mu4e-contexts
-              `( ,(make-mu4e-context
-                   :name "gmail"
-                   :enter-func (lambda ()
-                                 (mu4e-message "entering gmail"))
-                   :match-func (lambda (msg)
-                                 (when msg
-                                   (string-match "gmail"
-                                                 (mu4e-message-field msg :maildir))))
-                   :vars '((mail-reply-to . "thejefflarson@gmail.com")
-                           (user-mail-address . "thejefflarson@gmail.com")
-                           (user-full-name . "Jeff Larson")
-                           (mu4e-sent-messages-behavior . delete)
-                           (mu4e-drafts-folder . "/gmail/[Gmail]/Drafts")
-                           (mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
-                           (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
-                           (mu4e-refile-folder . "/gmail/[Gmail]/All Mail")))
-                 ,(make-mu4e-context
-                   :name "fastmail"
-                   :enter-func (lambda ()
-                                 (mu4e-message "entering fastmail"))
-                   :match-func (lambda (msg)
-                                 (when msg
-                                   (string-match "fastmail"
-                                                 (mu4e-message-field msg :maildir))))
-                   :vars '((mail-reply-to . "thejefflarson@fastmail.com")
-                           (user-mail-address . "thejefflarson@fastmail.com")
-                           (user-full-name . "Jeff Larson")
-                           (mu4e-sent-messages-behavior . sent)
-                           (mu4e-drafts-folder . "/fastmail/Drafts")
-                           (mu4e-sent-folder . "/fastmail/Sent")
-                           (mu4e-trash-folder . "/fastmail/Trash")
-                           (mu4e-refile-folder . "/fastmail/Archive")))
-                 ,(make-mu4e-context
-                   :name "riseup"
-                   :enter-func (lambda ()
-                                 (mu4e-message "entering riseup"))
-                   :match-func (lambda (msg)
-                                 (when msg
-                                   (string-match "riseup"
-                                                 (mu4e-message-field msg :maildir))))
-                   :vars '((mail-reply-to . "thejefflarson@riseup.net")
-                           (user-mail-address . "thejefflarson@riseup.net")
-                           (user-full-name . "Jeff Larson")
-                           (mu4e-sent-messages-behavior . sent)
-                           (mu4e-drafts-folder . "/riseup/Drafts")
-                           (mu4e-sent-folder . "/riseup/Sent")
-                           (mu4e-trash-folder . "/riseup/Trash")
-                           (mu4e-refile-folder . "/riseup/Archive")))
-                 )
-              )
-
-
-(require 'mu4e-vars)
-
-(add-to-list 'mu4e-header-info-custom
-             '(:mail-directory .
-                               (:name "Mail Directory"
-                                :shortname "Dir"
-                                :help "Mail Storage Directory"
-                                :function
-                                (lambda (msg)
-                                  (or
-                                   (mu4e-message-field msg :maildir) "")))))
-(setq mu4e-headers-fields '((:mail-directory . 20)
-                            (:human-date     . 12)
-                            (:flags          .  6)
-                            (:mailing-list   . 10)
-                            (:from           . 22)
-                            (:subject        . nil))))
 
 
 (message "Loaded in `%s'" (emacs-init-time))
