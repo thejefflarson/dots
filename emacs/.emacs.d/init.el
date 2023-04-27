@@ -118,6 +118,10 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (show-paren-mode 1)
 (electric-pair-mode 1)
+;; make electric pair mode not do quotes
+(setq-default electric-pair-inhibit-predicate
+              (lambda (c)
+                (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
 (recentf-mode)
 (global-set-key (kbd "C-\\") 'comment-or-uncomment-region)
 (delete-selection-mode 1)
@@ -147,10 +151,11 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
-;;(require 'cl)
+(require 'cl)
 (eval-when-compile
   (require 'use-package))
 (require 'diminish)
+(require 'bind-key)
 (diminish 'auto-revert-mode)
 (setq use-package-always-ensure t)
 (setq-default use-package-verbose t)
@@ -741,7 +746,9 @@
   :commands flycheck-swift-setup
   :hook (swift-mode . flycheck-swift-setup))
 
-
+(defun no-auto-fill ()
+  "Turn off 'auto-fill-mode'."
+  (auto-fill-mode -1))
 
 (message "Loaded in `%s'" (emacs-init-time))
 
