@@ -19,7 +19,7 @@ alias bazel="bazelisk"
 bass source $HOME/.cargo/env
 set -g fish_user_paths /opt/homebrew/bin $fish_user_paths
 eval (brew shellenv)
-source (brew --prefix)/opt/asdf/asdf.fish
+source (brew --prefix)/opt/asdf/libexec/asdf.fish
 
 if status is-login
     set -g fish_user_paths ~/bin $fish_user_paths
