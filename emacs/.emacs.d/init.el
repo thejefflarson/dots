@@ -603,14 +603,14 @@
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-(setq-default lsp-clients-verilog-executable "svls")
+;(setq-default lsp-clients-verilog-executable "svls")
 (use-package verilog-mode
   :ensure-system-package
-  (svls . "cargo install svls")
-  :hook
-  (verilog-mode . (lambda ()
-                    (setq flycheck-checker 'verilog-verilator)
-                    (flycheck-add-next-checker 'verilog-verilator 'lsp)))
+  (svlangserver . "npm install -g @imc-trading/svlangserver")
+   :hook
+   (verilog-mode . (lambda ()
+                     (setq flycheck-checker 'verilog-verilator)
+                     (flycheck-add-next-checker 'verilog-verilator 'lsp)))
   :custom
   (verilog-indent-level 2)
   (verilog-case-indent-level 2)

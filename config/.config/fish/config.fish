@@ -19,7 +19,7 @@ alias bazel="bazelisk"
 bass source $HOME/.cargo/env
 set -g fish_user_paths /opt/homebrew/bin $fish_user_paths
 eval (brew shellenv)
-source (brew --prefix)/opt/asdf/libexec/asdf.fish
+source (brew --prefix asdf)/libexec/asdf.fish
 
 if status is-login
     set -g fish_user_paths ~/bin $fish_user_paths
@@ -37,6 +37,7 @@ if status is-login
     set -g fish_user_paths (brew --prefix)/usr/local/opt/qt/bin $fish_user_paths
     set -g fish_user_paths ~/.poetry/bin $fish_user_paths
     set -g fish_user_paths /usr/local/sbin/ $fish_user_paths
+    set -g fish_user_paths ~/.krew/bin $fish_user_paths
     set -g fish_complete_path (brew --prefix)/share/fish/vendor_completions.d/ (brew --prefix)/share/fish/completions/ $fish_complete_path
     set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
     set -x NVM_DIR ~/.nvm
