@@ -111,7 +111,7 @@
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
   (setq-default dired-use-ls-dired t)
-  (setq insert-directory-program "/opt/homebrew/bin/gls")
+  (setq insert-directory-program "/usr/local/bin/gls")
   (setq dired-listing-switches "-aBhl --group-directories-first"))
 
 ;; other niceties
@@ -170,15 +170,7 @@
   (mapc #'disable-theme custom-enabled-themes))
 (ad-activate 'load-theme)
 
-(require 'elegance)
 (require 'cl-lib)
-(lexical-let (light true)
-  (defun heaven-and-hell ()
-    (interactive)
-    (if light (elegance-light) (elegance-dark))
-    (setq light (not light))))
-(bind-key "<f6>" 'heaven-and-hell)
-(elegance-light)
 
 (setq-default org-fontify-whole-heading-line t
               org-fontify-done-headline t
@@ -444,11 +436,11 @@
 (use-package org-roam
   :diminish t
   :hook
-  (after-init . org-roam-setup)
+  (after-init . org-roam-db-autosync-enable)
   :bind
   (("C-c b f" . org-roam-find-file)
    ("C-c b i" . org-roam-node-insert)
-   ("C-c b d" . org-roam-dailies-find-today))
+   ("C-c b d" . org-roam-dailies-goto-today))
   :diminish t
   :custom
   (org-roam-v2-ack t)
@@ -522,17 +514,24 @@
 (use-package projectile-rails
   :hook (ruby-mode . projectile-rails-on))
 
-(use-package company-jedi
-  :config
-  (add-to-list 'company-backends 'company-jedi))
-
-(use-package blacken
-  :ensure-system-package (black . "pip install black")
-  :hook (python-mode . blacken-mode))
-
 (use-package poetry
-  :ensure-system-package (poetry . "pip install poetry")
-  :hook (python-mode . poetry-tracking-mode))
+  :ensure-system-package ((poetry . "pip install poetry"))
+  :config (poetry-tracking-mode))
+
+(use-package python
+  :mode "python-mode"
+  :after (poetry)
+  :hook
+  (python-mode .
+     (lambda () (
+        when (poetry-venv-exist-p)
+          (setq-local lsp-pyls-server-command '("poetry" "run" "pylsp"))
+        )
+       (lsp-deferred)
+     )))
+
+(use-package pyvenv
+  :hook (after-init . pyvenv-mode))
 
 (setq-default c-basic-offset 2)
 (setq-default c-syntactic-indentation nil)
@@ -591,7 +590,8 @@
 (use-package lsp-mode
   :commands lsp
   :hook
-  ((prog-mode . lsp)
+  ((rust-mode . lsp-deffered)
+   (verilog-mode . lsp-deffered)
    (lsp-mode . lsp-enable-which-key-integration))
   :custom
   (lsp-keymap-prefix "s-l")
@@ -749,6 +749,15 @@
 (defun no-auto-fill ()
   "Turn off 'auto-fill-mode'."
   (auto-fill-mode -1))
+
+(require 'elegance)
+(lexical-let (light true)
+  (defun heaven-and-hell ()
+    (interactive)
+    (if light (elegance-light) (elegance-dark))
+    (setq light (not light))))
+(bind-key "<f6>" 'heaven-and-hell)
+(elegance-light)
 
 (message "Loaded in `%s'" (emacs-init-time))
 

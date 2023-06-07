@@ -27,8 +27,9 @@
                     '(internal-border-width . 24)
                     '(font . "Roboto Mono Light 14")
                     '(ns-transparent-titlebar . t))))
+
 (set-frame-parameter (selected-frame)
-                     'internal-border-width 20)
+                     'internal-border-width 5)
 
 ;; Line spacing, can be 0 for code and 1 or 2 for text
 (setq-default line-spacing 2)
@@ -132,7 +133,7 @@ background color that is barely perceptible."
               '((:eval
                  (mode-line-render
                   (format-mode-line (list
-                                     (propertize " ☰" 'face `(:inherit mode-line-buffer-id)
+                                     (propertize "☰" 'face `(:inherit mode-line-buffer-id)
                                                  'help-echo "Mode(s) menu"
                                                  'mouse-face 'mode-line-highlight
                                                  'local-map   mode-line-major-mode-keymap)
@@ -519,5 +520,7 @@ function is a convenience wrapper used by `describe-package-1'."
   (set-face 'web-mode-json-key-face 'face-popout)
   (set-face 'web-mode-inlay-face 'face-subtle)
   (set-face 'web-mode-block-face 'face-subtle))
+
+
 
 (provide 'elegance)
