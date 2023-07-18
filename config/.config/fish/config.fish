@@ -22,6 +22,7 @@ eval (brew shellenv)
 source (brew --prefix asdf)/libexec/asdf.fish
 
 if status is-login
+    set -x OP_BIOMETRIC_UNLOCK_ENABLED true
     set -g fish_user_paths ~/bin $fish_user_paths
     set -g fish_user_paths ~/go/bin $fish_user_paths
     set -g fish_user_paths ~/.cask/bin $fish_user_paths
