@@ -1,4 +1,5 @@
 #! /bin/bash
+brew install stow
 mkdir -p ~/.emacs.d/
 touch ~/.emacs.d/.keep
 
@@ -8,19 +9,8 @@ do
 done
 mkdir -p ~/.mail/{gmail,fastmail,riseup}
 
-echo "
-Please remember to install the following packages:
+brew install asdf atuin
 
-  msmtp
-  isync
-  mu
-  terminal-notifier
-  cask
-  rustup
-  asdf
-
-Installing requirements...
-"
 curl -L https://get.oh-my.fish | fish 
 omf install bass
 brew install asdf
@@ -36,7 +26,3 @@ cargo install cargo-profiler
 cargo install cargo-update
 cargo install diesel_cli
 
-rustup component add rls-preview --toolchain nightly
-rustup component add rust-analysis --toolchain nightly
-rustup component add rust-src --toolchain nightly
-rustup run nightly cargo clippy
