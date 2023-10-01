@@ -16,11 +16,13 @@ set -x HOMEBREW_NO_ANALYTICS 1
 set -x PIPENV_SHELL_COMPAT 1
 alias e "emacsclient -nc"
 alias bazel="bazelisk"
-bass source $HOME/.cargo/env
 set -g fish_user_paths /opt/homebrew/bin $fish_user_paths
-eval (brew shellenv)
-source (brew --prefix asdf)/libexec/asdf.fish
-
+if status is-interactive
+    eval (brew shellenv)
+    bass source $HOME/.cargo/env
+    source (brew --prefix asdf)/libexec/asdf.fish
+    atuin init fish | source
+end
 if status is-login
     set -x OP_BIOMETRIC_UNLOCK_ENABLED true
     set -g fish_user_paths ~/bin $fish_user_paths

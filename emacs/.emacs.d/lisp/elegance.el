@@ -297,7 +297,6 @@ background color that is barely perceptible."
 
 ;; Bookmarks
 (with-eval-after-load 'bookmark
-  (set-face 'bookmark-menu-heading                       'face-strong)
   (set-face 'bookmark-menu-bookmark                    'face-salient))
 
 ;; Message

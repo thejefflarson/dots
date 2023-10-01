@@ -111,7 +111,7 @@
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
   (setq-default dired-use-ls-dired t)
-  (setq insert-directory-program "/usr/local/bin/gls")
+  (setq insert-directory-program "/opt/homebrew/bin/gls")
   (setq dired-listing-switches "-aBhl --group-directories-first"))
 
 ;; other niceties
@@ -151,7 +151,6 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
-(require 'cl)
 (eval-when-compile
   (require 'use-package))
 (require 'diminish)
@@ -170,7 +169,15 @@
   (mapc #'disable-theme custom-enabled-themes))
 (ad-activate 'load-theme)
 
-(require 'cl-lib)
+(require 'elegance)
+
+(let (light true)
+  (defun heaven-and-hell ()
+    (interactive)
+    (if light (elegance-light) (elegance-dark))
+    (setq light (not light))))
+(bind-key "<f6>" 'heaven-and-hell)
+(elegance-light)
 
 (setq-default org-fontify-whole-heading-line t
               org-fontify-done-headline t
@@ -230,6 +237,12 @@
   (ivy-use-selectable-prompt t)
   :config
   (ivy-mode 1))
+
+(use-package marginalia
+  :bind (:map minibuffer-local-map
+              ("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode))
 
 (use-package counsel
   :diminish counsel-mode
@@ -592,13 +605,15 @@
   :hook
   ((rust-mode . lsp-deffered)
    (verilog-mode . lsp-deffered)
+   (python-mode . lsp-deffered)
    (lsp-mode . lsp-enable-which-key-integration))
   :custom
   (lsp-keymap-prefix "s-l")
   (lsp-prefer-flymake nil)
   (lsp-enable-file-watchers nil)
   (lsp-rust-server 'rust-analyzer)
-  (lsp-headerline-breadcrumb-enable nil))
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-rust-analyzer-proc-macro-enable t))
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
@@ -749,15 +764,6 @@
 (defun no-auto-fill ()
   "Turn off 'auto-fill-mode'."
   (auto-fill-mode -1))
-
-(require 'elegance)
-(lexical-let (light true)
-  (defun heaven-and-hell ()
-    (interactive)
-    (if light (elegance-light) (elegance-dark))
-    (setq light (not light))))
-(bind-key "<f6>" 'heaven-and-hell)
-(elegance-light)
 
 (message "Loaded in `%s'" (emacs-init-time))
 
