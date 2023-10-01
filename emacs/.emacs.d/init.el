@@ -600,12 +600,18 @@
   :custom
   (dap-auto-configure-mode))
 
+(use-package dockerfile-mode
+  :mode "Dockerfile\\'")
+
 (use-package lsp-mode
   :commands lsp
   :hook
-  ((rust-mode . lsp-deffered)
-   (verilog-mode . lsp-deffered)
-   (python-mode . lsp-deffered)
+  ((rust-mode . lsp-deferred)
+   (verilog-mode . lsp-deferred)
+   (python-mode . lsp-deferred)
+   (yaml-mode . lsp-deferred)
+   (dockerfile-mode . lsp-deferred)
+   (web-mode . lsp-deferred)
    (lsp-mode . lsp-enable-which-key-integration))
   :custom
   (lsp-keymap-prefix "s-l")
