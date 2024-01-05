@@ -74,6 +74,7 @@
   (write-region "" nil custom-file t))
 
 ;; put versions in the cache directory
+(setq backup-by-copying t)
 (setq backup-directory-alist `((".*" . ,user-cache-directory))
       backup-by-copying t
       kept-new-versions 6
@@ -187,6 +188,11 @@
    :ensure t
    :config
    (unicode-fonts-setup))
+
+;; guess indent
+(use-package dtrt-indent
+  :config
+  (setq dtrt-indent-global-mode t))
 
 ;; More Packages
 (require 'epa-file)
@@ -474,6 +480,15 @@
   :custom
   (org-projectile-projects-file "~/Documents/org/todos.org"))
 
+(use-package gptel
+  :custom
+  (gptel-model "mistral:latest")
+  (gptel-backend (gptel-make-ollama
+                  "Ollama"
+                  :host "localhost:11434"
+                  :models '("mistral:latest")
+                  :stream t)))
+
 (use-package cider
   :defer t
   :bind
@@ -593,7 +608,8 @@
   (lsp-ui-doc-max-height 5)
   (lsp-diagnostic-package :flycheck)
   (lsp-enable-indentation nil)
-  (lsp-enable-on-type-formatting nil))
+  (lsp-enable-on-type-formatting nil)
+  (lsp-ui-sideline-show-code-actions t))
 
 (use-package dap-mode
   :hook (lsp-mode)
@@ -604,7 +620,7 @@
   :mode "Dockerfile\\'")
 
 (use-package lsp-mode
-  :commands lsp
+  :commands (lsp lsp-deferred)
   :hook
   ((rust-mode . lsp-deferred)
    (verilog-mode . lsp-deferred)
@@ -619,7 +635,9 @@
   (lsp-enable-file-watchers nil)
   (lsp-rust-server 'rust-analyzer)
   (lsp-headerline-breadcrumb-enable nil)
-  (lsp-rust-analyzer-proc-macro-enable t))
+  (lsp-rust-analyzer-proc-macro-enable t)
+  (lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
+  (lsp-rust-enable-all-features t))
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)

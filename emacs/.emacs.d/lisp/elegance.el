@@ -209,7 +209,7 @@ background color that is barely perceptible."
   (set-face-attribute 'default nil
                       :foreground (face-foreground 'default)
                       :background (face-background 'default))
-  (set-face-attribute 'face-critical nil :foreground "#ff6347" :background nil)
+  (set-face-attribute 'face-critical nil :foreground "#ff6347" :background "unspecified")
   (set-face-attribute 'face-popout nil :foreground "#bf616a")
   (set-face-attribute 'face-strong nil :foreground "#111111"
                       :weight 'bold)
