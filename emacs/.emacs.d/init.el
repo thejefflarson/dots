@@ -58,8 +58,9 @@
   (define-key global-map [end] 'end-of-line)
   (setq-default epg-gpg-program  "/usr/local/bin/gpg")
   (setq mouse-wheel-scroll-amount '(0.01))
-  (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
-    (normal-top-level-add-subdirs-to-load-path)))
+  (if (file-exists-p  "/usr/local/share/emacs/site-lisp/")
+      (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
+        (normal-top-level-add-subdirs-to-load-path))))
 
 ;; Linux specific configuration
 (when (equal system-type 'gnu/linux)
