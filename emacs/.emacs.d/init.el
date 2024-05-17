@@ -778,7 +778,7 @@
 (use-package go-mode
   :mode "\\.go\\'"
   :ensure-system-package
-  (gopls . "go get golang.org/x/tools/gopls@latest")
+  (gopls . "go install golang.org/x/tools/gopls@latest")
   :hook
   ((before-save . gofmt-before-save)))
 
