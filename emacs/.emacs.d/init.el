@@ -160,7 +160,8 @@
 (diminish 'auto-revert-mode)
 (setq use-package-always-ensure t)
 (setq-default use-package-verbose t)
-(use-package use-package-ensure-system-package)
+;;(use-package use-package-ensure-system-package
+;;  :ensure t)
 (use-package buffer-move)
 (use-package gnu-elpa-keyring-update)
 (use-package cl-lib)
@@ -480,15 +481,6 @@
   (("C-c n p" . org-projectile-project-todo-completing-read))
   :custom
   (org-projectile-projects-file "~/Documents/org/todos.org"))
-
-(use-package gptel
-  :custom
-  (gptel-model "mistral:latest")
-  (gptel-backend (gptel-make-ollama
-                  "Ollama"
-                  :host "localhost:11434"
-                  :models '("mistral:latest")
-                  :stream t)))
 
 (use-package cider
   :defer t
