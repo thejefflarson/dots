@@ -110,6 +110,10 @@
 ;; text-mode should wrap
 (add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
+;; nicer resizing
+(setq window-resize-pixelwise t)
+(setq frame-resize-pixelwise t)
+
 ;; Use gnu ls on darwin
 (when (eq system-type 'darwin)
   (setq-default dired-use-ls-dired t)

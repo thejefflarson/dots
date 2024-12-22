@@ -22,6 +22,7 @@ if status is-interactive
     bass source $HOME/.cargo/env
     source (brew --prefix asdf)/libexec/asdf.fish
     atuin init fish | source
+    uv generate-shell-completion fish | source
 end
 if status is-login
     set -x OP_BIOMETRIC_UNLOCK_ENABLED true
@@ -31,6 +32,7 @@ if status is-login
     set -g fish_user_paths ~/.cargo/bin $fish_user_paths
     set -g fish_user_paths ~/dev/go/bin $fish_user_paths
     set -g fish_user_paths ~/.local/bin $fish_user_paths
+    set -g fish_user_paths ~/.mint/bin $fish_user_paths
     set -g fish_user_paths $fish_user_paths (brew --prefix)/opt/llvm/bin
     set -g fish_user_paths (brew --prefix)/opt/bison/bin $fish_user_paths
     set -g fish_user_paths (brew --prefix)/opt/flex/bin $fish_user_paths
