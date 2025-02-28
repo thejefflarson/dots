@@ -141,6 +141,7 @@
 ;; Blinky hairline cursor
 (setq-default cursor-type '(bar . 2))
 (blink-cursor-mode 1)
+(setq-default tab-always-indent 'complete)
 
 ;; Enable narrowing
 (put 'narrow-to-region 'disabled nil)
@@ -500,13 +501,86 @@
 
 (use-package auto-package-update
    :custom
-   (auto-package-update-delete-old-versions t)
    (auto-package-update-interval 4)
+   (auto-package-delete-old-versions t)
    :config
    (auto-package-update-maybe))
 
 
+
+;; smarts
+(use-package ellama
+    :bind ("C-c e" . ellama-transient-main-menu)
+    :init
+    ;; setup key bindings
+    ;; (setopt ellama-keymap-prefix "C-c e")
+    ;; language you want ellama to translate to
+    (setopt ellama-language "English")
+    ;; could be llm-openai for example
+    (require 'llm-ollama)
+    (setopt ellama-provider
+	      (make-llm-ollama
+	       ;; this model should be pulled to use it
+	       ;; value should be the same as you print in terminal during pull
+	       :chat-model "llama3.1:8b-instruct-q8_0"
+	       :embedding-model "nomic-embed-text"
+	       :default-chat-non-standard-params '(("num_ctx" . 8192))))
+    (setopt ellama-summarization-provider
+	      (make-llm-ollama
+	       :chat-model "qwen2.5:3b"
+	       :embedding-model "nomic-embed-text"
+	       :default-chat-non-standard-params '(("num_ctx" . 32768))))
+    (setopt ellama-coding-provider
+	      (make-llm-ollama
+	       :chat-model "qwen2.5-coder:3b"
+	       :embedding-model "nomic-embed-text"
+	       :default-chat-non-standard-params '(("num_ctx" . 32768))))
+    ;; Predefined llm providers for interactive switching.
+    ;; You shouldn't add ollama providers here - it can be selected interactively
+    ;; without it. It is just example.
+    (setopt ellama-providers
+	      '(("zephyr" . (make-llm-ollama
+			     :chat-model "zephyr:7b-beta-q6_K"
+			     :embedding-model "zephyr:7b-beta-q6_K"))
+		      ("mistral" . (make-llm-ollama
+			      :chat-model "mistral:7b-instruct-v0.2-q6_K"
+			      :embedding-model "mistral:7b-instruct-v0.2-q6_K"))
+		      ("mixtral" . (make-llm-ollama
+			      :chat-model "mixtral:8x7b-instruct-v0.1-q3_K_M-4k"
+			      :embedding-model "mixtral:8x7b-instruct-v0.1-q3_K_M-4k"))))
+    ;; Naming new sessions with llm
+    (setopt ellama-naming-provider
+	      (make-llm-ollama
+	       :chat-model "llama3.1:8b-instruct-q8_0"
+	       :embedding-model "nomic-embed-text"
+	       :default-chat-non-standard-params '(("stop" . ["\n"]))))
+    (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
+    ;; Translation llm provider
+    (setopt ellama-translation-provider
+	    (make-llm-ollama
+	     :chat-model "qwen2.5:3b"
+	     :embedding-model "nomic-embed-text"
+	     :default-chat-non-standard-params
+	     '(("num_ctx" . 32768))))
+    ;; customize display buffer behaviour
+    ;; see ~(info "(elisp) Buffer Display Action Functions")~
+    (setopt ellama-chat-display-action-function #'display-buffer-at-bottom)
+    (setopt ellama-instant-display-action-function #'display-buffer-at-bottom)
+    :config
+    ;; send last message in chat buffer with C-c C-c
+    (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
+
+
 ;; Programming modes
+
+;; use treesit
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install t)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 (use-package yasnippet
   :config
   (yas-global-mode 1))
@@ -516,16 +590,6 @@
 (use-package chruby
   :custom
   (chruby "2.5.1"))
-
-(use-package python
-  :mode ("\\.py\\'" . python-mode))
-
-(use-package ruby-mode
-  :mode "\\.rb\\'"
-  :init
-  (add-to-list 'completion-ignored-extensions ".rbc")
-  :custom
-  (flycheck-rubocoprc nil))
 
 (use-package yaml-mode
   :mode "\\.yaml\\'")
@@ -540,14 +604,20 @@
   :hook (ruby-mode . projectile-rails-on))
 
 (use-package poetry
-  :ensure-system-package ((poetry . "pip install poetry"))
   :config (poetry-tracking-mode))
+
+(use-package ruby-ts-mode
+  :mode "\\.rb\\'"
+  :init
+  (add-to-list 'completion-ignored-extensions ".rbc")
+  :custom
+  (flycheck-rubocoprc nil))
 
 (use-package python
   :mode "python-mode"
   :after (poetry)
   :hook
-  (python-mode .
+  (python-ts-mode .
      (lambda () (
         when (poetry-venv-exist-p)
           (setq-local lsp-pyls-server-command '("poetry" "run" "pylsp"))
@@ -613,18 +683,17 @@
   :custom
   (dap-auto-configure-mode))
 
-(use-package dockerfile-mode
+(use-package dockerfile-ts-mode
   :mode "Dockerfile\\'")
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook
-  ((rust-mode . lsp-deferred)
+  ((rust-ts-mode . lsp-deferred)
    (verilog-mode . lsp-deferred)
-   (python-mode . lsp-deferred)
+   (python-ts-mode . lsp-deferred)
    (yaml-mode . lsp-deferred)
-   (dockerfile-mode . lsp-deferred)
-   (web-mode . lsp-deferred)
+   (dockerfile-ts-mode . lsp-deferred)
    (lsp-mode . lsp-enable-which-key-integration))
   :custom
   (lsp-keymap-prefix "s-l")
@@ -658,22 +727,32 @@
   ;; Jesus autocomplete sucks in this mode, just because you can doesn't mean you should
   (clear-abbrev-table verilog-mode-abbrev-table))
 
-(use-package rust-mode
+(use-package rust-ts-mode
   :mode "\\.rs\\'"
   :ensure-system-package
   ((rls . "rustup component add rls rust-analysis rust-src")
   (rust-analyzer . "curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/2021-10-25/rust-analyzer-aarch64-apple-darwin.gz | gunzip  > ~/bin/rust-analyzer; chmod +x ~/bin/rust-analyzer"))
-  :custom
-  (rust-format-on-save t))
+  :init
+  (add-hook 'before-save-hook (lambda () (when (eq 'rust-ts-mode major-mode)
+                                           (lsp-format-buffer)))))
 
-(use-package toml-mode
-  :mode "\\.toml\\'")
+(use-package typescript-ts-mode
+  :mode (("\\.js\\'"  . typescript-ts-mode)
+         ("\\.mjs\\'" . typescript-ts-mode)
+         ("\\.mts\\'" . typescript-ts-mode)
+         ("\\.cjs\\'" . typescript-ts-mode)
+         ("\\.ts\\'"  . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)
+         ("\\.jsx\\'" . tsx-ts-mode)))
 
-(use-package cargo
-  :hook (rust-mode . cargo-minor-mode))
-
-(use-package fish-mode
-  :mode "\\.fish\\'")
+(use-package rjsx-mode)
+(use-package tide
+  :ensure t
+  :after (company flycheck)
+  :hook ((typescript-ts-mode . tide-setup)
+         (tsx-ts-mode . tide-setup)
+         (typescript-ts-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
 
 (setq-default js-indent-level 2)
 (setq-default css-indent-offset 2)
@@ -682,36 +761,14 @@
 (setq-default typescript-indent-level 2)
 (setq-default tide-format-options '(:indentSize 2 :tabSize 2))
 
-(use-package web-mode
-  :mode
-  (("\\.html?\\'" . web-mode)
-   ("\\.erb\\'" . web-mode)
-   ("\\.tsx\\'" . web-mode))
-  :custom
-  (web-mode-enable-auto-pairing t)
-  (web-mode-enable-current-element-highlight nil)
-  (web-mode-enable-part-face t)
-  (web-mode-enable-block-face t)
-  (web-mode-enable-current-column-highlight t)
-  (web-mode-markup-indent-offset 2)
-  (web-mode-css-indent-offset 2)
-  (web-mode-code-indent-offset 2)
-  (web-mode-markup-indent-offset 2)
-  (web-mode-attr-indent-offset 2)
-  (web-mode-attr-value-indent-offset 2)
-  :hook (web-mode . (lambda ()
-                    (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                      (tide-setup)))))
+(use-package toml-mode
+  :mode "\\.toml\\'")
 
-(use-package js2-mode
-  :mode
-  (("\\.js\\'" . js-mode))
-  (("\\.jsx\\'" . js-mode))
-  :hook ((js-mode) . js2-minor-mode)
-  :custom
-  (js-basic-offset 2)
-  (js-mode-show-parse-errors nil)
-  (js-mode-show-strict-warnings nil))
+(use-package cargo
+  :hook (rust-ts-mode . cargo-minor-mode))
+
+(use-package fish-mode
+  :mode "\\.fish\\'")
 
 (use-package prettier-js
   :ensure-system-package (prettier . "npm i prettier -g")
@@ -719,18 +776,6 @@
 
 (use-package json-mode
   :mode "\\.json\\'")
-
-(use-package rjsx-mode)
-
-(use-package tide
-  :ensure-system-package
-  ((tsc . "npm i typescript -g")
-   (tslint . "npm i -g tslint")
-   (tsfmt . "npm i -g typescript-formatter"))
-  :hook
-  ((typescript-mode . tide-setup)
-   (typescript-mode . lsp-mode)
-   (typescript-mode . tide-hl-identifier-mode)))
 
 (use-package sql-indent
   :defer t)
