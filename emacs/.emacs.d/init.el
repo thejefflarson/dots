@@ -430,6 +430,7 @@
   (org-log-reschedule 'note)
   (org-log-refile 'time)
   (org-use-tag-inheritance t)
+  (org-support-shift-select t)
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (org-mobile-inbox-for-pull "~/Documents/org/notes.org")
   (org-directory "~/Documents/org")

@@ -71,3 +71,7 @@ if not contains $_asdf_shims $PATH
     set -gx --prepend PATH $_asdf_shims
 end
 set --erase _asdf_shims
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+set --export --prepend PATH "/Users/jlarson01/.rd/bin"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
