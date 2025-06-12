@@ -303,19 +303,19 @@
    :defer t)
 
 (use-package treemacs
-  :after treemacs-all-the-icons
+  :after treemacs-nerd-icons
   :config
   (treemacs-filewatch-mode t)
   (treemacs-git-mode 'extended)
-  (treemacs-load-theme "all-the-icons"))
-(use-package all-the-icons)
-(use-package treemacs-all-the-icons)
-
+  (treemacs-load-theme "nerd-icons"))
+(use-package nerd-icons)
+(use-package lsp-treemacs)
+(use-package treemacs-nerd-icons
+  :after lsp-treemacs nerd-icons)
 (use-package treemacs-projectile
   :after treemacs projectile
   :custom
   (treemacs-header-function #'treemacs-projectile-create-header))
-
 (use-package treemacs-magit
   :after treemacs magit)
 
@@ -327,7 +327,6 @@
   (projectile-completion-system 'ivy)
   (projectile-enable-caching t)
   (projectile-switch-project-action #'treemacs-projectile)
-  (treemacs-file-face 'default)
   :config
   (projectile-mode))
 
@@ -674,7 +673,7 @@
   ((rust-ts-mode . lsp-deferred)
    (verilog-mode . lsp-deferred)
    (python-ts-mode . lsp-deferred)
-   (yaml-mode . lsp-deferred)
+   (yaml-ts-mode . lsp-deferred)
    (dockerfile-ts-mode . lsp-deferred)
    (typescript-ts-mode . lsp-deferred)
    (lsp-mode . lsp-enable-which-key-integration))
@@ -689,7 +688,7 @@
   (lsp-rust-enable-all-features t))
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
 
 ;(setq-default lsp-clients-verilog-executable "svls")
 (use-package verilog-mode
