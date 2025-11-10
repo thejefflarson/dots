@@ -550,6 +550,9 @@
 (use-package poetry
   :config (poetry-tracking-mode))
 
+(use-package uv-mode
+  :hook (python-mode . uv-mode-auto-activate-hook))
+
 (use-package ruby-ts-mode
   :mode "\\.rb\\'"
   :init
