@@ -125,7 +125,7 @@
 (show-paren-mode 1)
 (electric-pair-mode 1)
 ;; make electric pair mode not do quotes
-(setq-default electric-pair-inhibit-predicate
+(setq electric-pair-inhibit-predicate
               (lambda (c)
                 (if (char-equal c ?\") t (electric-pair-default-inhibit c))))
 (recentf-mode)
@@ -154,14 +154,14 @@
 
 
 ;; Packages
-(require 'package)
+(use-package package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 (eval-when-compile
   (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
+(use-package diminish)
+(use-package bind-key)
 (diminish 'auto-revert-mode)
 (setq use-package-always-ensure t)
 (setq-default use-package-verbose t)
@@ -509,46 +509,9 @@
 
 
 ;; smarts
-(use-package ellama
-    :bind ("C-c e" . ellama-transient-main-menu)
-    :init
-    (setopt ellama-language "English")
-    (require 'llm-ollama)
-    (setopt ellama-provider
-	      (make-llm-ollama
-	       :chat-model "gemma3:4b"
-	       :embedding-model "nomic-embed-text"
-	       :default-chat-non-standard-params '(("num_ctx" . 8192))))
-    (setopt ellama-summarization-provider
-	      (make-llm-ollama
-	       :chat-model "gemma3:4b"
-	       :embedding-model "nomic-embed-text"
-	       :default-chat-non-standard-params '(("num_ctx" . 32768))))
-    (setopt ellama-coding-provider
-	      (make-llm-ollama
-	       :chat-model "gemma3:4b"
-	       :embedding-model "nomic-embed-text"
-	       :default-chat-non-standard-params '(("num_ctx" . 32768))))
-    (setopt ellama-naming-provider
-	      (make-llm-ollama
-	       :chat-model "gemma3:4b"
-	       :embedding-model "nomic-embed-text"
-	       :default-chat-non-standard-params '(("stop" . ["\n"]))))
-    (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
-    (setopt ellama-translation-provider
-	    (make-llm-ollama
-	     :chat-model "gemma3:4b"
-	     :embedding-model "nomic-embed-text"
-	     :default-chat-non-standard-params
-	     '(("num_ctx" . 32768))))
-    (setopt ellama-chat-display-action-function #'display-buffer-at-bottom)
-    (setopt ellama-instant-display-action-function #'display-buffer-at-bottom)
-    :config
-    (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
-
 (use-package aider
   :config
-  (setq aider-args '("--model" "ollama_chat/gemma3:4b"))
+  (setq aider-args '("--model" "ollama_chat/ibm/granite4:micro-h"))
   (global-set-key (kbd "C-c a") 'aider-transient-menu))
 
 
@@ -827,3 +790,5 @@
 
 (provide 'init)
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
